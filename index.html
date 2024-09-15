@@ -1,13 +1,27 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React</title>
+    <title>Login</title>
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <div>
+      <h2>Log In</h2>
+      <p>Get started for free</p>
+    </div>
+    <div>
+      <form>
+        <label for="email">Email</label>
+        <input type="text" id="email" name="email" />
+        <label for="password">Password</label>
+        <input type="text" id="password" name="password" />
+      </form>
+      <button type="submit">Log In</button>
+      <div>
+        <a href="./src/signup.html">Create account</a>
+        <a href="./src/passwordRecovery.html">Forgot password?</a>
+      </div>
+    </div>
   </body>
 </html>
