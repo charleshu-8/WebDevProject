@@ -25,6 +25,7 @@ export default function Home() {
         </ol>
 
         <Link href="/auth/password-recovery">TEST PASSWORD RECOVERY PAGE</Link>
+        <Link href={"/auth/login"}>TEST LOGIN PAGE</Link>
 
         <div className="flex gap-4 items-center flex-col sm:flex-row">
           <a
