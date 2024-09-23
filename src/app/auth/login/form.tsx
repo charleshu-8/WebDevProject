@@ -4,12 +4,11 @@
 import Link from "next/link";
 
 export default function Form() {
-  // Handle email submission
   // TODO: Add functionality when ingesting username and password
   async function handleResponse(response: FormData) {
-    const username = response.get("username");
+    const email = response.get("email");
     const password = response.get("password");
-    console.log(username, password);
+    console.log(email, password);
   }
 
   return (
@@ -19,46 +18,44 @@ export default function Form() {
     >
       <div className="w-full">
         <input
-          name="username"
-          type="username"
-          placeholder="Username"
+          name="email"
+          type="email"
+          placeholder="Email"
           required
-          className="p-2 mt-4 mb-1 w-full text-gray-900 text-xs border border-1 border-grey rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-b-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          className="p-2 mt-5 mb-1 w-full text-gray-900 text-xs border border-1 border-grey rounded-md focus:ring-blue-500 focus:border-blue-500"
         />
       </div>
-      <div className="w-full">
+      <div className="w-full mb-1">
         <input
           name="password"
           type="password"
           placeholder="Password"
           required
-          className="p-2 w-full mb-1 text-gray-900 text-xs border border-1 border-grey rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-b-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          className="p-2 w-full mb-1 text-gray-900 text-xs border border-1 border-grey rounded-md focus:ring-blue-500 focus:border-blue-500"
         />
       </div>
-      <div className="text-sm">
-        <input
+      <div className="text-xs">
+        <label>
+          <input
           name="staySignedIn"
           type="checkbox"
-          placeholder="Stay Signed In"
-          className=""
+          placeholder="Stay Signed In?"
+          className="mr-1"
         />
-        Stay Signed In
+          Stay Signed In?
+        </label>
       </div>
       <div>
         <button
           type="submit"
-          className="border rounded-md p-3 mt-5 bg-darker-blue border-darker-blue text-white"
+          className="border text-xs rounded-md pt-2 pb-2 pr-4 pl-4 mt-3 mb-2 bg-darker-blue border-darker-blue text-white"
         >
           Sign In
         </button>
       </div>
-      <div className="space-x-4">
-        <Link href={"../signup"}
-              className="text-sm">
-          Create Account</Link>
-        <Link href="/auth/password-recovery"
-              className="text-sm">
-          Forgot Password</Link>
+      <div className="text-xs space-x-2 text-blue-600 underline">
+        <Link href={"/auth/signup"}>Create Account</Link>
+        <Link href="/auth/password-recovery">Forgot Password</Link>
       </div>
     </form>
   );
