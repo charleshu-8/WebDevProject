@@ -16,13 +16,13 @@ export default function Form() {
       action={handleResponse}
       className="flex flex-col items-left justify-center"
     >
-      <div className="w-full">
+      <div className="w-full dark:text-white">
         <input
           name="email"
           type="email"
           placeholder="Email"
           required
-          className="p-2 mt-5 mb-1 w-full text-gray-900 text-xs border border-1 border-grey rounded-md focus:ring-blue-500 focus:border-blue-500"
+          className="p-2 mt-5 mb-1 w-full text-gray-900 text-xs border border-1 border-grey rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-even-darker-blue dark:border-very-light-gray dark:text-very-light-gray"
         />
       </div>
       <div className="w-full mb-1">
@@ -31,7 +31,7 @@ export default function Form() {
           type="password"
           placeholder="Password"
           required
-          className="p-2 w-full mb-1 text-gray-900 text-xs border border-1 border-grey rounded-md focus:ring-blue-500 focus:border-blue-500"
+          className="p-2 w-full mb-1 text-gray-900 text-xs border border-1 border-grey rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-even-darker-blue dark:border-very-light-gray dark:text-very-light-gray"
         />
       </div>
       <div className="text-xs">
@@ -48,14 +48,14 @@ export default function Form() {
       <div>
         <button
           type="submit"
-          className="border text-xs rounded-md pt-2 pb-2 pr-4 pl-4 mt-3 mb-2 bg-darker-blue border-darker-blue text-white"
+          className="border text-xs rounded-md pt-2 pb-2 pr-4 pl-4 mt-3 mb-2 bg-darker-blue border-darker-blue text-white dark:bg-very-light-gray dark:text-black"
         >
           Sign In
         </button>
       </div>
-      <div className="text-xs space-x-2 text-blue-600 underline">
+      <div className="text-xs space-x-2 text-blue-600 underline dark:text-very-light-gray">
         <Link href={"/auth/signup"}>Create Account</Link>
-        <Link href="/auth/password-recovery">Forgot Password</Link>
+        <Link href="/auth/password-recovery">Forgot Password?</Link>
       </div>
     </form>
   );
