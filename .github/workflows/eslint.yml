@@ -8,7 +8,7 @@ on:
 
 jobs:
   eslint:
-    name: Runnig ESLint scan
+    name: Running ESLint scan
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
