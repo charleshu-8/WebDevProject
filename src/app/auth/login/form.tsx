@@ -1,8 +1,8 @@
 "use client";
 
-// Form component for taking username and password for verification
 import Link from "next/link";
 
+// Form component for taking username and password for verification
 export default function Form() {
   // TODO: Add functionality when ingesting username and password
   async function handleResponse(response: FormData) {
@@ -37,11 +37,11 @@ export default function Form() {
       <div className="text-xs">
         <label>
           <input
-          name="staySignedIn"
-          type="checkbox"
-          placeholder="Stay Signed In?"
-          className="mr-1"
-        />
+            name="staySignedIn"
+            type="checkbox"
+            placeholder="Stay Signed In?"
+            className="mr-1"
+          />
           Stay Signed In?
         </label>
       </div>
