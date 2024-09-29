@@ -4,7 +4,7 @@ on: pull_request_target
 
 permissions:
   pull-requests: write
-  contents: read
+  contents: write
 
 jobs:
   auto-approve:
@@ -13,9 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
-      contents: read
+      contents: write
     steps:
       - uses: hmarr/auto-approve-action@v4
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          review-message: "Auto approved Dependabot PR"
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
