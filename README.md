@@ -1,3 +1,7 @@
+[![ESLint](https://github.com/charleshu-8/WebDevProject/actions/workflows/eslint.yml/badge.svg)](https://github.com/charleshu-8/WebDevProject/actions/workflows/eslint.yml)
+[![Build](https://github.com/charleshu-8/WebDevProject/actions/workflows/build.yml/badge.svg)](https://github.com/charleshu-8/WebDevProject/actions/workflows/build.yml)
+[![GitHub Pages](https://github.com/charleshu-8/WebDevProject/actions/workflows/nextjs.yml/badge.svg)](https://github.com/charleshu-8/WebDevProject/actions/workflows/nextjs.yml)
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
