@@ -1,4 +1,4 @@
-name: ESLint
+name: Build
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   eslint:
-    name: Running ESLint scan
+    name: Building Next.js project
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -23,5 +23,5 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Run linter
-        run: pnpm lint
+      - name: Build
+        run: pnpm build
