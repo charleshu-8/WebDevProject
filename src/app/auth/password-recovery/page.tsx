@@ -8,12 +8,12 @@ export default function PasswordRecovery() {
       <main className="h-screen w-screen flex flex-col items-center justify-center">
         <h1 className="text-6xl mb-10 font-bold">Uh Oh!</h1>
         <p className="mt-10 w-2/3 text-center text-pretty">
-          Enter the email associated with your account and we'll help you reset
-          your password.
+          Enter the email associated with your account and we&apos;ll help you
+          reset your password.
         </p>
         <Form />
         <p>
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <a
             href="PLACEHOLDER"
             className="text-blue-600 underline dark:text-blue-500 hover:no-underline"
