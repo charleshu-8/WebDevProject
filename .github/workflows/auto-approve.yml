@@ -2,6 +2,10 @@ name: Auto approve
 
 on: pull_request_target
 
+permissions:
+  pull-requests: write
+  contents: write
+
 jobs:
   auto-approve:
     name: Auto approve Dependabot PRs
