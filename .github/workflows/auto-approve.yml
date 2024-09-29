@@ -1,4 +1,4 @@
-name: Auto approve
+name: Auto approve and merge
 
 on: pull_request_target
 
@@ -7,14 +7,22 @@ permissions:
   contents: write
 
 jobs:
-  auto-approve:
-    name: Auto approve Dependabot PRs
-    if: github.event.pull_request.user.login == 'dependabot[bot]'
+  auto-approve-merge:
+    name: Auto approve and merge Dependabot PRs
+    if: github.event.pull_request.user.login == "dependabot[bot]"
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
       contents: write
     steps:
-      - uses: hmarr/auto-approve-action@v4
+      - name: Approve PR
+        uses: hmarr/auto-approve-action@v4
         with:
-          github-token: "${{ secrets.GITHUB_TOKEN }}"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          review-message: "Auto approved Dependabot PR"
+
+      - name: Merge PR
+        run: gh pr merge --auto --merge "$PR_URL"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
