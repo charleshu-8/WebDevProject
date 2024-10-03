@@ -1,5 +1,7 @@
 import PasswordForm from "./form_password";
 import UsernameForm from "./form_username";
+import FirstNameForm from "./form_firstname";
+import LastNameForm from "./form_lastname";
 
 export default function SignUp() {
   return (
@@ -17,6 +19,15 @@ export default function SignUp() {
               </div>
               <div className="flex-1 w-full justify-center">
                 <PasswordForm />
+              </div>
+            </div>
+            <p className="text-black font-bold mb-5">Personal Info:</p>
+            <div className="flex flex-row justify-center space-x-4">
+              <div className="flex-1 w-full justify-center">
+                <FirstNameForm />
+              </div>
+              <div className="flex-1 w-full justify-center">
+                <LastNameForm />
               </div>
             </div>
           </div>
