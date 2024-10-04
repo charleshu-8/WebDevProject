@@ -13,12 +13,12 @@ export default function Form() {
   return (
     <form
       action={handleResponse}
-      className="w-full m-10 flex flex-col items-center justify-center"
+      className="w-full flex flex-col items-center justify-center space-y-8 p-5"
     >
       {/*Register label*/}
-      <p className="text-black font-bold mb-5">Register:</p>
+      <p className="mt-10 text-black font-bold w-full">Register:</p>
       {/*Username and Password Row*/}
-      <div className="flex flex-row justify-center space-x-4">
+      <div className="flex flex-row justify-center space-x-4 w-full mb-30">
         <div className="flex-1 w-full justify-center">
           <div className="w-full">
             <input
@@ -42,9 +42,9 @@ export default function Form() {
           </div>
         </div>
       </div>
-      <p className="text-black font-bold mb-5 mt-10">Personal Info:</p>
+      <p className="pt-5 text-black font-bold mt-50 w-full">Personal Info:</p>
       {/*Firstname and Lastname Row*/}
-      <div className="flex flex-row justify-center space-x-4">
+      <div className="flex flex-row justify-center space-x-4 w-full">
         <div className="flex-1 w-full justify-center">
           <div className="w-full">
             <input
@@ -69,7 +69,7 @@ export default function Form() {
         </div>
       </div>
       {/*Email and Phonenum Row*/}
-      <div className="flex flex-row justify-center space-x-4">
+      <div className="flex flex-row justify-center space-x-4 w-full">
         <div className="flex-1 w-full justify-center">
           <div className="w-full">
             <input
@@ -94,7 +94,7 @@ export default function Form() {
         </div>
       </div>
       {/*Short Bio Row*/}
-      <div className="flex flex-row justify-center space-x-4 h-100">
+      <div className="flex flex-row justify-center space-x-4 h-100 w-full">
         <div className="flex-1 w-full h-full justify-center">
           <div className="w-full h-full">
             <input

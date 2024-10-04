@@ -15,6 +15,9 @@ const config: Config = {
       },
     },
   },
+  variants: {
+    overscrollBehavior: ['responsive'],
+  },
   plugins: [],
 };
 export default config;
