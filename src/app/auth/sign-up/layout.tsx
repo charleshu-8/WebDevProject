@@ -5,7 +5,7 @@ export default function Layout({
 }>) {
   return (
     <html lang="en">
-      <body className="h-screen bg-darker-blue">{children}</body>
+      <body className="h-screen bg-darker-blue dark:bg-black">{children}</body>
     </html>
   );
 }
