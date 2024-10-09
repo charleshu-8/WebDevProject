@@ -29,11 +29,17 @@ export default function SignUp() {
                 className="w-3/4 pt-20 mt-2 md:pt-20 md:mt-20 lg:pt-24 lg:mt-24 focus:outline-none flex justify-center"
                 onClick={handleProfilePictureClick}
               >
-                {/* Profile icon or image here */}
+                {/* Profile icon for light mode */}
                 <img
                   src="/auth/sign-up/icon2.png"
-                  alt="Profile Icon"
-                  className="w-full h-full rounded-full object-cover"
+                  alt="Profile Icon Light"
+                  className="w-full h-full rounded-full object-cover dark:hidden"
+                />
+                {/* Profile icon for dark mode */}
+                <img
+                  src="/auth/sign-up/icon3.png"
+                  alt="Profile Icon Dark"
+                  className="w-full h-full rounded-full object-cover hidden dark:block"
                 />
               </button>
             </div>
