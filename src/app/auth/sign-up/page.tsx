@@ -4,7 +4,7 @@ export default function SignUp() {
   return (
     // Background Screen
     <div className="h-full w-full bg-darker-blue dark:bg-black overscroll-none">
-      <main className="min-h-screen h-full w-full flex flex-col mb-10 mt-6 bg-darker-blue dark:bg-black overscroll-none">
+      <main className="h-full w-full flex flex-col mb-10 mt-6 bg-darker-blue dark:bg-black overscroll-none">
         <h1 className="text-6xl mt-6 mb-8 text-white dark:text-dim-white font-thin text-center">
           Create Your Account
         </h1>
