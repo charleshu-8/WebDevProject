@@ -1,13 +1,27 @@
 "use client";
 
-// Form component for requesting email for password recovery
+// Form component for user sign up information
 export default function Form() {
-  // Handle email submission
-  // TODO: Add functionality when ingesting email
+  // Handle form submission
+  // TODO: Add functionality when ingesting user data
   async function handleResponse(response: FormData) {
+    const username = response.get("username");
+    const password = response.get("password");
+    const firstname = response.get("firstname");
+    const lastname = response.get("lastname");
     const email = response.get("email");
-    // Just throw out inputted email for now
-    console.log(email);
+    const phonenum = response.get("phonenum");
+    const shortbio = response.get("shortbio");
+    // Just throw out inputted data for now
+    console.log(
+      username,
+      password,
+      firstname,
+      lastname,
+      email,
+      phonenum,
+      shortbio
+    );
   }
 
   return (
@@ -16,11 +30,12 @@ export default function Form() {
       className="w-full flex flex-col items-center justify-center space-y-8 p-5"
     >
       {/*Register label*/}
-      <p className="mt-10 text-black dark:text-dim-white font-bold w-full">
+      <p className="pt-6 text-black dark:text-dim-white font-bold w-full">
         Register:
       </p>
       {/*Username and Password Row*/}
       <div className="flex flex-row justify-center space-x-4 w-full mb-30">
+        {/*Username Container*/}
         <div className="flex-1 w-full justify-center">
           <div className="w-full">
             <input
@@ -32,6 +47,7 @@ export default function Form() {
             />
           </div>
         </div>
+        {/*Password Container*/}
         <div className="flex-1 w-full justify-center">
           <div className="w-full">
             <input
@@ -50,6 +66,7 @@ export default function Form() {
       </p>
       {/*Firstname and Lastname Row*/}
       <div className="flex flex-row justify-center space-x-4 w-full">
+        {/*Firstname Container*/}
         <div className="flex-1 w-full justify-center">
           <div className="w-full">
             <input
@@ -61,6 +78,7 @@ export default function Form() {
             />
           </div>
         </div>
+        {/*Lastname Container*/}
         <div className="flex-1 w-full justify-center">
           <div className="w-full">
             <input
@@ -75,6 +93,7 @@ export default function Form() {
       </div>
       {/*Email and Phonenum Row*/}
       <div className="flex flex-row justify-center space-x-4 w-full">
+        {/*Email Container*/}
         <div className="flex-1 w-full justify-center">
           <div className="w-full">
             <input
@@ -86,6 +105,7 @@ export default function Form() {
             />
           </div>
         </div>
+        {/*Phonenum Container*/}
         <div className="flex-1 w-full justify-center">
           <div className="w-full">
             <input
@@ -100,6 +120,7 @@ export default function Form() {
       </div>
       {/*Short Bio Row*/}
       <div className="flex flex-row justify-center space-x-4 h-100 w-full">
+        {/*Short Bio Container*/}
         <div className="flex-1 w-full h-full justify-center">
           <div className="w-full h-full">
             <textarea
@@ -112,7 +133,7 @@ export default function Form() {
           </div>
         </div>
       </div>
-
+      {/*Signup Button Container*/}
       <div className="flex flex-row justify-center"></div>
       {/*Signup Button*/}
       <div>

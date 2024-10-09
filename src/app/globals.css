@@ -25,3 +25,9 @@ body {
     text-wrap: balance;
   }
 }
+
+.circle {
+  width: 25%;
+  height: 0;
+  padding-bottom: 25%;
+}
