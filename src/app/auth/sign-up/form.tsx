@@ -20,115 +20,115 @@ export default function Form() {
       lastname,
       email,
       phonenum,
-      shortbio
+      shortbio,
     );
   }
 
   return (
     <form
       action={handleResponse}
-      className="w-full flex flex-col items-center justify-center space-y-8 p-5"
+      className="flex w-full flex-col items-center justify-center space-y-8 p-5"
     >
       {/*Register label*/}
-      <p className="pt-6 text-black dark:text-dim-white font-bold w-full">
+      <p className="w-full pt-6 font-bold text-black dark:text-dim-white">
         Register:
       </p>
       {/*Username and Password Row*/}
-      <div className="flex flex-row justify-center space-x-4 w-full mb-30">
+      <div className="mb-30 flex w-full flex-row justify-center space-x-4">
         {/*Username Container*/}
-        <div className="flex-1 w-full justify-center">
+        <div className="w-full flex-1 justify-center">
           <div className="w-full">
             <input
               name="username"
               type="text"
               placeholder="Enter Username:"
               required
-              className="w-full p-3 text-gray-900 text-sm border-2 border-darker-blue bg-gray-50 outline-none rounded-md focus:ring-darker-blue focus:border-darker-blue dark:bg-darkest-blue dark:border-dark-mode-blue-highlight dark:focus:ring-dark-mode-blue-highlight dark:focus:border-dark-mode-blue-highlight dark:text-dark-mode-blue-highlight dark:placeholder-dark-mode-blue-highlight"
+              className="w-full rounded-md border-2 border-darker-blue bg-gray-50 p-3 text-sm text-gray-900 outline-none focus:border-darker-blue focus:ring-darker-blue dark:border-dark-mode-blue-highlight dark:bg-darkest-blue dark:text-dark-mode-blue-highlight dark:placeholder-dark-mode-blue-highlight dark:focus:border-dark-mode-blue-highlight dark:focus:ring-dark-mode-blue-highlight"
             />
           </div>
         </div>
         {/*Password Container*/}
-        <div className="flex-1 w-full justify-center">
+        <div className="w-full flex-1 justify-center">
           <div className="w-full">
             <input
               name="password"
               type="password"
               placeholder="Enter password:"
               required
-              className="w-full p-3 text-gray-900 text-sm border-2 border-darker-blue bg-gray-50 outline-none rounded-md focus:ring-darker-blue focus:border-darker-blue dark:bg-darkest-blue dark:border-dark-mode-blue-highlight dark:focus:ring-dark-mode-blue-highlight dark:focus:border-dark-mode-blue-highlight dark:text-dark-mode-blue-highlight dark:placeholder-dark-mode-blue-highlight"
+              className="w-full rounded-md border-2 border-darker-blue bg-gray-50 p-3 text-sm text-gray-900 outline-none focus:border-darker-blue focus:ring-darker-blue dark:border-dark-mode-blue-highlight dark:bg-darkest-blue dark:text-dark-mode-blue-highlight dark:placeholder-dark-mode-blue-highlight dark:focus:border-dark-mode-blue-highlight dark:focus:ring-dark-mode-blue-highlight"
             />
           </div>
         </div>
       </div>
       {/*Personal Info Label*/}
-      <p className="pt-5 text-black dark:text-dim-white font-bold mt-50 w-full">
+      <p className="mt-50 w-full pt-5 font-bold text-black dark:text-dim-white">
         Personal Info:
       </p>
       {/*Firstname and Lastname Row*/}
-      <div className="flex flex-row justify-center space-x-4 w-full">
+      <div className="flex w-full flex-row justify-center space-x-4">
         {/*Firstname Container*/}
-        <div className="flex-1 w-full justify-center">
+        <div className="w-full flex-1 justify-center">
           <div className="w-full">
             <input
               name="firstname"
               type="text"
               placeholder="First Name:"
               required
-              className="w-full p-3 text-gray-900 text-sm border-2 border-darker-blue bg-gray-50 outline-none rounded-md focus:ring-darker-blue focus:border-darker-blue dark:bg-darkest-blue dark:border-dark-mode-blue-highlight dark:focus:ring-dark-mode-blue-highlight dark:focus:border-dark-mode-blue-highlight dark:text-dark-mode-blue-highlight dark:placeholder-dark-mode-blue-highlight"
+              className="w-full rounded-md border-2 border-darker-blue bg-gray-50 p-3 text-sm text-gray-900 outline-none focus:border-darker-blue focus:ring-darker-blue dark:border-dark-mode-blue-highlight dark:bg-darkest-blue dark:text-dark-mode-blue-highlight dark:placeholder-dark-mode-blue-highlight dark:focus:border-dark-mode-blue-highlight dark:focus:ring-dark-mode-blue-highlight"
             />
           </div>
         </div>
         {/*Lastname Container*/}
-        <div className="flex-1 w-full justify-center">
+        <div className="w-full flex-1 justify-center">
           <div className="w-full">
             <input
               name="lastname"
               type="text"
               placeholder="Last Name:"
               required
-              className="w-full p-3 text-gray-900 text-sm border-2 border-darker-blue bg-gray-50 outline-none rounded-md focus:ring-darker-blue focus:border-darker-blue dark:bg-darkest-blue dark:border-dark-mode-blue-highlight dark:focus:ring-dark-mode-blue-highlight dark:focus:border-dark-mode-blue-highlight dark:text-dark-mode-blue-highlight dark:placeholder-dark-mode-blue-highlight"
+              className="w-full rounded-md border-2 border-darker-blue bg-gray-50 p-3 text-sm text-gray-900 outline-none focus:border-darker-blue focus:ring-darker-blue dark:border-dark-mode-blue-highlight dark:bg-darkest-blue dark:text-dark-mode-blue-highlight dark:placeholder-dark-mode-blue-highlight dark:focus:border-dark-mode-blue-highlight dark:focus:ring-dark-mode-blue-highlight"
             />
           </div>
         </div>
       </div>
       {/*Email and Phonenum Row*/}
-      <div className="flex flex-row justify-center space-x-4 w-full">
+      <div className="flex w-full flex-row justify-center space-x-4">
         {/*Email Container*/}
-        <div className="flex-1 w-full justify-center">
+        <div className="w-full flex-1 justify-center">
           <div className="w-full">
             <input
               name="email"
               type="email"
               placeholder="Email:"
               required
-              className="w-full p-3 text-gray-900 text-sm border-2 border-darker-blue bg-gray-50 outline-none rounded-md focus:ring-darker-blue focus:border-darker-blue dark:bg-darkest-blue dark:border-dark-mode-blue-highlight dark:focus:ring-dark-mode-blue-highlight dark:focus:border-dark-mode-blue-highlight dark:text-dark-mode-blue-highlight dark:placeholder-dark-mode-blue-highlight"
+              className="w-full rounded-md border-2 border-darker-blue bg-gray-50 p-3 text-sm text-gray-900 outline-none focus:border-darker-blue focus:ring-darker-blue dark:border-dark-mode-blue-highlight dark:bg-darkest-blue dark:text-dark-mode-blue-highlight dark:placeholder-dark-mode-blue-highlight dark:focus:border-dark-mode-blue-highlight dark:focus:ring-dark-mode-blue-highlight"
             />
           </div>
         </div>
         {/*Phonenum Container*/}
-        <div className="flex-1 w-full justify-center">
+        <div className="w-full flex-1 justify-center">
           <div className="w-full">
             <input
               name="phonenum"
               type="tel"
               placeholder="Phone Number:"
               required
-              className="w-full p-3 text-gray-900 text-sm border-2 border-darker-blue bg-gray-50 outline-none rounded-md focus:ring-darker-blue focus:border-darker-blue dark:bg-darkest-blue dark:border-dark-mode-blue-highlight dark:focus:ring-dark-mode-blue-highlight dark:focus:border-dark-mode-blue-highlight dark:text-dark-mode-blue-highlight dark:placeholder-dark-mode-blue-highlight"
+              className="w-full rounded-md border-2 border-darker-blue bg-gray-50 p-3 text-sm text-gray-900 outline-none focus:border-darker-blue focus:ring-darker-blue dark:border-dark-mode-blue-highlight dark:bg-darkest-blue dark:text-dark-mode-blue-highlight dark:placeholder-dark-mode-blue-highlight dark:focus:border-dark-mode-blue-highlight dark:focus:ring-dark-mode-blue-highlight"
             />
           </div>
         </div>
       </div>
       {/*Short Bio Row*/}
-      <div className="flex flex-row justify-center space-x-4 h-100 w-full">
+      <div className="h-100 flex w-full flex-row justify-center space-x-4">
         {/*Short Bio Container*/}
-        <div className="flex-1 w-full h-full justify-center">
-          <div className="w-full h-full">
+        <div className="h-full w-full flex-1 justify-center">
+          <div className="h-full w-full">
             <textarea
               name="shortbio"
               rows={5}
               placeholder="Short Bio (100 words max):"
               required
-              className="w-full h-full resize-none p-3 text-gray-900 text-sm border-2 border-darker-blue bg-gray-50 outline-none rounded-md focus:ring-darker-blue focus:border-darker-blue dark:bg-darkest-blue dark:border-dark-mode-blue-highlight dark:focus:ring-dark-mode-blue-highlight dark:focus:border-dark-mode-blue-highlight dark:text-dark-mode-blue-highlight dark:placeholder-dark-mode-blue-highlight"
+              className="h-full w-full resize-none rounded-md border-2 border-darker-blue bg-gray-50 p-3 text-sm text-gray-900 outline-none focus:border-darker-blue focus:ring-darker-blue dark:border-dark-mode-blue-highlight dark:bg-darkest-blue dark:text-dark-mode-blue-highlight dark:placeholder-dark-mode-blue-highlight dark:focus:border-dark-mode-blue-highlight dark:focus:ring-dark-mode-blue-highlight"
             />
           </div>
         </div>
@@ -139,7 +139,7 @@ export default function Form() {
       <div>
         <button
           type="submit"
-          className="border rounded-md py-3 px-16 font-bold bg-darker-blue dark:bg-dim-white border-darker-blue text-white dark:text-darker-blue"
+          className="rounded-md border border-darker-blue bg-darker-blue px-16 py-3 font-bold text-white dark:bg-dim-white dark:text-darker-blue"
           onClick={(event: React.MouseEvent<HTMLElement>) => {
             console.log("Signup Button Pressed");
           }}

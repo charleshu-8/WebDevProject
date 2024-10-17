@@ -1,5 +1,6 @@
 "use client";
 import Form from "./form";
+import UploadAndDisplayImage from "./pfp";
 
 export default function SignUp() {
   // Handle Profile Picture Click
@@ -11,50 +12,47 @@ export default function SignUp() {
 
   return (
     // Screen Background
-    <div className="min-h-screen w-full bg-darker-blue dark:bg-black overscroll-none">
+    <div className="min-h-screen w-full overscroll-none bg-darker-blue dark:bg-black">
       {/* Main Container */}
-      <main className="min-h-screen w-full flex flex-col mt-6 bg-darker-blue dark:bg-black overscroll-none">
+      <main className="mt-6 flex min-h-screen w-full flex-col overscroll-none bg-darker-blue dark:bg-black">
         {/* Create Your Account Label */}
-        <h1 className="text-6xl mt-6 mb-8 pb-6 text-white dark:text-dim-white font-thin text-center">
+        <h1 className="mb-12 mt-6 pb-6 text-center text-6xl font-thin text-white dark:text-dim-white">
           Create Your Account
         </h1>
         {/* Rectangle Container */}
         <div className="flex flex-col items-center">
           {/* Main White Form Rectangle */}
-          <div className="relative mt-16 mb-12 bg-white dark:bg-darker-blue rounded-xl p-6 w-4/5 md:w-2/3 lg:w-3/5">
+          <div className="relative mb-12 mt-16 w-4/5 rounded-xl bg-white p-6 md:w-2/3 lg:w-3/5 dark:bg-darker-blue">
             {/* Profile Picture White Background Circle */}
-            <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/4 bg-white circle rounded-full dark:bg-darker-blue border-none flex items-center justify-center">
-              {/* Profile Picture Button within circle that is clickable to actually add a profile picture */}
-              <button
-                className="w-3/4 pt-20 mt-2 md:pt-20 md:mt-20 lg:pt-24 lg:mt-24 focus:outline-none flex justify-center"
+            <div
+              className="absolute left-1/2 top-0 flex h-32 w-32 -translate-x-1/2 -translate-y-1/2 transform items-center justify-center rounded-full border-none bg-white md:h-40 md:w-40 lg:h-48 lg:w-48 dark:bg-darker-blue"
+              onClick={handleProfilePictureClick}
+              style={{
+                overflow: "hidden",
+              }}
+            >
+              {/* Profile Picture Circle */}
+              <div
+                className="h-28 w-28 rounded-full md:h-36 md:w-36 lg:h-44 lg:w-44"
                 onClick={handleProfilePictureClick}
               >
-                {/* Profile icon for light mode */}
-                <img
-                  src="/auth/sign-up/icon2.png"
-                  alt="Profile Icon Light"
-                  className="w-full h-full rounded-full object-cover dark:hidden"
-                />
-                {/* Profile icon for dark mode */}
-                <img
-                  src="/auth/sign-up/icon3.png"
-                  alt="Profile Icon Dark"
-                  className="w-full h-full rounded-full object-cover hidden dark:block"
-                />
-              </button>
+                <UploadAndDisplayImage />
+              </div>
             </div>
             {/* Label below the profile picture circle */}
-            <p className="text-center mt-6 pt-4 md:pt-8 lg:pt-14 text-black dark:text-gray-300 font-bold">
+            <p className="mt-10 pt-4 text-center font-bold text-black md:pt-8 lg:pt-14 dark:text-gray-300">
               Add Profile Picture
+              <br />
+              (Double Click/Tap to Remove)
             </p>
             {/* Form Component */}
             <Form />
             {/* Bottom of page text: Already have an account? Login */}
-            <p className="text-center mt-4">
+            <p className="mt-4 text-center">
               Already have an account?{" "}
               <a
                 href="/auth/login"
-                className="text-blue-600 underline dark:text-blue-500 hover:no-underline"
+                className="text-blue-600 underline hover:no-underline dark:text-blue-500"
               >
                 Login
               </a>
