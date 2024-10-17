@@ -16,6 +16,7 @@ const config: Config = {
         "very-light-gray": "#EDEDED",
         "secondary": "#78A1CC",
         "gray-shadow":"#d9d9d9",
+        "stark-white": "#FAFCFF",
       },
     },
   },
