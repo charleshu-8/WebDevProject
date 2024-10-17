@@ -7,20 +7,20 @@ export default function Form() {
   async function handleResponse(response: FormData) {
     const username = response.get("username");
     const password = response.get("password");
-    const firstname = response.get("firstname");
-    const lastname = response.get("lastname");
+    const firstName = response.get("firstname");
+    const lastName = response.get("lastname");
     const email = response.get("email");
-    const phonenum = response.get("phonenum");
-    const shortbio = response.get("shortbio");
+    const phoneNum = response.get("phonenum");
+    const shortBio = response.get("shortbio");
     // Just throw out inputted data for now
     console.log(
       username,
       password,
-      firstname,
-      lastname,
+      firstName,
+      lastName,
       email,
-      phonenum,
-      shortbio,
+      phoneNum,
+      shortBio,
     );
   }
 
