@@ -4,7 +4,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 
 export default function NavBar(){
-    let user = "First Name Last Name"
+    const user = "First Name Last Name"
     return (
         <Box className="sticky flex flex-row bg-darker-blue w-screen h-[6vw] min-h-[80px]" >
             <Box className="w-2/5 h-full ml-[10%] flex items-center">
