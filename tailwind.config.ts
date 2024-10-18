@@ -14,6 +14,7 @@ const config: Config = {
         "darker-blue": "#07326A",
         "even-darker-blue": "#0F2A50",
         "very-light-gray": "#EDEDED",
+        "gray-shadow": "#D9D9D9",
       },
     },
   },
