@@ -12,9 +12,9 @@ export default function SignUp() {
 
   return (
     // Screen Background
-    <div className="min-h-screen w-full overscroll-none bg-darker-blue dark:bg-black">
+    <div className="min-h-screen w-full bg-darker-blue dark:bg-black">
       {/* Main Container */}
-      <main className="mt-6 flex min-h-screen w-full flex-col overscroll-none bg-darker-blue dark:bg-black">
+      <main className="mt-6 flex min-h-screen w-full flex-col bg-darker-blue dark:bg-black">
         {/* Create Your Account Label */}
         <h1 className="mb-12 mt-6 pb-6 text-center text-6xl font-thin text-white dark:text-dim-white">
           Create Your Account

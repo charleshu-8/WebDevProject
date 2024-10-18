@@ -11,7 +11,7 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
-        
+
         "darker-blue": "#07326A",
         "dark-mode-blue-highlight": "#96C0F8",
         "darkest-blue": "#0F2A50",
@@ -20,9 +20,6 @@ const config: Config = {
         "very-light-gray": "#EDEDED",
       },
     },
-  },
-  variants: {
-    overscrollBehavior: ['responsive'],
   },
   plugins: [],
 };

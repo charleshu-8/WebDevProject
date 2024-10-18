@@ -15,7 +15,7 @@ export default function PasswordRecovery() {
         <p>
           Don&apos;t have an account?{" "}
           <a
-            href="PLACEHOLDER"
+            href="/auth/sign-up"
             className="text-blue-600 underline hover:no-underline dark:text-blue-500"
           >
             Sign up.
