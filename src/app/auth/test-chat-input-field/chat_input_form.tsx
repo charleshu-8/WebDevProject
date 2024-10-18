@@ -22,7 +22,7 @@ export default function ChatInputField() {
       >
         {/* Gray Options Bar above chat input field */}
         <div
-          className="bg-gray-shadow flex h-1/6 items-center pl-6"
+          className="bg-gray-shadow flex h-1/5 items-center pl-6"
           style={{ display: "flex", alignItems: "center" }}
         >
           {/* SVG Icon */}
