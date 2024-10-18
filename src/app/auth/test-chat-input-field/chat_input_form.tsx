@@ -1,9 +1,18 @@
 "use client";
-import icon from "../../res/heart.svg"; // Adjust the path to your SVG file
+import React, { useState } from "react";
+import icon from "../../res/heart.svg"; // Import the default heart icon
+import pressedIcon from "../../res/pressed_heart.svg"; // Import the pressed heart icon
 
 // Form component for requesting email for password recovery
 export default function ChatInputField() {
-  // TODO:
+  // State to track whether the icon is pressed
+  const [isPressed, setIsPressed] = useState(false);
+
+  // Toggle the icon state
+  const handleIconClick = () => {
+    setIsPressed(!isPressed);
+  };
+
   return (
     <>
       {/* Main White Chat Field Input Box Container */}
@@ -23,7 +32,8 @@ export default function ChatInputField() {
               height: "80%",
               cursor: "pointer",
             }}
-            src={icon.src} // Set the image source
+            src={isPressed ? pressedIcon.src : icon.src} // Conditionally render the icon
+            onClick={handleIconClick} // Handle icon click
           />
         </div>
       </div>
