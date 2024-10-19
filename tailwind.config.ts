@@ -12,15 +12,28 @@ const config: Config = {
         background: "var(--background)",
         foreground: "var(--foreground)",
 
-        "darker-blue": "#07326A",
-        "dark-mode-blue-highlight": "#96C0F8",
-        "darkest-blue": "#0F2A50",
-        "dim-white": "#E8F1FC",
-        "even-darker-blue": "#0F2A50",
-        "very-light-gray": "#EDEDED",
+        // Light mode
+        "light-text": "#030C17", // Black
+        "light-background": "#FAFCFF", // White
+        "light-primary": "#073269", // Dark Blue
+        "light-secondary": "#749DC8", // Light Blue
+        "light-accent": "#C59C34", // Gold
+
+        // Dark mode
+        "dark-text": "#E8F1FC", // White
+        "dark-background": "#000205", // Black
+        "dark-primary": "#96C0F8", // Light Blue
+        "dark-secondary": "#073269", // Dark Blue
+        "dark-accent": "#CBA13A", // Gold
+
+        // Misc.
+        "extra-light-gray": "#EDEDED",
+        "extra-gray": "#49454f",
+        "extra-dark-gray": "#2b2a2d",
       },
     },
   },
   plugins: [],
 };
+
 export default config;
