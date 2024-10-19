@@ -1,4 +1,5 @@
 import { Button, Box} from '@mui/material';
+import Link from './link'
 
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 
@@ -11,7 +12,7 @@ export default function NavBar(){
             </Box>
             <Box className='w-3/5 h-full flex items-center justify-end'>
 
-                <Button className="w-auto font-darker-blue h-auto bg-white flex flex-row items-center gap-[1.25rem] rounded-[5rem] mr-10">
+                <Button className="w-auto font-darker-blue h-auto bg-white flex flex-row items-center gap-[1rem] rounded-[5rem] mr-[1rem]">
                     <Box className="text-darker-blue text-sm">
                         <PersonOutlineIcon/> 
                     </Box>
