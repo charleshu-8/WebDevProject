@@ -1,5 +1,5 @@
-import SideBar from './sidebar';
-import NavBar from './navbar';
+import SideBar from './navbar';
+import NavBar from './sidebar';
 
 export default function ChatPage(){
     return(
