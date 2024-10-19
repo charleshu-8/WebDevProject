@@ -10,10 +10,10 @@ export default function SideBar(){
         <Box className="fixed flex flex-col items-center left-0 top-0 p4-[10px] h-full w-[7vw] min-w-[80px] bg-darker-blue ">
             <IconButton className="text-white mt-[1.5rem]"><MenuIcon/></IconButton>
             <Box className="flex h-full w-full flex-col items-center gap-[1rem] mt-[10vh]">
-                <Button className="aspect-square w-1/4 rounded-xl bg-white text-darker-blue"><GroupsIcon/></Button>
-                <Button className="aspect-square w-1/4 rounded-xl bg-white text-darker-blue"><ChatIcon/></Button>
-                <Button className="aspect-square w-1/4 rounded-xl bg-white text-darker-blue"><EventNoteIcon/></Button>
-                <Button className="aspect-square w-1/4 rounded-xl bg-white text-darker-blue"><StarsIcon/></Button>
+                <IconButton className="aspect-square w-3/4 bg-opacity-100 rounded-xl bg-white text-darker-blue"><GroupsIcon/></IconButton>
+                <IconButton className="aspect-square w-3/4 rounded-xl bg-white text-darker-blue"><ChatIcon/></IconButton>
+                <IconButton className="aspect-square w-3/4 rounded-xl bg-white text-darker-blue"><EventNoteIcon/></IconButton>
+                <IconButton className="aspect-square w-3/4 rounded-xl bg-white text-darker-blue"><StarsIcon/></IconButton>
             </Box>
             <IconButton className="text-white mb-[1rem]">
                 <SettingsIcon/>
