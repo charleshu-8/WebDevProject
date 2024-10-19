@@ -1,6 +1,5 @@
 import SideBar from './sidebar';
 import NavBar from './navbar';
-import Link from 'next/link';
 
 export default function ChatPage(){
     return(

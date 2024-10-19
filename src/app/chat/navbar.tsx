@@ -1,5 +1,4 @@
 import { Button, Box} from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
 
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 
