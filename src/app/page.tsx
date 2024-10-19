@@ -24,6 +24,7 @@ export default function Home() {
           <li>Save and see your changes instantly.</li>
         </ol>
 
+        <Link href="/auth/sign-up">TEST SIGN UP PAGE</Link>
         <Link href="/auth/password-recovery">TEST PASSWORD RECOVERY PAGE</Link>
         <Link href={"/auth/login"}>TEST LOGIN PAGE</Link>
 

@@ -54,7 +54,7 @@ export default function Form() {
         </button>
       </div>
       <div className="space-x-2 text-xs text-blue-600 underline dark:text-very-light-gray">
-        <Link href={"/auth/signup"}>Create Account</Link>
+        <Link href={"/auth/sign-up"}>Create Account</Link>
         <Link href="/auth/password-recovery">Forgot Password?</Link>
       </div>
     </form>
