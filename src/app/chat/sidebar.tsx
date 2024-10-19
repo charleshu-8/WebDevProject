@@ -8,23 +8,23 @@ import SettingsIcon from "@mui/icons-material/Settings";
 
 export default function SideBar() {
   return (
-    <Box className="p4-[10px] fixed left-0 top-0 flex h-full w-[7vw] min-w-[80px] flex-col items-center bg-darker-blue">
+    <Box className="p-[5px] fixed left-0 top-0 flex h-full w-[7vh] min-w-[80px] flex-col items-center bg-darker-blue">
       <IconButton className="mt-[1.5rem] text-white">
         <MenuIcon />
       </IconButton>
       <Box className="mt-[10vh] flex h-full w-full flex-col items-center gap-[1rem]">
-        <Button className="aspect-square w-1/4 rounded-xl bg-white text-darker-blue">
+        <IconButton className="aspect-square w-3/4 rounded-xl bg-white text-darker-blue">
           <GroupsIcon />
-        </Button>
-        <Button className="aspect-square w-1/4 rounded-xl bg-white text-darker-blue">
+        </IconButton>
+        <IconButton className="aspect-square w-3/4 rounded-xl bg-white text-darker-blue">
           <ChatIcon />
-        </Button>
-        <Button className="aspect-square w-1/4 rounded-xl bg-white text-darker-blue">
+        </IconButton>
+        <IconButton className="aspect-square w-3/4 rounded-xl bg-white text-darker-blue">
           <EventNoteIcon />
-        </Button>
-        <Button className="aspect-square w-1/4 rounded-xl bg-white text-darker-blue">
+        </IconButton>
+        <IconButton className="aspect-square w-3/4 rounded-xl bg-white text-darker-blue">
           <StarsIcon />
-        </Button>
+        </IconButton>
       </Box>
       <IconButton className="mb-[1rem] text-white">
         <SettingsIcon />
