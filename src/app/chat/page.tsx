@@ -4,10 +4,11 @@ import {Box} from "@mui/material";
 
 export default function ChatPage() {
   return (
-    <Box className="bg-white">
-      <NavBar />
-      <SideBar />
+    <Box className="bg-stark-white h-screen w-screen">
+          <NavBar />
+          <SideBar />
     </Box>
+    
 
     // then add control panel
 
