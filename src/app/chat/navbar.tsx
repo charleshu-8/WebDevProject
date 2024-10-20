@@ -5,7 +5,7 @@ import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 export default function NavBar() {
   const user = "First Name Last Name";
   return (
-    <Box className="sticky flex h-[6vw] min-h-[80px] w-screen flex-row bg-darker-blue p-2">
+    <Box className="sticky flex h-[6vw] min-h-[80px] w-auto flex-row bg-darker-blue p-2">
       <Box className="ml-[100px] flex h-full w-2/5 items-center">
         <h1 className="font-roboto text-[2em] font-bold text-white">
           Team Slackers
