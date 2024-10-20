@@ -13,7 +13,7 @@ export default function Form() {
   return (
     <form
       action={handleResponse}
-      className="w-screen m-10 flex flex-col items-center justify-center"
+      className="m-10 flex w-screen flex-col items-center justify-center"
     >
       <div>
         <input
@@ -21,13 +21,13 @@ export default function Form() {
           type="email"
           placeholder="Enter Email:"
           required
-          className="p-3 text-gray-900 text-sm bg-gray-50 border border-0 border-b-2 border-b-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-b-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          className="rounded-md border border-0 border-b-2 border-b-gray-300 bg-gray-50 p-3 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-b-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
         />
       </div>
       <div>
         <button
           type="submit"
-          className="border rounded-md p-3 mt-5 bg-darker-blue border-darker-blue text-white"
+          className="mt-5 rounded-md border border-darker-blue bg-darker-blue p-3 text-white"
         >
           Reset Password
         </button>
