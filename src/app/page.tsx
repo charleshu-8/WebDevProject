@@ -29,7 +29,7 @@ export default function Home() {
             Bring Order to Meetings
           </h1>
           <h2 className="mt-[25px] w-1/2 font-">
-            A web-based platform that adapts Robert's Rules of Order for digital use
+            A web-based platform that adapts Robert&apos;s Rules of Order for digital use
           </h2>
         </div>
       </main>
