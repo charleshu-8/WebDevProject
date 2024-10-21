@@ -1,27 +1,44 @@
 "use client";
 
+import { useContext } from "react";
+import { SignUpContext } from "./page";
+import PocketBase from "pocketbase";
+
 // Form component for user sign up information
 export default function Form() {
+  const { pfp } = useContext(SignUpContext);
+
   // Handle form submission
-  // TODO: Add functionality when ingesting user data
   async function handleResponse(response: FormData) {
-    const username = response.get("username");
-    const password = response.get("password");
-    const firstName = response.get("firstname");
-    const lastName = response.get("lastname");
-    const email = response.get("email");
-    const phoneNum = response.get("phonenum");
-    const shortBio = response.get("shortbio");
-    // Just throw out inputted data for now
-    console.log(
-      username,
-      password,
-      firstName,
-      lastName,
-      email,
-      phoneNum,
-      shortBio,
-    );
+    if (pfp) {
+      const pb = new PocketBase("https://slackers.pockethost.io");
+
+      const data = {
+        username: response.get("username"),
+        password: response.get("password"),
+        passwordConfirm: response.get("password"),
+        email: response.get("email"),
+        emailVisibility: true,
+        firstName: response.get("firstname"),
+        lastName: response.get("lastname"),
+        phoneNumber: response.get("phonenum"),
+        bio: response.get("shortbio"),
+        avatar: pfp,
+      };
+      console.log(data);
+
+      try {
+        const record = await pb.collection("users").create(data);
+        console.log(record);
+      } catch (e) {
+        console.log(e);
+      }
+
+      // (optional) send an email verification request
+      // await pb.collection("users").requestVerification("test@example.com");
+    } else {
+      console.error("No PFP Found");
+    }
   }
 
   return (
@@ -140,9 +157,6 @@ export default function Form() {
         <button
           type="submit"
           className="rounded-md border border-darker-blue bg-darker-blue px-16 py-3 font-bold text-white dark:bg-dim-white dark:text-darker-blue"
-          onClick={(event: React.MouseEvent<HTMLElement>) => {
-            console.log("Signup Button Pressed");
-          }}
         >
           Sign Up
         </button>

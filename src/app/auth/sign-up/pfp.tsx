@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import defaultProfileIconLight from "./res/default_profile_icon_light.svg"; // Import the light mode SVG file
 import defaultProfileIconDark from "./res/default_profile_icon_dark.svg"; // Import the dark mode SVG file
+import { SignUpContext } from "./page";
 
 const UploadAndDisplayImage: React.FC = () => {
   // Define a state variable to store the selected image
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const { pfp, setPfp } = useContext(SignUpContext);
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
 
   // Reference to the file input element
@@ -30,7 +31,7 @@ const UploadAndDisplayImage: React.FC = () => {
     if (clickTimeout) {
       clearTimeout(clickTimeout);
       clickTimeout = null;
-      setSelectedImage(null); // Handle double-click
+      setPfp(null); // Handle double-click
     } else {
       clickTimeout = setTimeout(() => {
         clickTimeout = null;
@@ -49,12 +50,12 @@ const UploadAndDisplayImage: React.FC = () => {
           style={{
             width: "100%",
             cursor: "pointer",
-            transform: selectedImage ? "scale(1.1)" : "none", // Apply zoom effect only to uploaded image
+            transform: pfp ? "scale(1.1)" : "none", // Apply zoom effect only to uploaded image
             transition: "transform 0.3s ease-in-out", // Smooth transition
           }}
           src={
-            selectedImage
-              ? URL.createObjectURL(selectedImage)
+            pfp
+              ? URL.createObjectURL(pfp)
               : isDarkMode
                 ? defaultProfileIconDark.src // Use dark mode image
                 : defaultProfileIconLight.src // Use light mode image
@@ -74,8 +75,8 @@ const UploadAndDisplayImage: React.FC = () => {
         onChange={(event) => {
           const files = event.target.files;
           if (files && files.length > 0) {
-            console.log(files[0]); // Log the selected file
-            setSelectedImage(files[0]); // Update the state with the selected file
+            console.log("Valid file has been selected");
+            setPfp(files[0]); // Update the state with the selected file
           } else {
             console.log("No file selected");
           }

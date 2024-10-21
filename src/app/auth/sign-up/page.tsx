@@ -1,14 +1,21 @@
 "use client";
+import { createContext, Dispatch, SetStateAction, useState } from "react";
 import Form from "./form";
 import UploadAndDisplayImage from "./pfp";
 
+export interface ISignUpState {
+  pfp: File | null;
+  setPfp: Dispatch<SetStateAction<File | null>>;
+}
+
+export const SignUpContext = createContext<ISignUpState>({
+  pfp: null,
+  setPfp: () => {},
+});
+
 export default function SignUp() {
-  // Handle Profile Picture Click
-  // TODO: Add functionality when ingesting user data
-  // Just throw out a "button clicked" message for now
-  const handleProfilePictureClick = () => {
-    console.log("Profile picture button clicked");
-  };
+  // Define state variable to track and pass user selected PFP between components
+  const [pfp, setPfp] = useState<File | null>(null);
 
   return (
     // Screen Background
@@ -26,17 +33,15 @@ export default function SignUp() {
             {/* Profile Picture White Background Circle */}
             <div
               className="absolute left-1/2 top-0 flex h-32 w-32 -translate-x-1/2 -translate-y-1/2 transform items-center justify-center rounded-full border-none bg-white md:h-40 md:w-40 lg:h-48 lg:w-48 dark:bg-darker-blue"
-              onClick={handleProfilePictureClick}
               style={{
                 overflow: "hidden",
               }}
             >
               {/* Profile Picture Circle */}
-              <div
-                className="h-28 w-28 rounded-full md:h-36 md:w-36 lg:h-44 lg:w-44"
-                onClick={handleProfilePictureClick}
-              >
-                <UploadAndDisplayImage />
+              <div className="h-28 w-28 rounded-full md:h-36 md:w-36 lg:h-44 lg:w-44">
+                <SignUpContext.Provider value={{ pfp: pfp, setPfp: setPfp }}>
+                  <UploadAndDisplayImage />
+                </SignUpContext.Provider>
               </div>
             </div>
             {/* Label below the profile picture circle */}
@@ -46,7 +51,9 @@ export default function SignUp() {
               (Double Click/Tap to Remove)
             </p>
             {/* Form Component */}
-            <Form />
+            <SignUpContext.Provider value={{ pfp: pfp, setPfp: setPfp }}>
+              <Form />
+            </SignUpContext.Provider>
             {/* Bottom of page text: Already have an account? Login */}
             <p className="mt-4 text-center">
               Already have an account?{" "}
