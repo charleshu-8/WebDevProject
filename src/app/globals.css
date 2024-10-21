@@ -41,7 +41,7 @@ p {
 }
 
 .button-styling {
-  @apply border-light-primary bg-light-primary dark:bg-extra-light-gray rounded-md border text-white dark:text-black;
+  @apply rounded-md border border-light-primary bg-light-primary text-white dark:bg-extra-light-gray dark:text-black;
 }
 
 @layer utilities {
