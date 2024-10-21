@@ -16,36 +16,42 @@ export default function Form() {
     >
       {/*Committee Name Row*/}
       <div className="flex w-full flex-row">
-        <h1 className="pr-4">Committee Name:</h1>
-        <input
-          name="committeename"
-          type="text"
-          placeholder="committee 1"
-          required
-          className="border-b border-black"
-        />
+        <label htmlFor="committeename">
+          Committee Name:
+          <input
+            name="committeename"
+            type="text"
+            placeholder="committee 1"
+            required
+            className="ml-4 border-b border-black"
+          />
+        </label>
       </div>
       {/*Start time Row*/}
       <div className="w-full">
-        <h1>Start time:</h1>
+        <label htmlFor="time">Start time:</label>
       </div>
       {/*Invite Member Row*/}
       <div className="flex w-full flex-row">
-        <h1>Invite Member:</h1>
-        <input
-          name="email"
-          type="text"
-          className="border-b border-black"
-          placeholder="johnd@gmail.com"
-        />
+        <label htmlFor="email">
+          Invite Member:
+          <input
+            name="email"
+            type="text"
+            className="ml-4 border-b border-black"
+            placeholder="johnd@gmail.com"
+          />
+        </label>
       </div>
       {/*Current Members Row?*/}
-      <div className="w-full"></div>
+      <div className="w-full">
+        <h1>Members:</h1>
+      </div>
       {/*Submit Button*/}
-      <div className="w-full items-center justify-center">
+      <div className="flex w-full items-center justify-center">
         <button
           type="submit"
-          className="justify-center rounded-md border border-darker-blue bg-darker-blue px-16 py-3 font-bold text-white dark:bg-dim-white dark:text-darker-blue"
+          className="justify-center rounded-full border-4 border-darker-blue px-16 py-3 font-bold text-darker-blue"
           onClick={(event: React.MouseEvent<HTMLElement>) => {
             console.log("Signup Button Pressed");
           }}

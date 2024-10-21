@@ -18,6 +18,7 @@ const config: Config = {
         "dim-white": "#E8F1FC",
         "even-darker-blue": "#0F2A50",
         "very-light-gray": "#EDEDED",
+        "secondary": "#78A1CC",
       },
     },
   },
