@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import "./globals.css";
 
 export default function Home() {
   return (
@@ -26,6 +27,7 @@ export default function Home() {
 
         <Link href="/auth/sign-up">TEST SIGN UP PAGE</Link>
         <Link href="/auth/password-recovery">TEST PASSWORD RECOVERY PAGE</Link>
+        <Link href="/chat">TEST CHAT PAGE</Link>
         <Link href={"/auth/login"}>TEST LOGIN PAGE</Link>
 
         <div className="flex flex-col items-center gap-4 sm:flex-row">
