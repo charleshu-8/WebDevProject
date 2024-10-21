@@ -8,6 +8,9 @@ export default function Form() {
   // TODO: Add functionality when creating committee
   async function handleResponse(response: FormData) {
     const committeeName = response.get("committeename");
+
+    console.log(email);
+    console.log(committeeName);
   }
 
   return (
@@ -96,7 +99,7 @@ export default function Form() {
           type="submit"
           className="justify-center rounded-full border-4 border-darker-blue px-16 py-3 font-bold text-darker-blue"
           onClick={(event: React.MouseEvent<HTMLElement>) => {
-            console.log("Signup Button Pressed");
+            console.log("Submit Committee Creation");
           }}
         >
           Submit
