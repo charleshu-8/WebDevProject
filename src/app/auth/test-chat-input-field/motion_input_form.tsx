@@ -12,7 +12,7 @@ import send from "../../res/send.svg"; // Import the send icon
 import Textarea from "@mui/joy/Textarea"; // Import the Input component from the MUI Joy library
 
 // Form component for requesting email for password recovery
-export default function ChatInputField() {
+export default function MotionInputField() {
   // State to track whether the icon is pressed
   const [isHeartPressed, setIsHeartPressed] = useState(false);
   const [isProPressed, setIsProPressed] = useState(false);
@@ -110,29 +110,32 @@ export default function ChatInputField() {
             onClick={handleNeutralClick} // Handle icon click
           />
         </div>
-        {/* MUI Input with Send Button */}
-        <div className="ml-7 mr-7 mt-4 flex items-center justify-between">
-          {/* MUI Input Component Container*/}
-          <div className="w-full">
-            <Textarea
-              name="Textarea"
-              placeholder="I move that…"
-              variant="outlined"
-              minRows={3}
-              maxRows={3}
-              size="sm"
-            />
-          </div>
+        {/* 'Motion:' Declaration Text with Send Button */}
+        <div className="ml-7 mr-7 mt-4 flex h-1/5 items-center justify-between">
+          {/* Motion Text */}
+          <p className="text-xl font-semibold">Motion:</p>
           {/* Send Button/Icon */}
           <img
             alt="Send"
             style={{
-              height: "20%",
+              height: "90%",
               cursor: "pointer",
               marginLeft: "10px",
+              marginRight: "10px",
             }}
             src={send.src} // Conditionally render the icon
             onClick={handleSendClick} // Handle icon click
+          />
+        </div>
+        {/* MUI Input Component Container*/}
+        <div className="mb-2 ml-7 mr-7 mt-2">
+          <Textarea
+            name="Textarea"
+            placeholder="I move that…"
+            variant="outlined"
+            minRows={3}
+            maxRows={3}
+            size="sm"
           />
         </div>
       </div>
