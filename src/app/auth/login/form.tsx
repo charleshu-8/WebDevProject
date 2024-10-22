@@ -1,14 +1,30 @@
 "use client";
 
 import Link from "next/link";
+import PocketBase from "pocketbase";
 
 // Form component for taking username and password for verification
 export default function Form() {
-  // TODO: Add functionality when ingesting username and password
   async function handleResponse(response: FormData) {
-    const email = response.get("email");
-    const password = response.get("password");
+    const email = (response.get("email") as FormDataEntryValue).toString();
+    const password = (
+      response.get("password") as FormDataEntryValue
+    ).toString();
     console.log(email, password);
+
+    const pb = new PocketBase("https://slackers.pockethost.io");
+
+    const authData = await pb
+      .collection("users")
+      .authWithPassword(email, password);
+
+    // after the above you can also access the auth data from the authStore
+    console.log(pb.authStore.isValid);
+    console.log(pb.authStore.token);
+    console.log(pb.authStore.model?.id);
+
+    // "logout" the last authenticated account
+    pb.authStore.clear();
   }
 
   return (
