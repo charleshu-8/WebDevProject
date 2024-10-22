@@ -21,7 +21,7 @@ export default function Form() {
           type="email"
           placeholder="Enter Email:"
           required
-          className="form-styling"
+          className="form-styling dark:bg-gray-700"
         />
       </div>
       <div>
