@@ -17,16 +17,16 @@ export default function SignUp() {
       {/* Main Container */}
       <div className="mt-6 flex h-screen w-screen flex-col">
         {/* Create Your Account Label */}
-        <h1 className="text-dark-text mb-12 mt-6 pb-6 text-center">
+        <h1 className="mb-12 mt-6 pb-6 text-center text-dark-text">
           Create Your Account
         </h1>
         {/* Rectangle Container */}
         <div className="flex flex-col items-center">
           {/* Main White Form Rectangle */}
-          <div className="bg-light-background dark:bg-dark-secondary relative mb-12 mt-16 w-4/5 rounded-xl p-6 md:w-2/3 lg:w-3/5">
+          <div className="relative mb-12 mt-16 w-4/5 rounded-xl bg-light-background p-6 md:w-2/3 lg:w-3/5 dark:bg-dark-secondary">
             {/* Profile Picture White Background Circle */}
             <div
-              className="bg-light-background dark:bg-dark-secondary absolute left-1/2 top-0 flex h-32 w-32 -translate-x-1/2 -translate-y-1/2 transform items-center justify-center rounded-full md:h-40 md:w-40 lg:h-48 lg:w-48"
+              className="absolute left-1/2 top-0 flex h-32 w-32 -translate-x-1/2 -translate-y-1/2 transform items-center justify-center rounded-full bg-light-background md:h-40 md:w-40 lg:h-48 lg:w-48 dark:bg-dark-secondary"
               onClick={handleProfilePictureClick}
               style={{
                 overflow: "hidden",
@@ -49,7 +49,7 @@ export default function SignUp() {
             {/* Form Component */}
             <Form />
             {/* Bottom of page text: Already have an account? Login */}
-            <p className="mt-4 text-center">
+            <p className="mt-2 text-center">
               Already have an account?{" "}
               <a href="/auth/login" className="hypertext-styling">
                 Login

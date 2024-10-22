@@ -9,21 +9,21 @@ export default function SideBar() {
   return (
     <Box className="fixed left-0 top-[80px] flex h-full w-[70px] flex-col items-center bg-light-primary p-[5px]">
       <Box className="mt-[10vh] flex h-auto w-full flex-grow flex-col items-center gap-[1rem]">
-        <IconButton className="aspect-square w-3/4 rounded-xl bg-light-background text-light-primary dark:bg-extra-light-gray">
+        <IconButton className="aspect-square w-3/4 rounded-xl bg-light-background text-light-primary">
           <GroupsIcon />
         </IconButton>
-        <IconButton className="aspect-square w-3/4 rounded-xl bg-light-background text-light-primary dark:bg-extra-light-gray">
+        <IconButton className="aspect-square w-3/4 rounded-xl bg-light-background text-light-primary">
           <ChatIcon />
         </IconButton>
-        <IconButton className="aspect-square w-3/4 rounded-xl bg-light-background text-light-primary dark:bg-extra-light-gray">
+        <IconButton className="aspect-square w-3/4 rounded-xl bg-light-background text-light-primary">
           <EventNoteIcon />
         </IconButton>
-        <IconButton className="aspect-square w-3/4 rounded-xl bg-light-background text-light-primary dark:bg-extra-light-gray">
+        <IconButton className="aspect-square w-3/4 rounded-xl bg-light-background text-light-primary">
           <StarsIcon />
         </IconButton>
       </Box>
       <Box className="flex h-auto w-full flex-1 flex-col items-center justify-end">
-        <IconButton className="mb-[6rem] text-light-background dark:text-extra-light-gray">
+        <IconButton className="mb-[6rem] text-light-background">
           <SettingsIcon />
         </IconButton>
       </Box>

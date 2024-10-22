@@ -132,7 +132,7 @@ export default function Form() {
       {/*Signup Button Container*/}
       <div className="flex flex-row justify-center">
         {/*Signup Button*/}
-        <p>
+        <h2>
           <button
             type="submit"
             className="button-styling rounded-md px-16 py-3"
@@ -142,7 +142,7 @@ export default function Form() {
           >
             Sign Up
           </button>
-        </p>
+        </h2>
       </div>
     </form>
   );
