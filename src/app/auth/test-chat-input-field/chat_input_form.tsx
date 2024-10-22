@@ -4,7 +4,7 @@ import heart from "../../res/heart.svg"; // Import the default heart icon
 import pressedHeart from "../../res/pressed_heart.svg"; // Import the pressed heart icon
 import pro from "../../res/pro.svg"; // Import the pro icon
 import pressedPro from "../../res/pressed_pro.svg"; // Import the pressed pro icon
-import con from "../../res/con.svg"; // Import the con icon
+import con from "../../res/con1.svg"; // Import the con icon
 import pressedCon from "../../res/pressed_con.svg"; // Import the pressed con icon
 import neutral from "../../res/neutral.svg"; // Import the neutral icon
 import pressedNeutral from "../../res/pressed_neutral.svg"; // Import the pressed neutral icon
