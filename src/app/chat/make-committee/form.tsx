@@ -97,7 +97,7 @@ export default function Form() {
       <div className="flex w-full items-center justify-center">
         <button
           type="submit"
-          className="justify-center rounded-full border-4 border-darker-blue px-16 py-3 font-bold text-darker-blue"
+          className="justify-center rounded-full border-2 border-darker-blue px-16 py-3 font-bold text-darker-blue"
           onClick={(event: React.MouseEvent<HTMLElement>) => {
             console.log("Submit Committee Creation");
           }}
