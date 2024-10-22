@@ -8,7 +8,8 @@ import con from "../../res/con.svg"; // Import the con icon
 import pressedCon from "../../res/pressed_con.svg"; // Import the pressed con icon
 import neutral from "../../res/neutral.svg"; // Import the neutral icon
 import pressedNeutral from "../../res/pressed_neutral.svg"; // Import the pressed neutral icon
-import Input from "@mui/joy/Input"; // Import the Input component from the MUI Joy library
+import send from "../../res/send.svg"; // Import the send icon
+import Textarea from "@mui/joy/Textarea"; // Import the Input component from the MUI Joy library
 
 // Form component for requesting email for password recovery
 export default function ChatInputField() {
@@ -42,6 +43,11 @@ export default function ChatInputField() {
     setIsNeutralPressed(!isNeutralPressed);
     setIsProPressed(false); // Ensure that the pro button is not pressed
     setIsConPressed(false); // Ensure that the con button is not pressed
+  };
+
+  // Hand send button click
+  const handleSendClick = () => {
+    // TODO: Add logic to send the message
   };
 
   return (
@@ -104,13 +110,31 @@ export default function ChatInputField() {
             onClick={handleNeutralClick} // Handle icon click
           />
         </div>
-        {/* 'Motion:' Declaration Text */}
-        <div className="ml-7 mt-4 text-left">
+        {/* 'Motion:' Declaration Text with Send Button */}
+        <div className="ml-7 mr-7 mt-4 flex items-center justify-between">
           <p className="text-xl font-semibold">Motion:</p>
+          <img
+            alt="Send"
+            style={{
+              height: "10%",
+              cursor: "pointer",
+              marginLeft: "10px",
+              marginRight: "10px",
+            }}
+            src={send.src} // Conditionally render the icon
+            onClick={handleSendClick} // Handle icon click
+          />
         </div>
         {/* MUI Input Component Container*/}
         <div className="ml-7 mr-7 mt-2">
-          <Input placeholder="I move that…" variant="outlined" size="lg" />
+          <Textarea
+            name="Textarea"
+            placeholder="I move that…"
+            variant="outlined"
+            minRows={3}
+            maxRows={3}
+            size="lg"
+          />
         </div>
       </div>
     </>
