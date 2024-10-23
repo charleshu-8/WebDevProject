@@ -15,7 +15,7 @@ export default function NavBar() {
         </h1>
       </Box>
       <Box className="flex h-full w-3/5 items-center ml-[70px] justify-end">
-        <Button className="font-darker-blue mr-[1rem] flex h-auto w-auto flex-row items-center gap-[1rem] rounded-[5rem] bg-white">
+        <Button className="font-darker-blue mr-[1rem] flex h-auto min-w-[10rem] flex-row items-center gap-[1rem] rounded-[5rem] bg-white">
           <Box className="text-sm text-darker-blue">
             <PersonOutlineIcon />
           </Box>
