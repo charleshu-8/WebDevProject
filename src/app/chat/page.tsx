@@ -8,7 +8,7 @@ export default function ChatPage() {
     <Box className="bg-stark-white h-screen w-screen flex">
       <Box className="flex flex-col h-full w-full">
         <NavBar />
-        <Box id="chat-content-container" className="flex flex-row flex-grow bg-yellow-500 w-screen h-auto">
+        <Box id="chat-horizontal-container" className="flex flex-row flex-grow w-screen h-auto">
           <SideBar/>
           <SidePanel/>
           <Box className="flex-grow">{/*discussion forum will go here*/}</Box>
