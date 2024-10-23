@@ -135,7 +135,7 @@ export default function Form() {
         <h2>
           <button
             type="submit"
-            className="button-styling rounded-md px-16 py-3"
+            className="button-styling rounded-md px-14 py-3"
             onClick={(event: React.MouseEvent<HTMLElement>) => {
               console.log("Signup Button Pressed");
             }}
