@@ -13,9 +13,9 @@ export default function SignUp() {
 
   return (
     // Screen Background
-    <main className="h-screen w-screen">
+    <main className="h-full w-full">
       {/* Main Container */}
-      <div className="mt-6 flex h-screen w-screen flex-col">
+      <div className="mt-6 flex h-full w-full flex-col">
         {/* Create Your Account Label */}
         <h1 className="mb-12 mt-6 pb-6 text-center text-dark-text">
           Create Your Account
