@@ -20,35 +20,35 @@ export default function MotionInputField() {
   const [isNeutralPressed, setIsNeutralPressed] = useState(false);
 
   // Toggle the heart button state
-  const handleHeartClick = () => {
+  function handleHeartClick(): void {
     setIsHeartPressed(!isHeartPressed);
-  };
+  }
 
   // Toggle the pro button state
-  const handleProClick = () => {
+  function handleProClick(): void {
     setIsProPressed(!isProPressed);
     setIsConPressed(false); // Ensure that the con button is not pressed
     setIsNeutralPressed(false); // Ensure that the neutral button is not pressed
-  };
+  }
 
   // Toggle the con button state
-  const handleConClick = () => {
+  function handleConClick(): void {
     setIsConPressed(!isConPressed);
     setIsProPressed(false); // Ensure that the pro button is not pressed
     setIsNeutralPressed(false); // Ensure that the neutral button is not pressed
-  };
+  }
 
   // Toggle the neutral button state
-  const handleNeutralClick = () => {
+  function handleNeutralClick(): void {
     setIsNeutralPressed(!isNeutralPressed);
     setIsProPressed(false); // Ensure that the pro button is not pressed
     setIsConPressed(false); // Ensure that the con button is not pressed
-  };
+  }
 
   // Hand send button click
-  const handleSendClick = () => {
+  function handleSendClick(): void {
     // TODO: Add logic to send the message
-  };
+  }
 
   return (
     <>
@@ -62,70 +62,56 @@ export default function MotionInputField() {
           className="flex h-1/5 items-center bg-gray-shadow pl-6"
           style={{ display: "flex", alignItems: "center" }}
         >
-          {/* Heart Button/Icon */}
-          <img
-            alt="Heart"
-            style={{
-              height: "80%",
-              cursor: "pointer",
-              marginRight: "10px",
-            }}
-            src={isHeartPressed ? pressedHeart.src : heart.src} // Conditionally render the icon
-            onClick={handleHeartClick} // Handle icon click
-          />
-          {/* Pro Button/Icon */}
-          <img
-            alt="Pro"
-            style={{
-              height: "70%",
-              cursor: "pointer",
-              marginLeft: "10px",
-              marginRight: "10px",
-            }}
-            src={isProPressed ? pressedPro.src : pro.src} // Conditionally render the icon
-            onClick={handleProClick} // Handle icon click
-          />
-          {/* Con Button/Icon */}
-          <img
-            alt="Con"
-            style={{
-              height: "70%",
-              cursor: "pointer",
-              marginLeft: "10px",
-              marginRight: "10px",
-            }}
-            src={isConPressed ? pressedCon.src : con.src} // Conditionally render the icon
-            onClick={handleConClick} // Handle icon click
-          />
-          {/* Neutral Button/Icon */}
-          <img
-            alt="Neutral"
-            style={{
-              height: "70%",
-              cursor: "pointer",
-              marginLeft: "10px",
-              marginRight: "10px",
-            }}
-            src={isNeutralPressed ? pressedNeutral.src : neutral.src} // Conditionally render the icon
-            onClick={handleNeutralClick} // Handle icon click
-          />
+          {/* Heart Icon Container */}
+          <div className="mr-2 flex h-4/5 items-center">
+            {/* Heart Button/Icon */}
+            <img
+              alt="Heart"
+              src={isHeartPressed ? pressedHeart.src : heart.src} // Conditionally render the icon
+              onClick={handleHeartClick} // Handle icon click
+            />
+          </div>
+          {/* Pro Icon Container */}
+          <div className="ml-2 mr-2 flex h-3/4 items-center">
+            {/* Pro Button/Icon */}
+            <img
+              alt="Pro"
+              src={isProPressed ? pressedPro.src : pro.src} // Conditionally render the icon
+              onClick={handleProClick} // Handle icon click
+            />
+          </div>
+          {/* Con Icon Container */}
+          <div className="ml-2 mr-2 flex h-3/4 items-center">
+            {/* Con Button/Icon */}
+            <img
+              alt="Con"
+              src={isConPressed ? pressedCon.src : con.src} // Conditionally render the icon
+              onClick={handleConClick} // Handle icon click
+            />
+          </div>
+          {/* Neutral Icon Container */}
+          <div className="ml-2 flex h-3/4 items-center">
+            {/* Neutral Button/Icon */}
+            <img
+              alt="Neutral"
+              src={isNeutralPressed ? pressedNeutral.src : neutral.src} // Conditionally render the icon
+              onClick={handleNeutralClick} // Handle icon click
+            />
+          </div>
         </div>
         {/* 'Motion:' Declaration Text with Send Button */}
         <div className="ml-7 mr-7 mt-4 flex h-1/5 items-center justify-between">
           {/* Motion Text */}
           <p className="text-xl font-semibold">Motion:</p>
-          {/* Send Button/Icon */}
-          <img
-            alt="Send"
-            style={{
-              height: "90%",
-              cursor: "pointer",
-              marginLeft: "10px",
-              marginRight: "10px",
-            }}
-            src={send.src} // Conditionally render the icon
-            onClick={handleSendClick} // Handle icon click
-          />
+          {/* Send Button/Icon Container*/}
+          <div className="ml-2 mr-2 flex h-5/6 cursor-pointer items-center">
+            {/* Send Button/Icon */}
+            <img
+              alt="Send"
+              src={send.src} // Conditionally render the icon
+              onClick={handleSendClick} // Handle icon click
+            />
+          </div>
         </div>
         {/* MUI Input Component Container*/}
         <div className="mb-2 ml-7 mr-7 mt-2">
