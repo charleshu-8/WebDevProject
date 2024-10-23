@@ -60,33 +60,37 @@ export default function ChatInputField() {
           <div className="mr-2 flex h-4/5 items-center">
             {/* Heart Button/Icon */}
             <img
+              className="h-full cursor-pointer"
               alt="Heart"
               src={isHeartPressed ? pressedHeart.src : heart.src} // Conditionally render the icon
               onClick={handleHeartClick} // Handle icon click
             />
           </div>
           {/* Pro Icon Container */}
-          <div className="ml-2 mr-2 flex h-3/4 items-center">
+          <div className="ml-2 mr-2 flex h-[70%] items-center">
             {/* Pro Button/Icon */}
             <img
+              className="h-full cursor-pointer"
               alt="Pro"
               src={isProPressed ? pressedPro.src : pro.src} // Conditionally render the icon
               onClick={handleProClick} // Handle icon click
             />
           </div>
           {/* Con Icon Container */}
-          <div className="ml-2 mr-2 flex h-3/4 items-center">
+          <div className="ml-2 mr-2 flex h-[70%] items-center">
             {/* Con Button/Icon */}
             <img
+              className="h-full cursor-pointer"
               alt="Con"
               src={isConPressed ? pressedCon.src : con.src} // Conditionally render the icon
               onClick={handleConClick} // Handle icon click
             />
           </div>
           {/* Neutral Icon Container */}
-          <div className="ml-2 flex h-3/4 items-center">
+          <div className="ml-2 mr-2 flex h-[70%] items-center">
             {/* Neutral Button/Icon */}
             <img
+              className="h-full cursor-pointer"
               alt="Neutral"
               src={isNeutralPressed ? pressedNeutral.src : neutral.src} // Conditionally render the icon
               onClick={handleNeutralClick} // Handle icon click
@@ -99,7 +103,7 @@ export default function ChatInputField() {
           <div className="w-full">
             <Textarea
               name="Textarea"
-              placeholder="I move that…"
+              placeholder="I like this motion because..."
               variant="outlined"
               minRows={3}
               maxRows={3}
@@ -110,6 +114,7 @@ export default function ChatInputField() {
           <div className="ml-2 mr-2 flex h-5/6 cursor-pointer items-center">
             {/* Send Button/Icon */}
             <img
+              className="h-full"
               alt="Send"
               src={send.src} // Conditionally render the icon
               onClick={handleSendClick} // Handle icon click
