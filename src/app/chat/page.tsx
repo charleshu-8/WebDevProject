@@ -4,7 +4,7 @@ import {Box} from "@mui/material";
 
 export default function ChatPage() {
   return (
-    <Box className="bg-stark-white h-screen w-screen">
+    <Box className="bg-stark-white h-screen w-screen dark:bg-darker-blue">
       <NavBar />
       <SideBar />
     </Box>

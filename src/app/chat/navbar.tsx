@@ -5,7 +5,7 @@ import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 export default function NavBar() {
   const user = "First Name Last Name";
   return (
-    <Box className="fixed top-0 left-0 flex h-[80px] w-full flex-row bg-darker-blue p-2">
+    <Box className="fixed top-0 left-0 flex h-[80px] w-full flex-row bg-darker-blue p-2 dark:bg-black">
       <IconButton className="text-white ml-2">
         <MenuIcon/>
       </IconButton>
@@ -15,7 +15,7 @@ export default function NavBar() {
         </h1>
       </Box>
       <Box className="flex h-full w-3/5 items-center ml-[70px] justify-end">
-        <Button className="font-darker-blue mr-[1rem] flex h-auto w-auto flex-row items-center gap-[1rem] rounded-[5rem] bg-white">
+        <Button className="font-darker-blue mr-[1rem] flex h-auto w-auto flex-row items-center gap-[1rem] rounded-[5rem] bg-white dark:bg-darker-blue">
           <Box className="text-sm text-darker-blue">
             <PersonOutlineIcon />
           </Box>

@@ -33,6 +33,7 @@ export default function Home() {
             A web-based platform that adapts Robert&apos;s Rules of Order for digital use
           </h2>
         </div>
+        <Link href="/chat">Go To Chat</Link>
       </main>
     </div>
   );

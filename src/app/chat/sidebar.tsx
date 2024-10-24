@@ -7,18 +7,18 @@ import SettingsIcon from "@mui/icons-material/Settings";
 
 export default function SideBar() {
   return (
-    <Box className="fixed left-0 top-[80px] p-[5px] h-full w-[70px] flex flex-col items-center bg-darker-blue">
+    <Box className="fixed left-0 top-[80px] p-[5px] h-full w-[70px] flex flex-col items-center bg-darker-blue dark:bg-black">
       <Box className="mt-[10vh] flex flex-grow w-full h-auto flex-col items-center gap-[1rem]">
-        <IconButton className="aspect-square w-3/4 rounded-xl bg-white text-darker-blue">
+        <IconButton className="aspect-square w-3/4 rounded-xl bg-white text-darker-blue dark:bg-darkest-blue">
           <GroupsIcon />
         </IconButton>
-        <IconButton className="aspect-square w-3/4 rounded-xl bg-white text-darker-blue">
+        <IconButton className="aspect-square w-3/4 rounded-xl bg-white text-darker-blue dark:bg-darkest-blue">
           <ChatIcon />
         </IconButton>
-        <IconButton className="aspect-square w-3/4 rounded-xl bg-white text-darker-blue">
+        <IconButton className="aspect-square w-3/4 rounded-xl bg-white text-darker-blue dark:bg-darkest-blue">
           <EventNoteIcon />
         </IconButton>
-        <IconButton className="aspect-square w-3/4 rounded-xl bg-white text-darker-blue">
+        <IconButton className="aspect-square w-3/4 rounded-xl bg-white text-darker-blue dark:bg-darkest-blue">
           <StarsIcon />
         </IconButton>
       </Box>
