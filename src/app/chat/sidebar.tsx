@@ -6,6 +6,13 @@ import StarsIcon from "@mui/icons-material/Stars";
 import SettingsIcon from "@mui/icons-material/Settings";
 
 export default function SideBar() {
+
+  const handleButtonClick = () =>{
+    console.log("Button clicked!");
+
+  };
+
+
   return (
     <Box className="fixed left-0 top-[80px] p-[5px] h-full w-[70px] flex flex-col items-center bg-darker-blue">
       <Box className="mt-[10vh] flex flex-grow w-full h-auto flex-col items-center gap-[1rem]">
@@ -23,7 +30,7 @@ export default function SideBar() {
         </IconButton>
       </Box>
       <Box className="flex flex-1 flex-col h-auto w-full items-center justify-end">
-        <IconButton className="text-white mb-[6rem]">
+        <IconButton className="text-white mb-[6rem]" onClick={handleButtonClick}>
             <SettingsIcon />
         </IconButton>
 

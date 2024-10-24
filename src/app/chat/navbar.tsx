@@ -3,7 +3,13 @@ import MenuIcon from "@mui/icons-material/Menu";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 
 export default function NavBar() {
+
+  /**
+   * will have this be modular once user auth is merged
+   */
   const user = "First Name Last Name";
+
+
   return (
     <Box className="fixed top-0 left-0 flex h-[80px] w-full flex-row bg-darker-blue p-2">
       <IconButton className="text-white ml-2">
