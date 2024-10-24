@@ -6,17 +6,36 @@ const config: Config = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  important: true,
   theme: {
     extend: {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
-        "darker-blue": "#07326A",
-        "even-darker-blue": "#0F2A50",
-        "very-light-gray": "#EDEDED",
+
+        // Light mode
+        "light-text": "#030C17", // Black
+        "light-background": "#FAFCFF", // White
+        "light-primary": "#073269", // Dark Blue
+        "light-secondary": "#749DC8", // Light Blue
+        "light-accent": "#C59C34", // Gold
+
+        // Dark mode
+        "dark-text": "#E8F1FC", // White
+        "dark-background": "#000205", // Black
+        "dark-primary": "#96C0F8", // Light Blue
+        "dark-secondary": "#073269", // Dark Blue
+        "dark-accent": "#CBA13A", // Gold
+
+        // Misc.
+        "extra-light-gray": "#EDEDED",
+        "extra-gray": "#49454f",
+        "extra-dark-gray": "#2b2a2d",
+        "extra-dark-blue": "#0F2A50", // Very dark blue
       },
     },
   },
   plugins: [],
 };
+
 export default config;

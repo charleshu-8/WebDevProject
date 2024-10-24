@@ -3,14 +3,14 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: theme(colors.light-primary);
+  --foreground: theme(colors.light-text);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: theme(colors.dark-background);
+    --foreground: theme(colors.dark-text);
   }
 }
 
@@ -18,6 +18,30 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+h1 {
+  @apply text-6xl font-bold;
+}
+
+h2 {
+  @apply text-lg;
+}
+
+p {
+  @apply text-sm;
+}
+
+.hypertext-styling {
+  @apply text-blue-600 underline hover:no-underline dark:text-blue-400;
+}
+
+.form-styling {
+  @apply rounded-md border-2 border-light-primary bg-gray-50 p-3 text-sm text-gray-900 focus:border-light-secondary focus:ring-light-secondary dark:border-dark-primary dark:bg-extra-dark-blue dark:text-dark-primary dark:placeholder-dark-primary dark:focus:border-blue-500 dark:focus:ring-blue-500;
+}
+
+.button-styling {
+  @apply rounded-md border border-light-primary bg-light-primary text-white dark:bg-extra-light-gray dark:text-black;
 }
 
 @layer utilities {
