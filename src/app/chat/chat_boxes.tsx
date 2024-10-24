@@ -31,6 +31,7 @@ const ChatBox: React.FC = () => {
       </Box>
 
       {/* Input area */}
+      <form onSubmit={(e) => { e.preventDefault(); sendMessage(); }}>
       <Box className="flex">
         <TextField
           value={currentMessage}
@@ -40,10 +41,11 @@ const ChatBox: React.FC = () => {
           variant="outlined"
           size="small"
         />
-        <Button onClick={sendMessage} variant="contained" color="primary">
+        <Button type="submit" variant="contained" color="primary">
           Send
         </Button>
       </Box>
+    </form>
     </Box>
   );
 };
