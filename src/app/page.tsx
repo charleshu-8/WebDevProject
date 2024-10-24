@@ -31,9 +31,10 @@ export default function Home() {
           </h1>
           <h2 className="mt-[25px] w-1/2 font-">
             A web-based platform that adapts Robert&apos;s Rules of Order for digital use
-          </h2>
+          </h2> {/*you can delete this testing chatpage button whenever*/}
+          <button className="h-auto w-auto text-white bg-darker-blue">
+            <Link href={"/chat"}>Go To Chat Page</Link></button>
         </div>
-        <Link href="/chat">Go To Chat</Link>
       </main>
     </div>
   );
