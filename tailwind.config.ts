@@ -29,6 +29,7 @@ const config: Config = {
 
         // Misc.
         "extra-light-gray": "#EDEDED",
+        "extra-dim-gray": "#D9D9D9",
         "extra-gray": "#49454f",
         "extra-dark-gray": "#2b2a2d",
         "extra-dark-blue": "#0F2A50", // Very dark blue
