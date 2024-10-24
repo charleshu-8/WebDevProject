@@ -4,12 +4,13 @@ import ChatIcon from "@mui/icons-material/Chat";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 import StarsIcon from "@mui/icons-material/Stars";
 import SettingsIcon from "@mui/icons-material/Settings";
+import { ReactHTMLElement } from "react";
 
 const SideBar = () => {
    
   const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    const sideBarButton = event.target.id;
-    switch (sideBarButton){
+    const buttonId = event.currentTarget.id;
+    switch (buttonId){
       case "sidebar-button-committee":
         console.log("committee");
         break;
