@@ -1,6 +1,7 @@
 import {Box} from "@mui/material";
 import {Panel} from './panel';
 import React, { useState } from 'react';
+import Motion_Card from "./motion_card";
 
 interface PanelProps {
     version: Panel;
@@ -24,7 +25,8 @@ const SidePanel = (version:PanelProps) => {
             <Box className="flex justify-start w-full h-auto">
                 <h2 className="panel-title text-black w-auto h-auto m-2">{title}</h2>
             </Box>
-            <Box className="panel-content flex flex-col h-full w-full">
+            <Box className="panel-content flex flex-col h-full w-full items-center gap-y-2">
+                <Motion_Card/>
             </Box>
         </Box>
         
