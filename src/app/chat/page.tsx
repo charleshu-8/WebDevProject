@@ -1,24 +1,28 @@
+"use client";
 import SideBar from "./navbar";
 import NavBar from "./sidebar";
 import SidePanel from "./sidepanel";
 import {Box} from "@mui/material";
 import React, { useState } from 'react';
-import './panel.';
+import {Panel} from './panel';
+import ChatInputField from "./chat_input_form";
 
-export default function ChatPage() {
+const ChatPage = () => {
 
-  //const [panelVersion, setPanelVersion] = useState(Panel);
-
-
+  //const [panelVersion, setPanelVersion] = useState(undefined | Panel);
 
   return (
     <Box className="bg-stark-white h-screen w-screen flex">
-      <Box className="flex flex-col h-full w-full">
+      <Box className="flex h-full w-full flex-col">
         <NavBar/>
-        <Box id="chat-horizontal-container" className="flex flex-row flex-grow w-screen h-auto">
+        <Box id="chat-horizontal-container" className="flex flex-grow w-screen h-auto flex-row">
           <SideBar/>
-          <SidePanel version={Panel.COMMITTEES}/>
-          <Box className="flex-grow">{/*discussion forum will go here*/}</Box>
+          <SidePanel version={Panel.COMMITTEES} />
+          <Box className="relative flex justify-center flex-grow w-full h-full">{/*discussion forum will go here*/}
+            <Box className="absolute bottom-0 w-[80%] h-auto bg-darker-blue p-4 m-2">
+              <ChatInputField/>
+            </Box>
+          </Box>
 
         </Box>
 
@@ -32,3 +36,5 @@ export default function ChatPage() {
     // depending on chat chosen
   );
 }
+
+export default ChatPage;

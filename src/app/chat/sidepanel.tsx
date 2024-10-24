@@ -1,15 +1,14 @@
 import {Box} from "@mui/material";
-import './panel';
+import {Panel} from './panel';
 import React, { useState } from 'react';
 
 interface PanelProps {
     version: Panel;
-  }
+}
 
-const SidePanel = (props:PanelProps) => {
+const SidePanel = (version:PanelProps) => {
 
     const title = "Motions";
-    console.log(props);
 
     /**
      * Function: will render the motion component if needed
