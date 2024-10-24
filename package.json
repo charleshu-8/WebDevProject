@@ -9,37 +9,16 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@emotion/react": "^11.13.3",
-    "@emotion/styled": "^11.13.0",
-<<<<<<< HEAD
-    "@mui/icons-material": "^6.1.4",
-    "@mui/lab": "^6.0.0-beta.12",
-    "@mui/material": "^6.1.5",
-    "mui": "^0.0.1",
-    "mui-chat-box": "^0.0.3",
     "next": "14.2.15",
-=======
-    "@fontsource/roboto": "^5.1.0",
-    "@mui/icons-material": "^6.1.4",
-    "@mui/material": "^6.1.5",
-    "@tailwindcss/aspect-ratio": "^0.4.2",
-    "next": "15.0.1",
->>>>>>> origin/main
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@types/node": "^22.7.8",
+    "@types/node": "^22.7.9",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
-<<<<<<< HEAD
-    "autoprefixer": "^10.4.20",
     "eslint": "^8.57.1",
     "eslint-config-next": "14.2.15",
-=======
-    "eslint": "^9.13.0",
-    "eslint-config-next": "15.0.1",
->>>>>>> origin/main
     "eslint-config-prettier": "^9.1.0",
     "postcss": "^8.4.47",
     "prettier": "^3.3.3",
