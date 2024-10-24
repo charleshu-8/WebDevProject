@@ -3,11 +3,11 @@ import NavBar from "./sidebar";
 import SidePanel from "./sidepanel";
 import {Box} from "@mui/material";
 import React, { useState } from 'react';
-import './panel';
+import './panel.';
 
 export default function ChatPage() {
 
-  const [panelVersion, setPanelVersion] = useState(Panel);
+  //const [panelVersion, setPanelVersion] = useState(Panel);
 
 
 
@@ -17,7 +17,7 @@ export default function ChatPage() {
         <NavBar/>
         <Box id="chat-horizontal-container" className="flex flex-row flex-grow w-screen h-auto">
           <SideBar/>
-          <SidePanel/>
+          <SidePanel version={Panel.COMMITTEES}/>
           <Box className="flex-grow">{/*discussion forum will go here*/}</Box>
 
         </Box>

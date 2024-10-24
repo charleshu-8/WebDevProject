@@ -7,10 +7,6 @@ import SettingsIcon from "@mui/icons-material/Settings";
 
 export default function SideBar() {
 
-  const handleButtonClick = () =>{
-    console.log("Button clicked!");
-
-  };
 
 
   return (
@@ -30,7 +26,7 @@ export default function SideBar() {
         </IconButton>
       </Box>
       <Box className="flex flex-1 flex-col h-auto w-full items-center justify-end">
-        <IconButton className="text-white mb-[6rem]" onClick={handleButtonClick}>
+        <IconButton className="text-white mb-[6rem]">
             <SettingsIcon />
         </IconButton>
 
