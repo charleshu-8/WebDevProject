@@ -17,7 +17,7 @@ const ChatPage = () => {
       <Box id="chat-horizontal-container" className="relative top-[80px] flex flex-row w-screen h-auto mb-[80px]">
         <SideBar/>
         <SidePanel version={Panel.COMMITTEES} />
-        <Box className="discussion-content relative flex justify-center flex-grow w-full h-auto">
+        <Box className="discussion-content relative flex justify-center flex-grow w-full min-w-[10rem] h-auto">
           {/*everything in discussion forum will go below here*/}
           <Box className="absolute bottom-0 w-[80%] h-auto bg-light-primary p-4 m-2">
             <ChatInputField/>
