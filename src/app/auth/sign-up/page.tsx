@@ -19,20 +19,21 @@ export default function SignUp() {
 
   return (
     // Screen Background
-    <div className="min-h-screen w-full">
+    <main className="h-full w-full">
       {/* Main Container */}
-      <main className="mt-6 flex min-h-screen w-full flex-col">
+      <div className="mt-6 flex h-full w-full flex-col">
         {/* Create Your Account Label */}
-        <h1 className="mb-12 mt-6 pb-6 text-center text-6xl font-thin text-white dark:text-dim-white">
+        <h1 className="mb-12 mt-6 pb-6 text-center text-dark-text">
           Create Your Account
         </h1>
         {/* Rectangle Container */}
         <div className="flex flex-col items-center">
           {/* Main White Form Rectangle */}
-          <div className="relative mb-12 mt-16 w-4/5 rounded-xl bg-white p-6 md:w-2/3 lg:w-3/5 dark:bg-darker-blue">
+          <div className="relative mb-12 mt-16 w-4/5 rounded-xl bg-light-background p-6 md:w-2/3 lg:w-3/5 dark:bg-dark-secondary">
             {/* Profile Picture White Background Circle */}
             <div
-              className="absolute left-1/2 top-0 flex h-32 w-32 -translate-x-1/2 -translate-y-1/2 transform items-center justify-center rounded-full border-none bg-white md:h-40 md:w-40 lg:h-48 lg:w-48 dark:bg-darker-blue"
+              className="absolute left-1/2 top-0 flex h-32 w-32 -translate-x-1/2 -translate-y-1/2 transform items-center justify-center rounded-full bg-light-background md:h-40 md:w-40 lg:h-48 lg:w-48 dark:bg-dark-secondary"
+              onClick={handleProfilePictureClick}
               style={{
                 overflow: "hidden",
               }}
@@ -45,28 +46,25 @@ export default function SignUp() {
               </div>
             </div>
             {/* Label below the profile picture circle */}
-            <p className="mt-10 pt-4 text-center font-bold text-black md:pt-8 lg:pt-14 dark:text-gray-300">
+            <h2 className="mt-10 pt-2 text-center font-bold md:pt-4 lg:pt-7">
               Add Profile Picture
               <br />
               (Double Click/Tap to Remove)
-            </p>
+            </h2>
             {/* Form Component */}
             <SignUpContext.Provider value={{ pfp: pfp, setPfp: setPfp }}>
               <Form />
             </SignUpContext.Provider>
             {/* Bottom of page text: Already have an account? Login */}
-            <p className="mt-4 text-center">
+            <p className="mt-2 text-center">
               Already have an account?{" "}
-              <a
-                href="/auth/login"
-                className="text-blue-600 underline hover:no-underline dark:text-blue-500"
-              >
+              <a href="/auth/login" className="hypertext-styling">
                 Login
               </a>
             </p>
           </div>
         </div>
-      </main>
-    </div>
+      </div>
+    </main>
   );
 }

@@ -47,9 +47,7 @@ export default function Form() {
       className="flex w-full flex-col items-center justify-center space-y-8 p-5"
     >
       {/*Register label*/}
-      <p className="w-full pt-6 font-bold text-black dark:text-dim-white">
-        Register:
-      </p>
+      <h2 className="w-full pt-6 font-bold">Register:</h2>
       {/*Username and Password Row*/}
       <div className="mb-30 flex w-full flex-row justify-center space-x-4">
         {/*Username Container*/}
@@ -60,7 +58,7 @@ export default function Form() {
               type="text"
               placeholder="Enter Username:"
               required
-              className="w-full rounded-md border-2 border-darker-blue bg-gray-50 p-3 text-sm text-gray-900 outline-none focus:border-darker-blue focus:ring-darker-blue dark:border-dark-mode-blue-highlight dark:bg-darkest-blue dark:text-dark-mode-blue-highlight dark:placeholder-dark-mode-blue-highlight dark:focus:border-dark-mode-blue-highlight dark:focus:ring-dark-mode-blue-highlight"
+              className="form-styling w-full"
             />
           </div>
         </div>
@@ -72,15 +70,13 @@ export default function Form() {
               type="password"
               placeholder="Enter password:"
               required
-              className="w-full rounded-md border-2 border-darker-blue bg-gray-50 p-3 text-sm text-gray-900 outline-none focus:border-darker-blue focus:ring-darker-blue dark:border-dark-mode-blue-highlight dark:bg-darkest-blue dark:text-dark-mode-blue-highlight dark:placeholder-dark-mode-blue-highlight dark:focus:border-dark-mode-blue-highlight dark:focus:ring-dark-mode-blue-highlight"
+              className="form-styling w-full"
             />
           </div>
         </div>
       </div>
       {/*Personal Info Label*/}
-      <p className="mt-50 w-full pt-5 font-bold text-black dark:text-dim-white">
-        Personal Info:
-      </p>
+      <h2 className="mt-50 w-full pt-5 font-bold">Personal Info:</h2>
       {/*Firstname and Lastname Row*/}
       <div className="flex w-full flex-row justify-center space-x-4">
         {/*Firstname Container*/}
@@ -91,7 +87,7 @@ export default function Form() {
               type="text"
               placeholder="First Name:"
               required
-              className="w-full rounded-md border-2 border-darker-blue bg-gray-50 p-3 text-sm text-gray-900 outline-none focus:border-darker-blue focus:ring-darker-blue dark:border-dark-mode-blue-highlight dark:bg-darkest-blue dark:text-dark-mode-blue-highlight dark:placeholder-dark-mode-blue-highlight dark:focus:border-dark-mode-blue-highlight dark:focus:ring-dark-mode-blue-highlight"
+              className="form-styling w-full"
             />
           </div>
         </div>
@@ -103,7 +99,7 @@ export default function Form() {
               type="text"
               placeholder="Last Name:"
               required
-              className="w-full rounded-md border-2 border-darker-blue bg-gray-50 p-3 text-sm text-gray-900 outline-none focus:border-darker-blue focus:ring-darker-blue dark:border-dark-mode-blue-highlight dark:bg-darkest-blue dark:text-dark-mode-blue-highlight dark:placeholder-dark-mode-blue-highlight dark:focus:border-dark-mode-blue-highlight dark:focus:ring-dark-mode-blue-highlight"
+              className="form-styling w-full"
             />
           </div>
         </div>
@@ -118,7 +114,7 @@ export default function Form() {
               type="email"
               placeholder="Email:"
               required
-              className="w-full rounded-md border-2 border-darker-blue bg-gray-50 p-3 text-sm text-gray-900 outline-none focus:border-darker-blue focus:ring-darker-blue dark:border-dark-mode-blue-highlight dark:bg-darkest-blue dark:text-dark-mode-blue-highlight dark:placeholder-dark-mode-blue-highlight dark:focus:border-dark-mode-blue-highlight dark:focus:ring-dark-mode-blue-highlight"
+              className="form-styling w-full"
             />
           </div>
         </div>
@@ -130,7 +126,7 @@ export default function Form() {
               type="tel"
               placeholder="Phone Number:"
               required
-              className="w-full rounded-md border-2 border-darker-blue bg-gray-50 p-3 text-sm text-gray-900 outline-none focus:border-darker-blue focus:ring-darker-blue dark:border-dark-mode-blue-highlight dark:bg-darkest-blue dark:text-dark-mode-blue-highlight dark:placeholder-dark-mode-blue-highlight dark:focus:border-dark-mode-blue-highlight dark:focus:ring-dark-mode-blue-highlight"
+              className="form-styling w-full"
             />
           </div>
         </div>
@@ -145,21 +141,25 @@ export default function Form() {
               rows={5}
               placeholder="Short Bio (100 words max):"
               required
-              className="h-full w-full resize-none rounded-md border-2 border-darker-blue bg-gray-50 p-3 text-sm text-gray-900 outline-none focus:border-darker-blue focus:ring-darker-blue dark:border-dark-mode-blue-highlight dark:bg-darkest-blue dark:text-dark-mode-blue-highlight dark:placeholder-dark-mode-blue-highlight dark:focus:border-dark-mode-blue-highlight dark:focus:ring-dark-mode-blue-highlight"
+              className="form-styling h-full w-full resize-none"
             />
           </div>
         </div>
       </div>
       {/*Signup Button Container*/}
-      <div className="flex flex-row justify-center"></div>
-      {/*Signup Button*/}
-      <div>
-        <button
-          type="submit"
-          className="rounded-md border border-darker-blue bg-darker-blue px-16 py-3 font-bold text-white dark:bg-dim-white dark:text-darker-blue"
-        >
-          Sign Up
-        </button>
+      <div className="flex flex-row justify-center">
+        {/*Signup Button*/}
+        <h2>
+          <button
+            type="submit"
+            className="button-styling rounded-md px-14 py-3"
+            onClick={(event: React.MouseEvent<HTMLElement>) => {
+              console.log("Signup Button Pressed");
+            }}
+          >
+            Sign Up
+          </button>
+        </h2>
       </div>
     </form>
   );
