@@ -24,11 +24,8 @@ const SidePanel = (version:PanelProps) => {
             <Box className="flex justify-start w-full h-auto">
                 <h2 className="panel-title text-black w-auto h-auto m-2">{title}</h2>
             </Box>
-            
             <Box className="panel-content flex flex-col h-full w-full">
-
             </Box>
-
         </Box>
         
 
