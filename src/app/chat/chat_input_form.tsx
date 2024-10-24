@@ -55,7 +55,7 @@ export default function ChatInputField() {
       {/* Main White Chat Field Input Box Container */}
       <div className="h-full w-full flex-col items-center justify-center overflow-hidden rounded-lg bg-white">
         {/* Gray Options Bar above chat input field */}
-        <div className="flex h-1/5 items-center bg-gray-shadow pl-6">
+        <div className="flex h-1/5 items-center bg-extra-light-gray pl-6">
           {/* Heart Icon Container */}
           <div className="mr-2 flex h-4/5 items-center">
             {/* Heart Button/Icon */}

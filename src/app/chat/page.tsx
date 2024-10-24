@@ -12,23 +12,19 @@ const ChatPage = () => {
   //const [panelVersion, setPanelVersion] = useState(undefined | Panel);
 
   return (
-    <Box className="bg-stark-white h-screen w-screen flex">
-      <Box className="flex h-full w-full flex-col">
-        <NavBar/>
-        <Box id="chat-horizontal-container" className="flex flex-grow w-screen h-auto flex-row">
-          <SideBar/>
-          <SidePanel version={Panel.COMMITTEES} />
-          <Box className="relative flex justify-center flex-grow w-full h-full">{/*discussion forum will go here*/}
-            <Box className="absolute bottom-0 w-[80%] h-auto bg-darker-blue p-4 m-2">
-              <ChatInputField/>
-            </Box>
+    <Box className="bg-light-background h-screen w-screen flex">
+      <NavBar/>
+      <Box id="chat-horizontal-container" className="relative top-[80px] flex flex-row w-screen h-auto mb-[80px]">
+        <SideBar/>
+        <SidePanel version={Panel.COMMITTEES} />
+        <Box className="discussion-content relative flex justify-center flex-grow w-full min-w-[10rem] h-auto">
+          {/*everything in discussion forum will go below here*/}
+          <Box className="absolute bottom-0 w-[80%] h-auto bg-light-primary p-4 m-2">
+            <ChatInputField/>
           </Box>
-
         </Box>
-
       </Box>
     </Box>
-    
 
     // then add control panel
 

@@ -20,14 +20,12 @@ const SidePanel = (version:PanelProps) => {
      */
 
     return(
-        <Box className="bg-secondary h-full w-[25%] min-w-[15rem] p-2">
-            <h1 className="panel-title text-black ">{title}
-
-            </h1>
-            <Box className="panel-content flex flex-col h-full w-full">
-
+        <Box className="bg-light-secondary flex flex-col h-full w-[25%] min-w-[8rem] p-2 dark:bg-dark-background">
+            <Box className="flex justify-start w-full h-auto">
+                <h2 className="panel-title text-black w-auto h-auto m-2">{title}</h2>
             </Box>
-
+            <Box className="panel-content flex flex-col h-full w-full">
+            </Box>
         </Box>
         
 
