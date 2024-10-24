@@ -20,7 +20,7 @@ const SideBar = () => {
   }
 
   return (
-    <Box className="fixed left-0 top-[80px] p-[5px] h-full w-[70px] flex flex-col items-center bg-light-primary">
+    <Box className="relative left-0 top-[80px] p-[5px] h-full w-[70px] flex flex-col items-center bg-light-primary">
       <Box className="mt-[10vh] flex flex-grow w-full h-auto flex-col items-center gap-[1rem]">
         <IconButton id="sidebar-button-committee" className="aspect-square w-3/4 rounded-xl bg-white text-light-primary" onClick={handleButtonClick}>
           <GroupsIcon />

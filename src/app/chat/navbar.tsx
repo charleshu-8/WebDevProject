@@ -10,7 +10,7 @@ export default function NavBar() {
   const user = "First Name Last Name";
 
   return (
-    <Box className="fixed left-0 top-0 flex h-[80px] w-full flex-row bg-light-primary p-2">
+    <Box className="fixed top-0 left-0 flex h-[80px] w-full flex-row bg-light-primary p-2">
       <IconButton className="ml-2 text-light-background">
         <MenuIcon />
       </IconButton>
