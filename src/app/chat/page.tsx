@@ -19,7 +19,7 @@ const ChatPage = () => {
         <SidePanel version={Panel.COMMITTEES} />
         <Box className="discussion-content relative flex justify-center flex-grow w-full min-w-[10rem] h-auto">
           {/*everything in discussion forum will go below here*/}
-          <Box className="absolute bottom-0 w-[80%] h-auto bg-light-primary p-4 m-2">
+          <Box className="absolute bottom-0 w-[80%] h-auto bg-light-primary p-4 m-2 rounded-md">
             <ChatInputField/>
           </Box>
         </Box>
