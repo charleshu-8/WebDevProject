@@ -1,4 +1,8 @@
+// src/chat/ChatBox.tsx
+"use client";
+
 import React, { useState } from 'react';
+import { Box, Button, TextField } from '@mui/material';
 
 const ChatBox: React.FC = () => {
   const [messages, setMessages] = useState<string[]>([]);
@@ -11,43 +15,36 @@ const ChatBox: React.FC = () => {
     }
   };
 
-  // Function to handle key press for sending messages
-  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      sendMessage();
-    }
-  };
-
   return (
-    <div className="chat-box flex flex-col h-full bg-gray-200 p-4">
-      <div className="messages-container flex-grow overflow-y-auto bg-white p-4 mb-2">
+    <Box className="flex flex-col h-full bg-gray-200 p-4">
+      {/* Display messages */}
+      <Box className="flex-grow overflow-y-auto bg-white p-4 mb-2">
         {messages.length === 0 ? (
-          <p className="text-gray-500">No messages yet</p> // Placeholder for no messages
+          <p className="text-gray-500">No messages yet</p>
         ) : (
           messages.map((message, index) => (
-            <p key={index} className="message p-2 bg-blue-500 text-white rounded mb-2">
+            <Box key={index} className="p-2 bg-blue-500 text-white rounded mb-2">
               {message}
-            </p>
+            </Box>
           ))
         )}
-      </div>
-      <div className="input-container flex">
-        <input
-          type="text"
+      </Box>
+
+      {/* Input area */}
+      <Box className="flex">
+        <TextField
           value={currentMessage}
           onChange={(e) => setCurrentMessage(e.target.value)}
-          onKeyPress={handleKeyPress} // press ENTER key to send message
-          className="flex-grow p-2 border border-gray-300 rounded-l"
+          className="flex-grow mr-2"
           placeholder="Type a message..."
+          variant="outlined"
+          size="small"
         />
-        <button // Add button to send message
-          onClick={sendMessage}
-          className="p-2 bg-blue-500 text-white rounded-r"
-        >
+        <Button onClick={sendMessage} variant="contained" color="primary">
           Send
-        </button>
-      </div>
-    </div>
+        </Button>
+      </Box>
+    </Box>
   );
 };
 
