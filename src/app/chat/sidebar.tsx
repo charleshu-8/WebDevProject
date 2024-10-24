@@ -20,18 +20,18 @@ const SideBar = () => {
   }
 
   return (
-    <Box className="fixed left-0 top-[80px] p-[5px] h-full w-[70px] flex flex-col items-center bg-darker-blue">
+    <Box className="fixed left-0 top-[80px] p-[5px] h-full w-[70px] flex flex-col items-center bg-light-primary">
       <Box className="mt-[10vh] flex flex-grow w-full h-auto flex-col items-center gap-[1rem]">
-        <IconButton id="sidebar-button-committee" className="aspect-square w-3/4 rounded-xl bg-white text-darker-blue" onClick={handleButtonClick}>
+        <IconButton id="sidebar-button-committee" className="aspect-square w-3/4 rounded-xl bg-white text-light-primary" onClick={handleButtonClick}>
           <GroupsIcon />
         </IconButton>
-        <IconButton id="sidebar-button-motion"className="aspect-square w-3/4 rounded-xl bg-white text-darker-blue" onClick={handleButtonClick}>
+        <IconButton id="sidebar-button-motion"className="aspect-square w-3/4 rounded-xl bg-white text-light-primary" onClick={handleButtonClick}>
           <ChatIcon />
         </IconButton>
-        <IconButton id="sidebar-button-agenda" className="aspect-square w-3/4 rounded-xl bg-white text-darker-blue" onClick={handleButtonClick}>
+        <IconButton id="sidebar-button-agenda" className="aspect-square w-3/4 rounded-xl bg-white text-light-primary" onClick={handleButtonClick}>
           <EventNoteIcon />
         </IconButton>
-        <IconButton id="sidebar-button-role" className="aspect-square w-3/4 rounded-xl bg-white text-darker-blue" onClick={handleButtonClick}>
+        <IconButton id="sidebar-button-role" className="aspect-square w-3/4 rounded-xl bg-white text-light-primary" onClick={handleButtonClick}>
           <StarsIcon />
         </IconButton>
       </Box>

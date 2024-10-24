@@ -1,4 +1,5 @@
 import Link from "next/link";
+import {Button} from "@mui/material";
 
 export default function Home() {
   return (
@@ -34,8 +35,9 @@ export default function Home() {
             digital use
           </h2>
           {/*you can delete this testing chatpage button whenever*/}
-          <button className="h-auto w-auto text-white bg-darker-blue">
-            <Link href={"/chat"}>Go To Chat Page</Link></button>
+          <Button className="h-auto w-auto text-white bg-light-primary">
+            <Link href={"/chat"}>Go To Chat Page</Link></Button>
+        
         </div>
       </div>
     </main>

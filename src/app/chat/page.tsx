@@ -12,14 +12,14 @@ const ChatPage = () => {
   //const [panelVersion, setPanelVersion] = useState(undefined | Panel);
 
   return (
-    <Box className="bg-stark-white h-screen w-screen flex">
+    <Box className="bg-light-background h-screen w-screen flex">
       <Box className="flex h-full w-full flex-col">
         <NavBar/>
         <Box id="chat-horizontal-container" className="flex flex-grow w-screen h-auto flex-row">
           <SideBar/>
           <SidePanel version={Panel.COMMITTEES} />
           <Box className="relative flex justify-center flex-grow w-full h-full">{/*discussion forum will go here*/}
-            <Box className="absolute bottom-0 w-[80%] h-auto bg-darker-blue p-4 m-2">
+            <Box className="absolute bottom-0 w-[80%] h-auto bg-light-primary p-4 m-2">
               <ChatInputField/>
             </Box>
           </Box>
