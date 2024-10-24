@@ -1,4 +1,4 @@
-import { Box, IconButton, Button } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import GroupsIcon from "@mui/icons-material/Groups";
 import ChatIcon from "@mui/icons-material/Chat";
 import EventNoteIcon from "@mui/icons-material/EventNote";
@@ -35,11 +35,10 @@ const SideBar = () => {
           <StarsIcon />
         </IconButton>
       </Box>
-      <Box className="flex flex-1 flex-col h-auto w-full items-center justify-end">
-        <IconButton className="text-white mb-[6rem]">
-            <SettingsIcon />
+      <Box className="flex h-auto w-full flex-1 flex-col items-center justify-end">
+        <IconButton className="mb-[6rem] text-light-background">
+          <SettingsIcon />
         </IconButton>
-
       </Box>
     </Box>
   );

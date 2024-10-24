@@ -28,7 +28,6 @@ const ChatPage = () => {
 
       </Box>
     </Box>
-    
 
     // then add control panel
 
