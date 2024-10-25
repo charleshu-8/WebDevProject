@@ -1,8 +1,7 @@
 import Form from "./form";
 
-// Page for password recovery
+// Page for displaying the make-committee form while in development
 export default function MakeCommittee() {
-  // Change href to point to actual signup page once implemented
   return (
     <div>
       <main className="flex h-screen w-screen flex-col items-center justify-center bg-white">

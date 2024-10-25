@@ -67,7 +67,7 @@ export default function Form() {
             <option value="AM">AM</option>
             <option value="PM">PM</option>
           </select>
-          {/*Time zone selector for all of U.S. and some other
+          {/*Time zone selector for all of U.S. zones and some other
             major time zones*/}
           <select
             name="time-zone"
@@ -103,7 +103,7 @@ export default function Form() {
           />
           <button
             type="button"
-            className="float-right ml-4 h-7 w-fit rounded-md border-2 border-secondary px-1 text-center align-middle text-secondary"
+            className="float-right ml-4 h-7 w-fit grow-0 rounded-md border-2 border-secondary px-1 text-center align-middle text-secondary"
             onClick={(event: React.MouseEvent<HTMLElement>) => {
               //Get email from Invite Member input and discard @gmail etc.
               //console.log("Add member button pressed");
@@ -125,7 +125,10 @@ export default function Form() {
               // Split the email at the "@" character
               const username = nameToAdd.split("@")[0];
 
+              //TO DO: Save the email to later perform the actual invite
+              //For now just reset the input and adds visible member element
               email.value = "";
+
               addNewMemberItem(username, "Member");
             }}
           >
@@ -142,7 +145,7 @@ export default function Form() {
           className="flex w-2/3 flex-row space-x-4 overflow-auto"
         >
           {/*Outer div for individual member*/}
-          {/*Creator of the */}
+          {/*Creator of the Committee is default auto displayed as owner*/}
           <div className="flex flex-row">
             <div className="mr-2 content-center">
               <div className="h-3 w-3 rounded-full bg-darker-blue"></div>
