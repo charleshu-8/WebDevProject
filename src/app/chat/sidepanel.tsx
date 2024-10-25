@@ -26,7 +26,6 @@ const SidePanel = (version:PanelProps) => {
                 <h2 className="panel-title text-black w-auto h-auto m-2">{title}</h2>
             </Box>
             <Box className="panel-content flex flex-col h-full w-full items-center gap-y-2">
-                <Motion_Card/>
             </Box>
         </Box>
         
