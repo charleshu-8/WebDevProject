@@ -93,7 +93,7 @@ export default function Form() {
         <label className="w-1/3" htmlFor="email">
           Invite Member:
         </label>
-        <div className="w-2/3">
+        <div className="flex w-2/3 flex-row">
           <input
             id="email-to-invite"
             name="email"
@@ -103,7 +103,7 @@ export default function Form() {
           />
           <button
             type="button"
-            className="float-right ml-4 h-7 w-fit grow-0 rounded-md border-2 border-secondary px-1 text-center align-middle text-secondary"
+            className="float-right ml-4 h-7 w-fit rounded-md border-2 border-secondary px-1 text-center align-middle text-secondary"
             onClick={(event: React.MouseEvent<HTMLElement>) => {
               //Get email from Invite Member input and discard @gmail etc.
               //console.log("Add member button pressed");
