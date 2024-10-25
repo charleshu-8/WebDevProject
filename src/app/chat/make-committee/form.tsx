@@ -86,10 +86,14 @@ export default function Form() {
           </button>
         </div>
       </div>
-      {/*Current Members Row?*/}
+      {/*Current Members Row*/}
       <div className="flex w-full flex-row">
         <h1 className="w-1/3">Members:</h1>
-        <div id="current-members" className="flex w-2/3 flex-row space-x-4">
+        {/*Members List*/}
+        <div
+          id="current-members"
+          className="flex w-2/3 flex-row space-x-4 overflow-auto"
+        >
           {/*Outer div for individual member*/}
           <div className="flex flex-row">
             <div className="mr-2 content-center">
