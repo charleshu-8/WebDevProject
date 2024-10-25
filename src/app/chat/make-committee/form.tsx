@@ -1,5 +1,6 @@
 "use client";
 
+import { text } from "stream/consumers";
 import { JsxElement } from "typescript";
 
 // Form component for making a committee
@@ -68,17 +69,17 @@ export default function Form() {
               // Split the email at the "@" character
               const username = nameToAdd.split("@")[0];
 
-              //const nameToAdd = getUsernameFromEmail(email.value);
-              email.value = "";
-              //console.log(nameToAdd);
+              //email.value = "";
 
               //TO DO Create New div for new member
               const members = document.getElementById(
                 "current-members",
               ) as HTMLDivElement;
-              const newMember = document.createElement("div");
-              newMember.innerText = username;
-              members.appendChild(newMember);
+              //const newMember = document.createElement("div");
+              //const newMember = makeNewMemberItem(username, "Member");
+              const newMember = makeNewMemberItem2(username, "member");
+
+              members.append(newMember);
             }}
           >
             Add member
@@ -88,10 +89,18 @@ export default function Form() {
       {/*Current Members Row?*/}
       <div className="flex w-full flex-row">
         <h1 className="w-1/3">Members:</h1>
-        <div
-          id="current-members"
-          className="flex w-2/3 flex-row space-x-4"
-        ></div>
+        <div id="current-members" className="flex w-2/3 flex-row space-x-4">
+          {/*Outer div for individual member*/}
+          <div className="flex flex-row">
+            <div className="mr-2 content-center">
+              <div className="h-3 w-3 rounded-full bg-darker-blue"></div>
+            </div>
+            <div className="flex flex-col">
+              <p>You</p>
+              <p className="text-xs text-gray-shadow">Owner</p>
+            </div>
+          </div>
+        </div>
       </div>
       {/*Submit Button*/}
       <div className="flex w-full items-center justify-center">
@@ -122,3 +131,48 @@ export default function Form() {
 //   const username = email.split("@")[0];
 //   return username;
 // }
+
+function makeNewMemberItem(name: string, role: string): JSX.Element {
+  return (
+    <div className="flex flex-row">
+      <div className="mr-2 content-center">
+        <div className="h-3 w-3 rounded-full bg-red-500"></div>
+      </div>
+      <div className="flex flex-col">
+        <p>{name}</p>
+        <p className="text-xs text-gray-shadow">{role}</p>
+      </div>
+    </div>
+  );
+}
+
+function makeNewMemberItem2(name: string, role: string): HTMLDivElement {
+  const memberDiv = document.createElement("div");
+  memberDiv.className = "flex flex-row";
+
+  const iconDiv = document.createElement("div");
+  iconDiv.className = "mr-2 content-center";
+
+  const icon = document.createElement("div");
+  icon.className = "bg-red-500 h-3 w-3 rounded-full";
+
+  const textDiv = document.createElement("div");
+  textDiv.className = "flex flex-col";
+
+  const memberName = document.createElement("p");
+  memberName.textContent = name;
+
+  const roleDiv = document.createElement("p");
+  roleDiv.className = "text-xs text-gray-shadow";
+  roleDiv.innerText = role;
+
+  textDiv.appendChild(memberName);
+  textDiv.appendChild(roleDiv);
+
+  iconDiv.appendChild(icon);
+
+  memberDiv.appendChild(iconDiv);
+  memberDiv.appendChild(textDiv);
+
+  return memberDiv;
+}
