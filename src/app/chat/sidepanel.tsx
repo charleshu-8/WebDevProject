@@ -26,7 +26,7 @@ const SidePanel = memo(({panelVersion}:{panelVersion:Panel}) => {
           setPanelTitle('Current Role');
           break;
       }
-    });
+    }),[panelVersion];
     /**
      * Function: will render the motion component if needed
      *  funciton RenderMotions () {}
