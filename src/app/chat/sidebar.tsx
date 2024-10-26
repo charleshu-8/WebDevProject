@@ -4,38 +4,15 @@ import ChatIcon from "@mui/icons-material/Chat";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 import StarsIcon from "@mui/icons-material/Stars";
 import SettingsIcon from "@mui/icons-material/Settings";
-import React, { useState } from 'react';
+import React, { useState, memo, useEffect } from 'react';
 import {Panel} from './panel';
 
 
 export default function SideBar () {
-  /* tracks panel version for changing panel layout */
   const [panelVersion, setPanelVersion] = useState(Panel.COMMITTEES);
+  /* tracks panel version for changing panel layout */
+
   
-  /* defines parameter type for props passed to SidePanel */
-  interface PanelProps {
-    panel: Panel;
-  }
-  function SidePanel (panel: PanelProps) {
-
-    const [panelTitle, setPanelTitle] = useState('');
-    /**
-     * Function: will render the motion component if needed
-     *  funciton RenderMotions () {}
-    */
-
-    return(
-        <Box className="bg-light-secondary flex flex-col h-full w-[20vw] min-w-[10rem] p-2 dark:bg-dark-background">
-            <Box className="flex justify-start w-full h-auto">
-                <h2 className="panel-title text-black w-auto h-auto m-2">{panelTitle}</h2>
-            </Box>
-            <Box className="panel-content flex flex-col h-full w-full items-center gap-y-2">
-            </Box>
-        </Box>
-    );
-
-  }
-   
   const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     const buttonId = event.currentTarget.id;
     switch (buttonId){
@@ -57,6 +34,44 @@ export default function SideBar () {
         break;
     }
   }
+
+ 
+  const SidePanel = memo(function SidePanel({panelVersion}:{panelVersion:Panel}) {
+    const [panelTitle, setPanelTitle] = useState('');
+
+    useEffect(() => {
+      switch(panelVersion){
+        case Panel.COMMITTEES:
+          setPanelTitle('All Committees');
+          break;
+        case Panel.MOTIONS:
+          setPanelTitle('Committee Motions');
+          break;
+      case Panel.AGENDA:
+          setPanelTitle('Current Agenda');
+          break;
+      case Panel.ROLES:
+          setPanelTitle('Current Role');
+          break;
+      }
+    });
+    /**
+     * Function: will render the motion component if needed
+     *  funciton RenderMotions () {}
+    */
+
+    return(
+        <Box className="bg-light-secondary flex flex-col h-full w-[20vw] min-w-[12rem] p-2 dark:bg-dark-background">
+            <Box className="flex justify-start w-full h-auto">
+                <h2 className="panel-title text-black font-bold w-auto h-auto m-2">{panelTitle}</h2>
+            </Box>
+            <Box className="panel-content flex flex-col h-full w-full items-center gap-y-2">
+            </Box>
+        </Box>
+    );
+
+  });
+
 
   return (
     <Box className="container-sidebar-panel relative h-[calc(100vh-80px)] left-0 top-[80px] flex flex-row items-center w-auto">
@@ -81,7 +96,7 @@ export default function SideBar () {
           </IconButton>
         </Box>
       </Box>
-      <SidePanel panel={panelVersion}/>
+      <SidePanel panelVersion={panelVersion}/>
     </Box>
   );
 }
