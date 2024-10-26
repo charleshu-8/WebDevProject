@@ -2,12 +2,9 @@
 import SideBar from "./navbar";
 import NavBar from "./sidebar";
 import {Box} from "@mui/material";
-//import React, { useState } from 'react';
 import ChatInputField from "./chat_input_form";
 
 export default function ChatPage() {
-
-  //const [panelVersion, setPanelVersion] = useState(undefined | Panel);
 
   return (
     <Box className="bg-light-background dark:bg-dark-secondary h-screen w-screen flex">
