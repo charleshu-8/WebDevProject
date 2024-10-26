@@ -33,7 +33,7 @@ const SidePanel = memo(({panelVersion}:{panelVersion:Panel}) => {
     */
 
     return(
-        <Box className="bg-light-secondary flex flex-col h-full w-[20vw] min-w-[12rem] p-2 dark:bg-dark-background">
+        <Box className="bg-light-secondary dark:bg-extra-dark-blue flex flex-col h-full w-[20vw] min-w-[12rem] p-2 dark:bg-dark-background">
             <Box className="flex justify-start w-full h-auto">
                 <h2 className="panel-title text-black font-bold w-auto h-auto m-2">{panelTitle}</h2>
             </Box>
