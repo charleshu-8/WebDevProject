@@ -20,7 +20,7 @@ export default function SideBar () {
   }
 
   return (
-    <Box className="bg-light-primary relative left-0 top-[80px] p-[5px] h-full w-[70px] flex flex-col items-center dark:bg-black">
+    <Box className="bg-light-primary relative left-0 top-[80px] p-[5px] h-[calc(100%-80px)] w-[70px] flex flex-col items-center dark:bg-black">
       <Box className="mt-[10vh] flex flex-grow w-full h-auto flex-col items-center gap-[1rem]">
         <IconButton id="sidebar-button-committee" className="bg-white text-light-primary dark:bg-dark-secondary dark:text-dark-text aspect-square w-3/4 rounded-xl" onClick={handleButtonClick}>
           <GroupsIcon />
@@ -35,8 +35,8 @@ export default function SideBar () {
           <StarsIcon />
         </IconButton>
       </Box>
-      <Box className="flex h-auto w-full flex-1 flex-col items-center justify-end">
-        <IconButton className="text-light-background mb-[6rem]">
+      <Box className="flex h-auto w-full flex-1 flex-col items-center justify-end mb-2">
+        <IconButton className="text-light-background">
           <SettingsIcon />
         </IconButton>
       </Box>
