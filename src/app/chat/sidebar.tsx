@@ -41,7 +41,7 @@ export default function SideBar () {
   }
 
   return (
-    <Box className="container-sidebar-panel relative h-[calc(100vh-80px)] left-0 top-[80px] flex flex-row items-center w-auto">
+    <Box className="container-sidebar-panel relative h-[calc(100vh-80px)] w-[35vw] min-w-[12rem] left-0 top-[80px] flex flex-row items-center">
       <Box className="sidebar bg-light-primary relative left-0 p-[5px] h-full w-[60px] flex flex-col items-center dark:bg-black">
         <Box className="sidebar-button-container mt-[10vh] flex flex-grow w-full h-auto flex-col items-center gap-y-3">
           <IconButton id="sidebar-button-committee" className="bg-white text-light-primary dark:bg-dark-secondary dark:text-dark-text aspect-square w-3/4 rounded-xl" onClick={handleButtonClick}>

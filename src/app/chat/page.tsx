@@ -11,7 +11,7 @@ export default function ChatPage() {
       <NavBar/>
       <Box id="chat-horizontal-container" className="relative top-[80px] flex flex-row w-screen h-[calc(100%-80px)]">
         <SideBar />
-        <Box className="discussion-content relative flex justify-center w-full min-w-[10rem] h-full">
+        <Box className="discussion-content relative flex justify-center w-full min-w-[65vw] h-full">
           {/*everything in discussion forum will go below here*/}
           <Box className="bg-light-primary dark:bg-dark-secondary absolute bottom-0 w-[80%] h-auto p-4 m-2 rounded-md">
             <ChatInputField/>
