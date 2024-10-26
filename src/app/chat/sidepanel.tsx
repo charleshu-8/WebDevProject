@@ -1,19 +1,14 @@
 import { Box } from "@mui/material";
-import React, { useState, memo, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {Panel} from './panel';
 
- /**
-  * has to be a const in order to re-render the component whenever the parent 
-  * state variable setPanelVersion is updated by user clicks
-  * memo() helps optimize performance by choosing to re-render component when
-  * prop is updated
-  * 
-  */
-const SidePanel = memo(({panelVersion}:{panelVersion:Panel}) => {
+
+export default function SidePanel({panelVersion}:{panelVersion:Panel}) {
     const [panelTitle, setPanelTitle] = useState('');
+    const panel = panelVersion;
 
     useEffect(() => {
-      switch(panelVersion){
+      switch(panel){
         case Panel.COMMITTEES:
           setPanelTitle('All Committees');
           break;
@@ -30,7 +25,7 @@ const SidePanel = memo(({panelVersion}:{panelVersion:Panel}) => {
           setPanelTitle(''); // Reset title if panelVersion does not match any case
           break;
       }
-    }),[panelVersion];
+    },[panelVersion]);
 
     return(
         <Box className="bg-light-secondary dark:bg-extra-dark-blue flex flex-grow flex-col h-full w-auto min-w-[8rem] p-2 dark:bg-dark-background">
@@ -42,6 +37,4 @@ const SidePanel = memo(({panelVersion}:{panelVersion:Panel}) => {
         </Box>
     );
 
-  });
-
-export default SidePanel;
+  }
