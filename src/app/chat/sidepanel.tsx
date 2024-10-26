@@ -1,6 +1,7 @@
 import { Box } from "@mui/material";
 import React, { useState, memo, useEffect } from 'react';
 import {Panel} from './panel';
+
  /**
   * has to be a const in order to re-render the component whenever the parent 
   * state variable setPanelVersion is updated by user clicks
@@ -25,12 +26,11 @@ const SidePanel = memo(({panelVersion}:{panelVersion:Panel}) => {
       case Panel.ROLES:
           setPanelTitle('Current Role');
           break;
+      default:
+          setPanelTitle(''); // Reset title if panelVersion does not match any case
+          break;
       }
     }),[panelVersion];
-    /**
-     * Function: will render the motion component if needed
-     *  funciton RenderMotions () {}
-    */
 
     return(
         <Box className="bg-light-secondary dark:bg-extra-dark-blue flex flex-grow flex-col h-full w-auto min-w-[8rem] p-2 dark:bg-dark-background">
