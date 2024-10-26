@@ -12,7 +12,7 @@ export default function ChatPage() {
   //const [panelVersion, setPanelVersion] = useState(undefined | Panel);
 
   return (
-    <Box className="bg-light-background h-screen w-screen flex">
+    <Box className="bg-light-background dark:bg-dark-secondary h-screen w-screen flex">
       <NavBar/>
       <Box id="chat-horizontal-container" className="relative top-[80px] flex flex-row w-screen h-auto mb-[80px]">
         <SideBar/>

@@ -20,23 +20,23 @@ export default function SideBar () {
   }
 
   return (
-    <Box className="relative left-0 top-[80px] p-[5px] h-full w-[70px] flex flex-col items-center bg-light-primary">
+    <Box className="bg-light-primary relative left-0 top-[80px] p-[5px] h-full w-[70px] flex flex-col items-center dark:bg-black">
       <Box className="mt-[10vh] flex flex-grow w-full h-auto flex-col items-center gap-[1rem]">
-        <IconButton id="sidebar-button-committee" className="aspect-square w-3/4 rounded-xl bg-white text-light-primary" onClick={handleButtonClick}>
+        <IconButton id="sidebar-button-committee" className="bg-white text-light-primary dark:bg-dark-secondary dark:text-dark-text aspect-square w-3/4 rounded-xl" onClick={handleButtonClick}>
           <GroupsIcon />
         </IconButton>
-        <IconButton id="sidebar-button-motion"className="aspect-square w-3/4 rounded-xl bg-white text-light-primary" onClick={handleButtonClick}>
+        <IconButton id="sidebar-button-motion"className="bg-white text-light-primary dark:bg-dark-secondary dark:text-dark-text aspect-square w-3/4 rounded-xl" onClick={handleButtonClick}>
           <ChatIcon />
         </IconButton>
-        <IconButton id="sidebar-button-agenda" className="aspect-square w-3/4 rounded-xl bg-white text-light-primary" onClick={handleButtonClick}>
+        <IconButton id="sidebar-button-agenda" className="bg-white text-light-primary dark:bg-dark-secondary dark:text-dark-text aspect-square w-3/4 rounded-xl" onClick={handleButtonClick}>
           <EventNoteIcon />
         </IconButton>
-        <IconButton id="sidebar-button-role" className="aspect-square w-3/4 rounded-xl bg-white text-light-primary" onClick={handleButtonClick}>
+        <IconButton id="sidebar-button-role" className="bg-white text-light-primary dark:bg-dark-secondary dark:text-dark-text aspect-square w-3/4 rounded-xl" onClick={handleButtonClick}>
           <StarsIcon />
         </IconButton>
       </Box>
       <Box className="flex h-auto w-full flex-1 flex-col items-center justify-end">
-        <IconButton className="mb-[6rem] text-light-background">
+        <IconButton className="text-light-background mb-[6rem]">
           <SettingsIcon />
         </IconButton>
       </Box>
