@@ -3,11 +3,11 @@ import SideBar from "./navbar";
 import NavBar from "./sidebar";
 import SidePanel from "./sidepanel";
 import {Box} from "@mui/material";
-import React, { useState } from 'react';
+//import React, { useState } from 'react';
 import {Panel} from './panel';
 import ChatInputField from "./chat_input_form";
 
-const ChatPage = () => {
+export default function ChatPage() {
 
   //const [panelVersion, setPanelVersion] = useState(undefined | Panel);
 
@@ -32,5 +32,3 @@ const ChatPage = () => {
     // depending on chat chosen
   );
 }
-
-export default ChatPage;

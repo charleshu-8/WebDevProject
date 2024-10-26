@@ -4,9 +4,8 @@ import ChatIcon from "@mui/icons-material/Chat";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 import StarsIcon from "@mui/icons-material/Stars";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { ReactHTMLElement } from "react";
 
-const SideBar = () => {
+export default function SideBar () {
    
   const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     const buttonId = event.currentTarget.id;
@@ -44,5 +43,3 @@ const SideBar = () => {
     </Box>
   );
 }
-
-export default SideBar;

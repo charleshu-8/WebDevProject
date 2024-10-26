@@ -1,13 +1,15 @@
 import {Box} from "@mui/material";
 import {Panel} from './panel';
 import React, { useState } from 'react';
-import Motion_Card from "./motion_card";
 
+/**
+ * defines parameter props passed to SidePanel 
+ */
 interface PanelProps {
     version: Panel;
 }
 
-const SidePanel = (version:PanelProps) => {
+export default function SidePanel (version:PanelProps) {
 
     const title = "Motions";
 
@@ -34,7 +36,6 @@ const SidePanel = (version:PanelProps) => {
 
 }
 
-export default SidePanel;
 
 
 
