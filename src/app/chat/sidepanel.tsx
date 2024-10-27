@@ -28,9 +28,9 @@ export default function SidePanel({panelVersion}:{panelVersion:Panel}) {
     },[panelVersion]);
 
     return(
-        <Box className="bg-light-secondary dark:bg-extra-dark-blue flex flex-grow flex-col h-full w-auto min-w-[8rem] p-2 dark:bg-dark-background">
+        <Box className="bg-light-secondary dark:bg-extra-dark-blue flex flex-grow flex-col h-full w-auto min-w-[8rem] p-2">
             <Box className="flex justify-start w-full h-auto">
-                <h2 className="panel-title text-black font-bold w-auto h-auto m-2">{panelTitle}</h2>
+                <h2 className="panel-title text-black dark:text-white font-bold w-auto h-auto m-2">{panelTitle}</h2>
             </Box>
             <Box className="panel-content flex flex-col h-full w-full items-center gap-y-2">
             </Box>
