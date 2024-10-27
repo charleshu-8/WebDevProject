@@ -2,17 +2,18 @@
 
 import { useContext } from "react";
 import { SignUpContext } from "./page";
-import PocketBase from "pocketbase";
+import PocketBase, { ClientResponseError } from "pocketbase";
+import { useRouter } from "next/navigation";
 
 // Form component for user sign up information
 export default function Form() {
+  const router = useRouter();
   const { pfp } = useContext(SignUpContext);
 
   // Handle form submission
   async function handleResponse(response: FormData) {
     if (pfp) {
       const pb = new PocketBase("https://slackers.pockethost.io");
-
       const data = {
         username: response.get("username"),
         password: response.get("password"),
@@ -25,17 +26,23 @@ export default function Form() {
         bio: response.get("shortbio"),
         avatar: pfp,
       };
-      console.log(data);
 
       try {
-        const record = await pb.collection("users").create(data);
-        console.log(record);
+        // Attempt creation request
+        await pb.collection("users").create(data);
+        // Then reroute to login page
+        router.push("/auth/login");
       } catch (e) {
-        console.log(e);
+        // Log failure event
+        console.log(
+          `Account creation error: ${(e as ClientResponseError).response.message}`,
+        );
+        for (const cause in (e as ClientResponseError).response.data) {
+          console.log(
+            `${cause} - ${JSON.stringify((e as ClientResponseError).response.data[cause].code)}: ${JSON.stringify((e as ClientResponseError).response.data[cause].message)}`,
+          );
+        }
       }
-
-      // (optional) send an email verification request
-      // await pb.collection("users").requestVerification("test@example.com");
     } else {
       console.error("No PFP Found");
     }
