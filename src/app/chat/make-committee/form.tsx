@@ -36,6 +36,7 @@ export default function Form() {
           className="float-right w-2/3 border-b border-black"
         />
       </div>
+      {/*Time input row commented out to reflect current async default of committees*/}
       {/*Start time Row*/}
       {/* <div className="w-full">
         <label htmlFor="time" className="w-1/3">
@@ -161,7 +162,7 @@ export default function Form() {
       <div className="flex w-full items-center justify-center">
         <button
           type="submit"
-          className="justify-center rounded-full border-2 border-darker-blue px-16 py-3 font-bold text-darker-blue"
+          className="mt-5 justify-center rounded-full border-2 border-darker-blue px-16 py-3 font-bold text-darker-blue"
           onClick={(event: React.MouseEvent<HTMLElement>) => {
             console.log("Submit Committee Creation");
           }}

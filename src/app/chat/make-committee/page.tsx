@@ -6,7 +6,7 @@ export default function MakeCommittee() {
     <div>
       <main className="flex h-screen w-screen flex-col items-center justify-center bg-white">
         <h1>Testing</h1>
-        <div className="h-2/3 w-4/5">
+        <div className="h-fit w-4/5">
           <Form />
         </div>
       </main>
