@@ -1,14 +1,13 @@
 import SideBar from "./navbar";
 import NavBar from "./sidebar";
-import {Box} from "@mui/material";
+import { Box } from "@mui/material";
 
 export default function ChatPage() {
   return (
-    <Box className="bg-stark-white h-screen w-screen">
+    <Box className="bg-light-background dark:bg-dark-secondary h-screen w-screen">
       <NavBar />
       <SideBar />
     </Box>
-    
 
     // then add control panel
 
