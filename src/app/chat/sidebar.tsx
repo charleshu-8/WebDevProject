@@ -7,23 +7,23 @@ import SettingsIcon from "@mui/icons-material/Settings";
 
 export default function SideBar() {
   return (
-    <Box className="fixed left-0 top-[80px] flex h-full w-[70px] flex-col items-center bg-light-primary p-[5px]">
+    <Box className="bg-light-primary fixed left-0 top-[80px] flex h-full w-[70px] flex-col items-center p-[5px] dark:bg-black">
       <Box className="mt-[10vh] flex h-auto w-full flex-grow flex-col items-center gap-[1rem]">
-        <IconButton className="aspect-square w-3/4 rounded-xl bg-light-background text-light-primary">
+        <IconButton className="bg-light-background text-light-primary dark:bg-dark-secondary dark:text-dark-text aspect-square w-3/4 rounded-xl">
           <GroupsIcon />
         </IconButton>
-        <IconButton className="aspect-square w-3/4 rounded-xl bg-light-background text-light-primary">
+        <IconButton className="bg-light-background text-light-primary dark:bg-dark-secondary dark:text-dark-text aspect-square w-3/4 rounded-xl">
           <ChatIcon />
         </IconButton>
-        <IconButton className="aspect-square w-3/4 rounded-xl bg-light-background text-light-primary">
+        <IconButton className="bg-light-background text-light-primary dark:bg-dark-secondary dark:text-dark-text aspect-square w-3/4 rounded-xl">
           <EventNoteIcon />
         </IconButton>
-        <IconButton className="aspect-square w-3/4 rounded-xl bg-light-background text-light-primary">
+        <IconButton className="bg-light-background text-light-primary dark:bg-dark-secondary dark:text-dark-text aspect-square w-3/4 rounded-xl">
           <StarsIcon />
         </IconButton>
       </Box>
       <Box className="flex h-auto w-full flex-1 flex-col items-center justify-end">
-        <IconButton className="mb-[6rem] text-light-background">
+        <IconButton className="text-light-background mb-[6rem]">
           <SettingsIcon />
         </IconButton>
       </Box>
