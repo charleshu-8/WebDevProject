@@ -37,11 +37,11 @@ export default function Form() {
         />
       </div>
       {/*Start time Row*/}
-      <div className="w-full">
+      {/* <div className="w-full">
         <label htmlFor="time" className="w-1/3">
           Start time:
         </label>
-        {/*Div for Time Input Boxes*/}
+        {/*Div for Time Input Boxes
         <div className="float-right flex w-2/3 flex-row space-x-4">
           <input
             type="number"
@@ -68,7 +68,7 @@ export default function Form() {
             <option value="PM">PM</option>
           </select>
           {/*Time zone selector for all of U.S. zones and some other
-            major time zones*/}
+            major time zones*
           <select
             name="time-zone"
             id="time-zone"
@@ -87,7 +87,7 @@ export default function Form() {
             <option value="WET">WET</option>
           </select>
         </div>
-      </div>
+      </div> */}
       {/*Invite Member Row*/}
       <div className="flex w-full flex-row">
         <label className="w-1/3" htmlFor="email">
