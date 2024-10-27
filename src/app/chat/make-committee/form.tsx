@@ -21,7 +21,7 @@ export default function Form() {
   return (
     <form
       action={handleResponse}
-      className="flex h-full w-full flex-col space-y-6 rounded-xl border-2 border-secondary bg-white p-8"
+      className="flex h-full w-full flex-col space-y-6 rounded-xl border-2 border-light-secondary bg-white p-8"
     >
       {/*Committee Name Row*/}
       <div className="flex w-full flex-row">
@@ -104,7 +104,7 @@ export default function Form() {
           />
           <button
             type="button"
-            className="float-right ml-4 h-7 w-fit rounded-md border-2 border-secondary px-1 text-center align-middle text-secondary"
+            className="border-secondary text-secondary float-right ml-4 h-7 w-fit rounded-md border-2 px-1 text-center align-middle"
             onClick={(event: React.MouseEvent<HTMLElement>) => {
               //Get email from Invite Member input and discard @gmail etc.
               //console.log("Add member button pressed");
@@ -139,7 +139,7 @@ export default function Form() {
       </div>
       {/*Current Members Row*/}
       <div className="flex w-full flex-row">
-        <h1 className="w-1/3">Members:</h1>
+        <label className="w-1/3">Members:</label>
         {/*Members List*/}
         <div
           id="current-members"
@@ -149,11 +149,11 @@ export default function Form() {
           {/*Creator of the Committee is default auto displayed as owner*/}
           <div className="flex flex-row">
             <div className="mr-2 content-center">
-              <div className="h-3 w-3 rounded-full bg-darker-blue"></div>
+              <div className="h-3 w-3 rounded-full bg-light-primary"></div>
             </div>
             <div className="flex flex-col">
               <p>You</p>
-              <p className="text-xs text-gray-shadow">Owner</p>
+              <p className="text-xs text-extra-gray">Owner</p>
             </div>
           </div>
         </div>
@@ -162,7 +162,7 @@ export default function Form() {
       <div className="flex w-full items-center justify-center">
         <button
           type="submit"
-          className="mt-5 justify-center rounded-full border-2 border-darker-blue px-16 py-3 font-bold text-darker-blue"
+          className="mt-5 justify-center rounded-full border-2 border-light-primary px-16 py-3 font-bold text-light-primary"
           onClick={(event: React.MouseEvent<HTMLElement>) => {
             console.log("Submit Committee Creation");
           }}
@@ -193,7 +193,7 @@ function addNewMemberItem(name: string, role: string) {
   memberName.textContent = name;
 
   const roleDiv = document.createElement("p");
-  roleDiv.className = "text-xs text-gray-shadow";
+  roleDiv.className = "text-xs text-extra-gray";
   roleDiv.innerText = role;
 
   //Icon color should be red for members
@@ -201,7 +201,7 @@ function addNewMemberItem(name: string, role: string) {
   if ((role = "Member")) {
     icon.className = icon.className + " bg-red-500";
   } else if ((role = "Owner")) {
-    icon.className = icon.className + " bg-darker-blue";
+    icon.className = icon.className + " bg-light-primary";
   }
 
   textDiv.appendChild(memberName);
