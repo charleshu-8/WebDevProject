@@ -34,7 +34,7 @@ export default function Home() {
             digital use
           </h2>
           {/*you can delete this testing chatpage button whenever*/}
-          <button className="h-auto w-auto bg-darker-blue text-white">
+          <button className="h-auto w-auto bg-light-primary text-white">
             <Link href={"/chat"}>Go To Chat Page</Link>
           </button>
         </div>
