@@ -1,14 +1,14 @@
 "use client";
 import React, { useState } from "react";
-import heart from "../../res/heart.svg"; // Import the default heart icon
-import pressedHeart from "../../res/pressed_heart.svg"; // Import the pressed heart icon
-import pro from "../../res/pro.svg"; // Import the pro icon
-import pressedPro from "../../res/pressed_pro.svg"; // Import the pressed pro icon
-import con from "../../res/con1.svg"; // Import the con icon
-import pressedCon from "../../res/pressed_con.svg"; // Import the pressed con icon
-import neutral from "../../res/neutral.svg"; // Import the neutral icon
-import pressedNeutral from "../../res/pressed_neutral.svg"; // Import the pressed neutral icon
-import send from "../../res/send.svg"; // Import the send icon
+import heart from "../res/heart.svg"; // Import the default heart icon
+import pressedHeart from "../res/pressed_heart.svg"; // Import the pressed heart icon
+import pro from "../res/pro.svg"; // Import the pro icon
+import pressedPro from "../res/pressed_pro.svg"; // Import the pressed pro icon
+import con from "../res/con1.svg"; // Import the con icon
+import pressedCon from "../res/pressed_con.svg"; // Import the pressed con icon
+import neutral from "../res/neutral.svg"; // Import the neutral icon
+import pressedNeutral from "../res/pressed_neutral.svg"; // Import the pressed neutral icon
+import send from "../res/send.svg"; // Import the send icon
 import Textarea from "@mui/joy/Textarea"; // Import the Input component from the MUI Joy library
 
 // Form component for requesting email for password recovery
@@ -53,9 +53,9 @@ export default function ChatInputField() {
   return (
     <>
       {/* Main White Chat Field Input Box Container */}
-      <div className="h-full w-full flex-col items-center justify-center overflow-hidden rounded-lg bg-white">
+      <div className="h-full w-full flex-col items-center justify-center overflow-hidden rounded-lg bg-white border-extra-light-gray border-2">
         {/* Gray Options Bar above chat input field */}
-        <div className="flex h-1/5 items-center bg-gray-shadow pl-6">
+        <div className="flex h-1/5 items-center bg-extra-light-gray pl-6 p-1">
           {/* Heart Icon Container */}
           <div className="mr-2 flex h-4/5 items-center">
             {/* Heart Button/Icon */}
@@ -100,7 +100,7 @@ export default function ChatInputField() {
         {/* MUI Input with Send Button */}
         <div className="ml-7 mr-7 mt-4 flex items-center justify-between">
           {/* MUI Input Component Container*/}
-          <div className="w-full">
+          <div className="w-full m-1 mb-3">
             <Textarea
               name="Textarea"
               placeholder="I like this motion because..."
