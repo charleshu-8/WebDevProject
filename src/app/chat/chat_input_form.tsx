@@ -14,7 +14,6 @@ import Textarea from "@mui/joy/Textarea"; // Import the Input component from the
 interface ChatInputFieldProps {
   onSendMessage: (message: string) => void;
 }
-
 // Form component for requesting email for password recovery
 export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
   // State to track whether the icon is pressed

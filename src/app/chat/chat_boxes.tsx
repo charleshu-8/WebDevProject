@@ -2,16 +2,16 @@
 "use client";
 
 import React, { useState } from "react";
-import { Box, Button, TextField } from "@mui/material";
+import { Box } from "@mui/material";
 import ChatInputField from "./chat_input_form";
 
 const ChatBox: React.FC = () => {
-  const [messages, setMessages] = useState<{ sender: string; text: string }[]>([]);
-  const [currentMessage, setCurrentMessage] = useState<string>("");
+  const [messages, setMessages] = useState<string[]>([]);
+  const [message, setCurrentMessage] = useState<string>("");
 
-  const sendMessage = () => {
-    if (currentMessage.trim()) {
-      setMessages([...messages, { sender: "User", text: currentMessage }]);
+  const sendMessage = (message: string) => {
+    if (message.trim()) {
+      setMessages([...messages, message]);
       setCurrentMessage(""); // Clear input after sending
     }
   };
@@ -24,12 +24,23 @@ const ChatBox: React.FC = () => {
           <p className="text-gray-500">No messages yet</p>
         ) : (
           messages.map((message, index) => (
-            <Box key={index} className="mb-2 flex items-center">
-              <Box className="mr-2 rounded bg-gray-300 p-1 text-black">
-                {message.sender}
-              </Box>
-              <Box className="rounded bg-blue-500 p-2 text-white">
-                {message.text}
+            <Box
+              key={index}
+              className="mb-2 flex items-end justify-end" // Right-align messages
+            >
+              <Box className="flex items-center space-x-2">
+                {/* Message bubble with wider max width */}
+                <Box className="rounded bg-blue-500 p-2 text-white max-w-md">
+                  {message}
+                </Box>
+                
+                {/* Circle Icon for Profile */}
+                <Box
+                  className="h-6 w-6 rounded-full bg-gray-300 flex items-center justify-center text-white font-bold"
+                  aria-label="User Icon"
+                >
+                  U {/* Optional: Replace 'U' with initials or an emoji */}
+                </Box>
               </Box>
             </Box>
           ))
@@ -40,22 +51,10 @@ const ChatBox: React.FC = () => {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          sendMessage();
+          sendMessage(message);
         }}
       >
-        <Box className="flex">
-          <TextField
-            value={currentMessage}
-            onChange={(e) => setCurrentMessage(e.target.value)}
-            className="flex-grow mr-2"
-            placeholder="Type a message..."
-            variant="outlined"
-            size="small"
-          />
-          <Button type="submit" variant="contained" color="primary">
-            Send
-          </Button>
-        </Box>
+        <ChatInputField onSendMessage={sendMessage} />
       </form>
     </Box>
   );
