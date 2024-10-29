@@ -165,6 +165,13 @@ export default function Form() {
           className="mt-5 justify-center rounded-full border-2 border-light-primary px-16 py-3 font-bold text-light-primary"
           onClick={(event: React.MouseEvent<HTMLElement>) => {
             console.log("Submit Committee Creation");
+            const members = document.getElementById("current-members");
+            while (
+              members!.firstChild &&
+              members!.firstChild != members!.lastChild
+            ) {
+              members!.removeChild(members!.lastChild!);
+            }
           }}
         >
           Submit
@@ -179,6 +186,7 @@ function addNewMemberItem(name: string, role: string) {
 
   const memberDiv = document.createElement("div");
   memberDiv.className = "flex flex-row";
+  memberDiv.id = "member-" + name;
 
   const iconDiv = document.createElement("div");
   iconDiv.className = "mr-2 content-center";
@@ -204,6 +212,16 @@ function addNewMemberItem(name: string, role: string) {
     icon.className = icon.className + " bg-light-primary";
   }
 
+  const removeMember = document.createElement("button");
+  removeMember.title = "Remove Member";
+  removeMember.className = "text-xs text-extra-gray text-right pl-2";
+  removeMember.textContent = "x";
+  removeMember.type = "button";
+  removeMember.onclick = function () {
+    members.removeChild(document.getElementById(memberDiv!.id!)!);
+    //TODO: Remove this member from the actual list of emails to invite
+  };
+
   textDiv.appendChild(memberName);
   textDiv.appendChild(roleDiv);
 
@@ -211,6 +229,7 @@ function addNewMemberItem(name: string, role: string) {
 
   memberDiv.appendChild(iconDiv);
   memberDiv.appendChild(textDiv);
+  memberDiv.appendChild(removeMember);
 
   members.append(memberDiv);
 }
