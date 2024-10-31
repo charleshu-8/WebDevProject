@@ -9,7 +9,8 @@ import pressedCon from "../res/pressed_con.svg"; // Import the pressed con icon
 import neutral from "../res/neutral.svg"; // Import the neutral icon
 import pressedNeutral from "../res/pressed_neutral.svg"; // Import the pressed neutral icon
 import send from "../res/send.svg"; // Import the send icon
-import Textarea from "@mui/joy/Textarea"; // Import the Input component from the MUI Joy library
+import Textarea from "@mui/joy/Textarea";
+import {currentUser, pb} from "@/pocketbase"; // Import the Input component from the MUI Joy library
 
 // Form component for requesting email for password recovery
 export default function ChatInputField() {
@@ -18,6 +19,7 @@ export default function ChatInputField() {
   const [isProPressed, setIsProPressed] = useState(false);
   const [isConPressed, setIsConPressed] = useState(false);
   const [isNeutralPressed, setIsNeutralPressed] = useState(false);
+  const [message, setMessage] = useState("");
 
   // Toggle the heart button state
   function handleHeartClick(): void {
@@ -46,9 +48,27 @@ export default function ChatInputField() {
   }
 
   // Hand send button click
-  function handleSendClick(): void {
-    // TODO: Add logic to send the message
+  async function handleSendClick() {
+  if (message.trim() !== "" && currentUser) {
+    await publishMessage(message);
+  } else {
+    console.error("Message is empty or user is not logged in");
   }
+}
+
+  async function publishMessage(message: string) {
+    try {
+      const response = await pb.collection("messages").create({
+        text: message,
+        owner: currentUser?.id,
+        location: "91ttrau140qhgdc",//placeholder location
+      });
+      console.log("Message published successfully:", response);
+      setMessage("");
+    } catch (error) {
+      console.error("Failed to publish message:", error);
+    }
+}
 
   return (
     <>
@@ -108,6 +128,8 @@ export default function ChatInputField() {
               minRows={3}
               maxRows={3}
               size="sm"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
             />
           </div>
           {/* Send Button/Icon Container*/}
