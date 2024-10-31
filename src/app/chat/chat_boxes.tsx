@@ -38,7 +38,7 @@ const ChatBox: React.FC = () => {
               {/* Timestamp above the message */}
               <Typography
                 variant="caption"
-                className="text-gray-400" // Smaller and less prominent color
+                className="text-gray-400"
               >
                 {message.timestamp}
               </Typography>
