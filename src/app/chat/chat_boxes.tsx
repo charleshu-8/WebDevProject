@@ -2,16 +2,26 @@
 "use client";
 
 import React, { useState } from "react";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import ChatInputField from "./chat_input_form";
 
+// Helper function to get the current time in {HH:MM} format
+const getCurrentTime = () => {
+  const now = new Date();
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  return `${hours}:${minutes}`;
+};
+
 const ChatBox: React.FC = () => {
-  const [messages, setMessages] = useState<string[]>([]);
+  // State to store messages as objects with text and timestamp
+  const [messages, setMessages] = useState<{ text: string; timestamp: string }[]>([]);
   const [message, setCurrentMessage] = useState<string>("");
 
   const sendMessage = (message: string) => {
     if (message.trim()) {
-      setMessages([...messages, message]);
+      // Add message along with timestamp
+      setMessages([...messages, { text: message, timestamp: getCurrentTime() }]);
       setCurrentMessage(""); // Clear input after sending
     }
   };
@@ -24,16 +34,21 @@ const ChatBox: React.FC = () => {
           <p className="text-gray-500">No messages yet</p>
         ) : (
           messages.map((message, index) => (
-            <Box
-              key={index}
-              className="mb-2 flex items-end justify-end" // Right-align messages
-            >
+            <Box key={index} className="mb-4 flex flex-col items-end">
+              {/* Timestamp above the message */}
+              <Typography
+                variant="caption"
+                className="text-gray-400" // Smaller and less prominent color
+              >
+                {message.timestamp}
+              </Typography>
+
+              {/* Message bubble */}
               <Box className="flex items-center space-x-2">
-                {/* Message bubble with wider max width */}
                 <Box className="rounded bg-blue-500 p-2 text-white max-w-md">
-                  {message}
+                  {message.text}
                 </Box>
-                
+
                 {/* Circle Icon for Profile */}
                 <Box
                   className="h-6 w-6 rounded-full bg-gray-300 flex items-center justify-center text-white font-bold"
