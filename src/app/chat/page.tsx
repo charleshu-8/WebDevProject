@@ -12,10 +12,5 @@ export default function ChatPage() {
         <ChatBox />
       </div>
     </Box>
-
-    // then add control panel
-
-    //then have chat page content dispalyed here and switched out
-    // depending on chat chosen
   );
 }
