@@ -1,10 +1,14 @@
 "use client";
 
+import { currentUser, pb } from "@/app/pocketbase";
 import Link from "next/link";
-import PocketBase from "pocketbase";
+import { useRouter } from "next/navigation";
+import { login } from "../login";
 
 // Form component for taking username and password for verification
 export default function Form() {
+  const router = useRouter();
+
   async function handleResponse(response: FormData) {
     const email = (response.get("email") as FormDataEntryValue).toString();
     const password = (
@@ -12,19 +16,19 @@ export default function Form() {
     ).toString();
     console.log(email, password);
 
-    const pb = new PocketBase("https://slackers.pockethost.io");
-
-    const authData = await pb
-      .collection("users")
-      .authWithPassword(email, password);
+    await login(email, password);
 
     // after the above you can also access the auth data from the authStore
     console.log(pb.authStore.isValid);
     console.log(pb.authStore.token);
     console.log(pb.authStore.model?.id);
 
-    // "logout" the last authenticated account
-    pb.authStore.clear();
+    if (currentUser) {
+      console.log("User logged in");
+      router.push("/chat");
+    } else {
+      console.log("Login failed");
+    }
   }
 
   return (

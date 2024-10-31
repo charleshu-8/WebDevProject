@@ -1,17 +1,8 @@
 "use client";
-import { createContext, Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 import Form from "./form";
 import UploadAndDisplayImage from "./pfp";
-
-export interface ISignUpState {
-  pfp: File | null;
-  setPfp: Dispatch<SetStateAction<File | null>>;
-}
-
-export const SignUpContext = createContext<ISignUpState>({
-  pfp: null,
-  setPfp: () => {},
-});
+import { SignUpContext } from "./signUpContext";
 
 export default function SignUp() {
   // Define state variable to track and pass user selected PFP between components

@@ -1,9 +1,10 @@
 "use client";
 
 import { useContext } from "react";
-import { SignUpContext } from "./page";
-import PocketBase, { ClientResponseError } from "pocketbase";
+import { ClientResponseError } from "pocketbase";
 import { useRouter } from "next/navigation";
+import { pb } from "@/app/pocketbase";
+import { SignUpContext } from "./signUpContext";
 
 // Form component for user sign up information
 export default function Form() {
@@ -13,7 +14,6 @@ export default function Form() {
   // Handle form submission
   async function handleResponse(response: FormData) {
     if (pfp) {
-      const pb = new PocketBase("https://slackers.pockethost.io");
       const data = {
         username: response.get("username"),
         password: response.get("password"),

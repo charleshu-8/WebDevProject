@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import defaultProfileIconLight from "./res/default_profile_icon_light.svg"; // Import the light mode SVG file
 import defaultProfileIconDark from "./res/default_profile_icon_dark.svg"; // Import the dark mode SVG file
-import { SignUpContext } from "./page";
+import { SignUpContext } from "./signUpContext";
 
 const UploadAndDisplayImage: React.FC = () => {
   // Define a state variable to store the selected image
