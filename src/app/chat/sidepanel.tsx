@@ -1,16 +1,13 @@
 import { Box, Button } from "@mui/material";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect ,useMemo} from 'react';
 import {Panel} from './panel';
 
 
 interface SidePanelProps {
   panelVersion: Panel;
-  updateInputField: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function SidePanel({panelVersion, updateInputField}: SidePanelProps) {
-  const [panelTitle, setPanelTitle] = useState('');
-  const [panelButtonTitle, setPanelButtonTitle] = useState('');
+export default function SidePanel({panelVersion}: SidePanelProps) {
   const panel = panelVersion;
 
     function handlePanelButtonClick(event: React.MouseEvent<HTMLButtonElement>){
@@ -20,7 +17,6 @@ export default function SidePanel({panelVersion, updateInputField}: SidePanelPro
           console.log("Rendering add committee")
           break;
         case Panel.MOTIONS:
-          updateInputField(true);
           console.log("Rendering add motion")
           break;
         default:
@@ -29,28 +25,27 @@ export default function SidePanel({panelVersion, updateInputField}: SidePanelPro
       }
     }
 
+    const panelTitle: string = useMemo(()=>{
+      switch(panel) {
+        case Panel.COMMITTEES:
+          return "All Committees";
+        case Panel.MOTIONS:
+          return "Comitte Motions";
+        case Panel.AGENDA:
+          return "Current Agenda";
+        case Panel.ROLES:
+          return "Current Role";
+      }
+    },[panel])
 
-  useEffect(() => {
-    switch(panel){
-      case Panel.COMMITTEES:
-        setPanelTitle('All Committees');
-        setPanelButtonTitle('Add Committee')
-        break;
-      case Panel.MOTIONS:
-        setPanelTitle('Committee Motions');
-        setPanelButtonTitle('Add Motion')
-        break;
-      case Panel.AGENDA:
-          setPanelTitle('Current Agenda');
-          break;
-      case Panel.ROLES:
-          setPanelTitle('Current Role');
-          break;
-      default:
-          setPanelTitle(''); // Reset title if panelVersion does not match any case
-          break;
-    }
-}, [panelVersion]);
+    const panelButtonTitle: string | undefined = useMemo(() => {
+      switch(panel){
+        case Panel.COMMITTEES:
+          return "Add Committee";
+        case Panel.MOTIONS:
+          return "Add Motion";
+      }
+    }, [panel])
 
 
     return(
