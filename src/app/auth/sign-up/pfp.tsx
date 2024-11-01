@@ -3,8 +3,8 @@ import defaultProfileIconLight from "./res/default_profile_icon_light.svg"; // I
 import defaultProfileIconDark from "./res/default_profile_icon_dark.svg"; // Import the dark mode SVG file
 import { SignUpContext } from "./signUpContext";
 
-const UploadAndDisplayImage: React.FC = () => {
-  // Define a state variable to store the selected image
+export default function UploadAndDisplayImage() {
+  // Define state variable to store the selected image
   const { pfp, setPfp } = useContext(SignUpContext);
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
 
@@ -84,6 +84,4 @@ const UploadAndDisplayImage: React.FC = () => {
       />
     </div>
   );
-};
-
-export default UploadAndDisplayImage;
+}

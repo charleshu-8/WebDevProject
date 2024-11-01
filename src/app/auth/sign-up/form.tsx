@@ -13,6 +13,7 @@ export default function Form() {
 
   // Handle form submission
   async function handleResponse(response: FormData) {
+    // Check if PFP has been submitted by user
     if (pfp) {
       const data = {
         username: response.get("username"),

@@ -9,21 +9,22 @@ import { login } from "./authentication";
 export default function Form() {
   const router = useRouter();
 
+  // Process submitted form input and attempt log in
   async function handleResponse(response: FormData) {
     const email = (response.get("email") as FormDataEntryValue).toString();
     const password = (
       response.get("password") as FormDataEntryValue
     ).toString();
-    console.log(email, password);
 
     await login(email, password);
 
-    // after the above you can also access the auth data from the authStore
+    // Check authStore data
     console.log(pb.authStore.isValid);
     console.log(pb.authStore.token);
     console.log(pb.authStore.model?.id);
 
     if (currentUser) {
+      // Once approved, move to chat page
       console.log("User logged in");
       router.push("/chat");
     } else {
