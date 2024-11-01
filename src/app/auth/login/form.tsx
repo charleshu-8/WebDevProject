@@ -3,7 +3,7 @@
 import { currentUser, pb } from "@/app/pocketbase";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { login } from "../login";
+import { login } from "./authentication";
 
 // Form component for taking username and password for verification
 export default function Form() {
