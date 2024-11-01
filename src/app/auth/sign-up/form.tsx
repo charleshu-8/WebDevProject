@@ -35,11 +35,11 @@ export default function Form() {
         router.push("/auth/login");
       } catch (e) {
         // Log failure event
-        console.log(
+        console.error(
           `Account creation error: ${(e as ClientResponseError).response.message}`,
         );
         for (const cause in (e as ClientResponseError).response.data) {
-          console.log(
+          console.error(
             `${cause} - ${JSON.stringify((e as ClientResponseError).response.data[cause].code)}: ${JSON.stringify((e as ClientResponseError).response.data[cause].message)}`,
           );
         }
