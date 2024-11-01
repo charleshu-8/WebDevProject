@@ -1,41 +1,40 @@
-import {Box} from "@mui/material";
+import { Box } from "@mui/material";
+import React, { useState, useEffect } from 'react';
 import {Panel} from './panel';
-import React, { useState } from 'react';
-import Motion_Card from "./motion_card";
 
-interface PanelProps {
-    version: Panel;
-}
 
-const SidePanel = (version:PanelProps) => {
+export default function SidePanel({panelVersion}:{panelVersion:Panel}) {
+    const [panelTitle, setPanelTitle] = useState('');
+    const panel = panelVersion;
 
-    const title = "Motions";
-
-    /**
-     * Function: will render the motion component if needed
-     *  const RenderMotions = () => {
-    
-
-    }
-
-     */
+    useEffect(() => {
+      switch(panel){
+        case Panel.COMMITTEES:
+          setPanelTitle('All Committees');
+          break;
+        case Panel.MOTIONS:
+          setPanelTitle('Committee Motions');
+          break;
+      case Panel.AGENDA:
+          setPanelTitle('Current Agenda');
+          break;
+      case Panel.ROLES:
+          setPanelTitle('Current Role');
+          break;
+      default:
+          setPanelTitle(''); // Reset title if panelVersion does not match any case
+          break;
+      }
+    },[panelVersion]);
 
     return(
-        <Box className="bg-light-secondary flex flex-col h-full w-[25%] min-w-[8rem] p-2 dark:bg-dark-background">
+        <Box className="bg-light-secondary dark:bg-extra-dark-blue flex flex-grow flex-col h-full w-auto min-w-[8rem] p-2">
             <Box className="flex justify-start w-full h-auto">
-                <h2 className="panel-title text-black w-auto h-auto m-2">{title}</h2>
+                <h2 className="panel-title text-black dark:text-white font-bold w-auto h-auto m-2">{panelTitle}</h2>
             </Box>
             <Box className="panel-content flex flex-col h-full w-full items-center gap-y-2">
-                <Motion_Card/>
             </Box>
         </Box>
-        
-
     );
 
-}
-
-export default SidePanel;
-
-
-
+  }
