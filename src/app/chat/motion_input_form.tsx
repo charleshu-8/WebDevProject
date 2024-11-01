@@ -1,18 +1,21 @@
 "use client";
 import React, { useState } from "react";
-import heart from "../../res/heart.svg"; // Import the default heart icon
-import pressedHeart from "../../res/pressed_heart.svg"; // Import the pressed heart icon
-import pro from "../../res/pro.svg"; // Import the pro icon
-import pressedPro from "../../res/pressed_pro.svg"; // Import the pressed pro icon
-import con from "../../res/con1.svg"; // Import the con icon
-import pressedCon from "../../res/pressed_con.svg"; // Import the pressed con icon
-import neutral from "../../res/neutral.svg"; // Import the neutral icon
-import pressedNeutral from "../../res/pressed_neutral.svg"; // Import the pressed neutral icon
-import send from "../../res/send.svg"; // Import the send icon
+import heart from "../res/heart.svg"; // Import the default heart icon
+import pressedHeart from "../res/pressed_heart.svg"; // Import the pressed heart icon
+import pro from "../res/pro.svg"; // Import the pro icon
+import pressedPro from "../res/pressed_pro.svg"; // Import the pressed pro icon
+import con from "../res/con1.svg"; // Import the con icon
+import pressedCon from "../res/pressed_con.svg"; // Import the pressed con icon
+import neutral from "../res/neutral.svg"; // Import the neutral icon
+import pressedNeutral from "../res/pressed_neutral.svg"; // Import the pressed neutral icon
+import send from "../res/send.svg"; // Import the send icon
 import Textarea from "@mui/joy/Textarea"; // Import the Input component from the MUI Joy library
-
+import {Button} from "@mui/material";
 // Form component for requesting email for password recovery
-export default function MotionInputField() {
+interface motionInputProps{
+  updateInputField: React.Dispatch<React.SetStateAction<boolean>>;
+}
+export default function MotionInputField({updateInputField}:motionInputProps) {
   // State to track whether the icon is pressed
   const [isHeartPressed, setIsHeartPressed] = useState(false);
   const [isProPressed, setIsProPressed] = useState(false);
@@ -47,6 +50,8 @@ export default function MotionInputField() {
 
   // Hand send button click
   function handleSendClick(): void {
+    updateInputField(false);
+    console.log("sent! update input field to chat")
     // TODO: Add logic to send the message
   }
 
@@ -104,15 +109,14 @@ export default function MotionInputField() {
             Motion:
           </p>
           {/* Send Button/Icon Container*/}
-          <div className="ml-2 mr-2 flex h-[95%] cursor-pointer items-center">
             {/* Send Button/Icon */}
-            <img
+            <div className="ml-2 mr-2 flex h-[95%] cursor-pointer items-center"><img
               className="h-full"
               alt="Send"
               src={send.src} // Conditionally render the icon
-              onClick={handleSendClick} // Handle icon click
-            />
-          </div>
+              onClick={handleSendClick}
+            /></div>
+          
         </div>
         {/* MUI Input Component Container*/}
         <div className="mb-2 ml-7 mr-7 mt-2">

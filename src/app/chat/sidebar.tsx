@@ -8,9 +8,10 @@ import React, { useState, memo, useEffect } from 'react';
 import {Panel} from './panel';
 import SidePanel from './sidepanel';
 
-
-export default function SideBar () {
-
+interface SideBarProps {
+  updateInputField: React.Dispatch<React.SetStateAction<boolean>>;
+}
+export default function SideBar ({updateInputField}:SideBarProps){
     /* tracks panel version for changing panel layout */
   const [panelVersion, setPanelVersion] = useState(Panel.COMMITTEES);
 
@@ -18,7 +19,7 @@ export default function SideBar () {
    * Function adjusts panel version const based on button pressed
    * @param event user clicking the sidebar buttons
    */
-  const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  function handleButtonClick(event: React.MouseEvent<HTMLButtonElement>) {
     const buttonId = event.currentTarget.id;
     switch (buttonId){
       case "sidebar-button-committee":
@@ -63,7 +64,7 @@ export default function SideBar () {
           </IconButton>
         </Box>
       </Box>
-      <SidePanel panelVersion={panelVersion}/>
+      <SidePanel panelVersion={panelVersion} updateInputField={updateInputField}/>
     </Box>
   );
 }
