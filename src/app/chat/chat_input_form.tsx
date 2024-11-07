@@ -16,17 +16,18 @@ interface ChatInputFieldProps {
 }
 // Form component for requesting email for password recovery
 export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
-  // State to track whether the icon is pressed
-  const [isHeartPressed, setIsHeartPressed] = useState(false);
+  // States to track whether each icon is pressed
+  // const [isHeartPressed, setIsHeartPressed] = useState(false);  // Remove for now, might bring back
   const [isProPressed, setIsProPressed] = useState(false);
   const [isConPressed, setIsConPressed] = useState(false);
   const [isNeutralPressed, setIsNeutralPressed] = useState(false);
   const [message, setMessage] = useState(""); // State to track the message input
 
+  //// NOTE: Uncomment this function if you want to use the heart button /////
   // Toggle the heart button state
-  function handleHeartClick(): void {
-    setIsHeartPressed(!isHeartPressed);
-  }
+  // function handleHeartClick(): void {
+  //   setIsHeartPressed(!isHeartPressed);
+  // }
 
   // Toggle the pro button state
   function handleProClick(): void {
@@ -58,19 +59,9 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
   return (
     <>
       {/* Main White Chat Field Input Box Container */}
-      <div className="h-full w-full flex-col items-center justify-center overflow-hidden rounded-lg bg-white border-extra-light-gray border-2">
+      <div className="h-full w-full flex-col items-center justify-center overflow-hidden rounded-lg border-2 border-extra-light-gray bg-white">
         {/* Gray Options Bar above chat input field */}
-        <div className="bg-extra-dim-gray flex h-1/5 items-center pl-6">
-          {/* Heart Icon Container */}
-          <div className="mr-2 flex h-4/5 items-center">
-            {/* Heart Button/Icon */}
-            <img
-              className="h-full cursor-pointer"
-              alt="Heart"
-              src={isHeartPressed ? pressedHeart.src : heart.src} // Conditionally render the icon
-              onClick={handleHeartClick} // Handle icon click
-            />
-          </div>
+        <div className="flex h-1/5 items-center bg-extra-dim-gray pl-6">
           {/* Pro Icon Container */}
           <div className="ml-2 mr-2 flex h-[70%] items-center">
             {/* Pro Button/Icon */}
@@ -105,7 +96,7 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
         {/* MUI Input with Send Button */}
         <div className="mb-6 ml-7 mr-7 mt-4 flex items-center justify-between">
           {/* MUI Input Component Container*/}
-          <div className="w-full m-1 mb-3">
+          <div className="m-1 mb-3 w-full">
             <Textarea
               name="Textarea"
               placeholder="I like this motion because..."
