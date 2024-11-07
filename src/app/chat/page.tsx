@@ -14,10 +14,7 @@ export default function ChatPage() {
         <SideBar/>
         <Box className="discussion-content relative flex justify-center w-full min-w-[65vw] h-full">
           {/*everything in discussion forum will go below here*/}
-          <Box className="absolute bottom-0 w-[80%] h-auto p-4 m-2 rounded-md">
-            <ChatBox/>
-            
-          </Box>
+          <ChatBox/>
         </Box>
       </Box>
     </Box>

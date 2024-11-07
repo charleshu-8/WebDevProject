@@ -1,5 +1,4 @@
 import { Button, IconButton, Box } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 
 export default function NavBar() {
@@ -11,9 +10,6 @@ export default function NavBar() {
 
   return (
     <Box className="bg-light-primary dark:bg-dark-background fixed left-0 top-0 flex h-[80px] w-full flex-row p-2">
-      <IconButton className="text-light-background ml-[8px]">
-        <MenuIcon />
-      </IconButton>
       <Box className="ml-[50px] flex h-full w-1/5 items-center md:ml-[100px] md:w-2/5">
         <h1 className="text-light-background text-[2em]">Team Slackers</h1>
       </Box>
