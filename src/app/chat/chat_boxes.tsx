@@ -5,12 +5,12 @@ import { Box, Typography } from "@mui/material";
 import ChatInputField from "./chat_input_form";
 
 // Helper function to get the current time in {HH:MM} format
-const getCurrentTime = () => {
+function getCurrentTime() {
   const now = new Date();
   const hours = String(now.getHours()).padStart(2, "0");
   const minutes = String(now.getMinutes()).padStart(2, "0");
   return `${hours}:${minutes}`;
-};
+}
 
 const ChatBox: React.FC = () => {
   // State to store messages as objects with text and timestamp
