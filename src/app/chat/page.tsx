@@ -3,11 +3,7 @@ import SideBar from "./navbar";
 import NavBar from "./sidebar";
 import { Box } from "@mui/material";
 import ChatBox from "./chat_boxes";
-import {Box} from "@mui/material";
-import ChatInputField from "./chat_input_form";
-import {useState} from 'react';
-import MotionInputField from "./motion_input_form";
-import SidePanel from './sidepanel';
+
 
 export default function ChatPage() {
 
