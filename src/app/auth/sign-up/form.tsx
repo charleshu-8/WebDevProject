@@ -1,27 +1,52 @@
 "use client";
 
+import { useContext } from "react";
+import { ClientResponseError } from "pocketbase";
+import { useRouter } from "next/navigation";
+import { pb } from "@/app/pocketbase";
+import { SignUpContext } from "./signUpContext";
+
 // Form component for user sign up information
 export default function Form() {
+  const router = useRouter();
+  const { pfp } = useContext(SignUpContext);
+
   // Handle form submission
-  // TODO: Add functionality when ingesting user data
   async function handleResponse(response: FormData) {
-    const username = response.get("username");
-    const password = response.get("password");
-    const firstName = response.get("firstname");
-    const lastName = response.get("lastname");
-    const email = response.get("email");
-    const phoneNum = response.get("phonenum");
-    const shortBio = response.get("shortbio");
-    // Just throw out inputted data for now
-    console.log(
-      username,
-      password,
-      firstName,
-      lastName,
-      email,
-      phoneNum,
-      shortBio,
-    );
+    // Check if PFP has been submitted by user
+    if (pfp) {
+      const data = {
+        username: response.get("username"),
+        password: response.get("password"),
+        passwordConfirm: response.get("password"),
+        email: response.get("email"),
+        emailVisibility: true,
+        firstName: response.get("firstname"),
+        lastName: response.get("lastname"),
+        phoneNumber: response.get("phonenum"),
+        bio: response.get("shortbio"),
+        avatar: pfp,
+      };
+
+      try {
+        // Attempt creation request
+        await pb.collection("users").create(data);
+        // Then reroute to login page
+        router.push("/auth/login");
+      } catch (e) {
+        // Log failure event
+        console.error(
+          `Account creation error: ${(e as ClientResponseError).response.message}`,
+        );
+        for (const cause in (e as ClientResponseError).response.data) {
+          console.error(
+            `${cause} - ${JSON.stringify((e as ClientResponseError).response.data[cause].code)}: ${JSON.stringify((e as ClientResponseError).response.data[cause].message)}`,
+          );
+        }
+      }
+    } else {
+      console.error("No PFP Found");
+    }
   }
 
   return (
@@ -136,9 +161,6 @@ export default function Form() {
           <button
             type="submit"
             className="button-styling rounded-md px-14 py-3"
-            onClick={(event: React.MouseEvent<HTMLElement>) => {
-              console.log("Signup Button Pressed");
-            }}
           >
             Sign Up
           </button>

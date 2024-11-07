@@ -1,9 +1,11 @@
+"use client";
 import SideBar from "./navbar";
 import NavBar from "./sidebar";
 import { Box } from "@mui/material";
 import ChatBox from "./chat_boxes";
 
 export default function ChatPage() {
+
   return (
     <Box className="h-screen w-screen bg-light-background">
       <NavBar />

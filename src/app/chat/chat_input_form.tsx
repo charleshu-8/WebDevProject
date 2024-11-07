@@ -58,7 +58,7 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
   return (
     <>
       {/* Main White Chat Field Input Box Container */}
-      <div className="h-full w-full flex-col items-center justify-center overflow-hidden rounded-lg bg-white">
+      <div className="h-full w-full flex-col items-center justify-center overflow-hidden rounded-lg bg-white border-extra-light-gray border-2">
         {/* Gray Options Bar above chat input field */}
         <div className="bg-extra-dim-gray flex h-1/5 items-center pl-6">
           {/* Heart Icon Container */}
@@ -105,7 +105,7 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
         {/* MUI Input with Send Button */}
         <div className="mb-6 ml-7 mr-7 mt-4 flex items-center justify-between">
           {/* MUI Input Component Container*/}
-          <div className="w-full">
+          <div className="w-full m-1 mb-3">
             <Textarea
               name="Textarea"
               placeholder="I like this motion because..."
