@@ -10,17 +10,21 @@ import neutral from "../res/neutral.svg"; // Import the neutral icon
 import pressedNeutral from "../res/pressed_neutral.svg"; // Import the pressed neutral icon
 import send from "../res/send.svg"; // Import the send icon
 import Textarea from "@mui/joy/Textarea"; // Import the Input component from the MUI Joy library
-import {Button} from "@mui/material";
-// Form component for requesting email for password recovery
-interface motionInputProps{
-  updateInputField: React.Dispatch<React.SetStateAction<boolean>>;
+
+interface MotionInputFieldProps {
+  onSendMessage: (message: string) => void;
 }
-export default function MotionInputField({updateInputField}:motionInputProps) {
+
+// Form component for requesting email for password recovery
+export default function MotionInputField({
+  onSendMessage,
+}: MotionInputFieldProps) {
   // State to track whether the icon is pressed
   const [isHeartPressed, setIsHeartPressed] = useState(false);
   const [isProPressed, setIsProPressed] = useState(false);
   const [isConPressed, setIsConPressed] = useState(false);
   const [isNeutralPressed, setIsNeutralPressed] = useState(false);
+  const [message, setMessage] = useState(""); // State to track the message input
 
   // Toggle the heart button state
   function handleHeartClick(): void {
@@ -50,9 +54,8 @@ export default function MotionInputField({updateInputField}:motionInputProps) {
 
   // Hand send button click
   function handleSendClick(): void {
-    updateInputField(false);
-    console.log("sent! update input field to chat")
-    // TODO: Add logic to send the message
+    onSendMessage(message);
+    setMessage(""); // Clear the text area after sending the message
   }
 
   return (
@@ -60,7 +63,7 @@ export default function MotionInputField({updateInputField}:motionInputProps) {
       {/* Main White Chat Field Input Box Container */}
       <div className="h-full w-full flex-col items-center justify-center overflow-hidden rounded-lg bg-white">
         {/* Gray Options Bar above chat input field */}
-        <div className="flex h-1/5 items-center bg-gray-shadow pl-6">
+        <div className="bg-extra-dim-gray flex h-1/5 items-center pl-6">
           {/* Heart Icon Container */}
           <div className="mr-2 flex h-4/5 items-center">
             {/* Heart Button/Icon */}
@@ -119,7 +122,7 @@ export default function MotionInputField({updateInputField}:motionInputProps) {
           
         </div>
         {/* MUI Input Component Container*/}
-        <div className="mb-2 ml-7 mr-7 mt-2">
+        <div className="mb-6 ml-7 mr-7 mt-2">
           <Textarea
             name="Textarea"
             placeholder="I move that…"
@@ -127,6 +130,14 @@ export default function MotionInputField({updateInputField}:motionInputProps) {
             minRows={3}
             maxRows={3}
             size="sm"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)} // Handle input change
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault(); // Prevent default behavior of Enter key
+                handleSendClick(); // Trigger send button click
+              }
+            }}
           />
         </div>
       </div>
