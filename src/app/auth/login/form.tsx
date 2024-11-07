@@ -1,14 +1,35 @@
 "use client";
 
+import { currentUser, pb } from "@/app/pocketbase";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { login } from "./authentication";
 
 // Form component for taking username and password for verification
 export default function Form() {
-  // TODO: Add functionality when ingesting username and password
+  const router = useRouter();
+
+  // Process submitted form input and attempt log in
   async function handleResponse(response: FormData) {
-    const email = response.get("email");
-    const password = response.get("password");
-    console.log(email, password);
+    const email = (response.get("email") as FormDataEntryValue).toString();
+    const password = (
+      response.get("password") as FormDataEntryValue
+    ).toString();
+
+    await login(email, password);
+
+    // Check authStore data
+    console.log(pb.authStore.isValid);
+    console.log(pb.authStore.token);
+    console.log(pb.authStore.model?.id);
+
+    if (currentUser) {
+      // Once approved, move to chat page
+      console.log("User logged in");
+      router.push("/chat");
+    } else {
+      console.log("Login failed");
+    }
   }
 
   return (
