@@ -17,7 +17,7 @@ interface ChatBoxProps {
   isNewMotion: boolean;
 }
 
-const ChatBox: React.FC<ChatBoxProps> = ({ isNewMotion }) => {
+function ChatBox({ isNewMotion }: ChatBoxProps) {
   // State to store messages as objects with text and timestamp
   const [messages, setMessages] = useState<
     { text: string; timestamp: string }[]
@@ -93,6 +93,6 @@ const ChatBox: React.FC<ChatBoxProps> = ({ isNewMotion }) => {
       </form>
     </Box>
   );
-};
+}
 
 export default ChatBox;
