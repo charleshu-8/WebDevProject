@@ -1,7 +1,6 @@
-// src/chat/ChatBox.tsx
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Box, Typography } from "@mui/material";
 import ChatInputField from "./chat_input_form";
 
@@ -17,6 +16,14 @@ const ChatBox: React.FC = () => {
   // State to store messages as objects with text and timestamp
   const [messages, setMessages] = useState<{ text: string; timestamp: string }[]>([]);
   const [message, setCurrentMessage] = useState<string>("");
+
+  // Ref to keep track of the container for automatic scrolling
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
+
+  // Effect to scroll to the bottom whenever the messages change
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   const sendMessage = (message: string) => {
     if (message.trim()) {
@@ -36,10 +43,7 @@ const ChatBox: React.FC = () => {
           messages.map((message, index) => (
             <Box key={index} className="mb-4 flex flex-col items-end">
               {/* Timestamp above the message */}
-              <Typography
-                variant="caption"
-                className="text-gray-400"
-              >
+              <Typography variant="caption" className="text-gray-400">
                 {message.timestamp}
               </Typography>
 
@@ -60,6 +64,8 @@ const ChatBox: React.FC = () => {
             </Box>
           ))
         )}
+        {/* Invisible div to maintain scrolling to the bottom */}
+        <div ref={messagesEndRef} />
       </Box>
 
       {/* Input area */}
