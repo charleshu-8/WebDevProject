@@ -10,19 +10,16 @@ interface SidePanelProps {
 export default function SidePanel({panelVersion}: SidePanelProps) {
   const panel = panelVersion;
 
-    function handlePanelButtonClick(event: React.MouseEvent<HTMLButtonElement>){
+    function handlePanelAddButtonClick(event: React.MouseEvent<HTMLButtonElement>){
       switch(panel){
         case Panel.COMMITTEES:
-          {/* render add committee on discussion page*/}
-          console.log("Rendering add committee")
+          console.log("Rendering add committee");
           break;
         case Panel.MOTIONS:
-          console.log("Rendering add motion")
+          console.log("Rendering add motion");
           break;
-        default:
-          break;
-
       }
+
     }
 
     const panelTitle: string = useMemo(()=>{
@@ -30,7 +27,7 @@ export default function SidePanel({panelVersion}: SidePanelProps) {
         case Panel.COMMITTEES:
           return "All Committees";
         case Panel.MOTIONS:
-          return "Comitte Motions";
+          return "Comittee Motions";
         case Panel.AGENDA:
           return "Current Agenda";
         case Panel.ROLES:
@@ -38,14 +35,16 @@ export default function SidePanel({panelVersion}: SidePanelProps) {
       }
     },[panel])
 
-    const panelButtonTitle: string | undefined = useMemo(() => {
+    const panelButtonTitle = useMemo(() => {
       switch(panel){
         case Panel.COMMITTEES:
           return "Add Committee";
         case Panel.MOTIONS:
           return "Add Motion";
       }
-    }, [panel])
+
+
+    },[panel]);
 
 
     return(
@@ -56,7 +55,8 @@ export default function SidePanel({panelVersion}: SidePanelProps) {
             <Box className="panel-content flex flex-col h-full w-full items-center gap-y-2">
               {/*check version here with && and then choose to render add committee button or add motion button
               then populate by fetching data from specific loc in db and returning a motion card or discussion card for each*/}
-              {((panel === Panel.COMMITTEES || panel === Panel.MOTIONS) && (<Button className="text-white bg-extra-dark-blue mt-3" onClick={handlePanelButtonClick}>{panelButtonTitle}</Button>))}
+              {((panel === Panel.COMMITTEES || panel === Panel.MOTIONS )&& (<Button className="text-white bg-extra-dark-blue mt-3 dark:bg-dark-background" onClick={handlePanelAddButtonClick}>{panelButtonTitle}</Button>))}
+              {/*Side panel content will go here --> so mapping motions and displaying below or committees */}
             </Box>
         </Box>
     );

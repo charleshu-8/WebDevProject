@@ -8,10 +8,8 @@ import React, { useState, memo, useEffect } from 'react';
 import {Panel} from './panel';
 import SidePanel from './sidepanel';
 
-interface SideBarProps {
-  updateInputField: React.Dispatch<React.SetStateAction<boolean>>;
-}
-export default function SideBar ({updateInputField}:SideBarProps){
+
+export default function SideBar (){
     /* tracks panel version for changing panel layout */
   const [panelVersion, setPanelVersion] = useState(Panel.COMMITTEES);
 
@@ -64,7 +62,7 @@ export default function SideBar ({updateInputField}:SideBarProps){
           </IconButton>
         </Box>
       </Box>
-      <SidePanel panelVersion={panelVersion} updateInputField={updateInputField}/>
+      <SidePanel panelVersion={panelVersion} />
     </Box>
   );
 }
