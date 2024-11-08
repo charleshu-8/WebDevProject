@@ -12,7 +12,7 @@ function getCurrentTime() {
   return `${hours}:${minutes}`;
 }
 
-const ChatBox: React.FC = () => {
+export default function ChatBox() {
   // State to store messages as objects with text and timestamp
   const [messages, setMessages] = useState<
     { text: string; timestamp: string }[]
@@ -84,6 +84,4 @@ const ChatBox: React.FC = () => {
       </form>
     </Box>
   );
-};
-
-export default ChatBox;
+}
