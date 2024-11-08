@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { Box, Typography } from "@mui/material";
-import ChatInputField from "./chat_input_form";
+import ChatInputField from "./chat-input-form";
 
 // Helper function to get the current time in {HH:MM} format
 function getCurrentTime() {
@@ -27,7 +27,7 @@ export default function ChatBox() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const sendMessage = (message: string) => {
+  function sendMessage(message: string) {
     if (message.trim()) {
       // Add message along with timestamp
       setMessages([
@@ -36,7 +36,7 @@ export default function ChatBox() {
       ]);
       setCurrentMessage(""); // Clear input after sending
     }
-  };
+  }
 
   return (
     <Box className="flex h-full w-full flex-col bg-gray-200 p-4">

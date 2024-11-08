@@ -11,14 +11,11 @@ import pressedNeutral from "../res/pressed_neutral.svg"; // Import the pressed n
 import send from "../res/send.svg"; // Import the send icon
 import Textarea from "@mui/joy/Textarea"; // Import the Input component from the MUI Joy library
 
-interface MotionInputFieldProps {
+interface ChatInputFieldProps {
   onSendMessage: (message: string) => void;
 }
-
 // Form component for requesting email for password recovery
-export default function MotionInputField({
-  onSendMessage,
-}: MotionInputFieldProps) {
+export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
   // State to track whether the icon is pressed
   const [isHeartPressed, setIsHeartPressed] = useState(false);
   const [isProPressed, setIsProPressed] = useState(false);
@@ -61,9 +58,9 @@ export default function MotionInputField({
   return (
     <>
       {/* Main White Chat Field Input Box Container */}
-      <div className="h-full w-full flex-col items-center justify-center overflow-hidden rounded-lg bg-white">
+      <div className="h-full w-full flex-col items-center justify-center overflow-hidden rounded-lg border-2 border-extra-light-gray bg-white">
         {/* Gray Options Bar above chat input field */}
-        <div className="bg-extra-dim-gray flex h-1/5 items-center pl-6">
+        <div className="flex h-1/5 items-center bg-extra-dim-gray pl-6">
           {/* Heart Icon Container */}
           <div className="mr-2 flex h-4/5 items-center">
             {/* Heart Button/Icon */}
@@ -105,14 +102,29 @@ export default function MotionInputField({
             />
           </div>
         </div>
-        {/* 'Motion:' Declaration Text with Send Button */}
-        <div className="ml-7 mr-7 mt-4 flex h-1/5 items-center justify-between">
-          {/* Motion Text */}
-          <p className="text-xl font-semibold text-black dark:text-black">
-            Motion:
-          </p>
+        {/* MUI Input with Send Button */}
+        <div className="mb-6 ml-7 mr-7 mt-4 flex items-center justify-between">
+          {/* MUI Input Component Container*/}
+          <div className="m-1 mb-3 w-full">
+            <Textarea
+              name="Textarea"
+              placeholder="I like this motion because..."
+              variant="outlined"
+              minRows={3}
+              maxRows={3}
+              size="sm"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)} // Handle input change
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault(); // Prevent default behavior of Enter key
+                  handleSendClick(); // Trigger send button click
+                }
+              }}
+            />
+          </div>
           {/* Send Button/Icon Container*/}
-          <div className="ml-2 mr-2 flex h-[95%] cursor-pointer items-center">
+          <div className="ml-2 mr-2 flex h-5/6 cursor-pointer items-center">
             {/* Send Button/Icon */}
             <img
               className="h-full"
@@ -121,25 +133,6 @@ export default function MotionInputField({
               onClick={handleSendClick} // Handle icon click
             />
           </div>
-        </div>
-        {/* MUI Input Component Container*/}
-        <div className="mb-6 ml-7 mr-7 mt-2">
-          <Textarea
-            name="Textarea"
-            placeholder="I move that…"
-            variant="outlined"
-            minRows={3}
-            maxRows={3}
-            size="sm"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)} // Handle input change
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault(); // Prevent default behavior of Enter key
-                handleSendClick(); // Trigger send button click
-              }
-            }}
-          />
         </div>
       </div>
     </>
