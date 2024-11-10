@@ -1,5 +1,5 @@
 import { Box, Button } from "@mui/material";
-import React, { useState, useEffect ,useMemo} from 'react';
+import React, {useMemo} from 'react';
 import {Panel} from './panel';
 
 
@@ -10,7 +10,7 @@ interface SidePanelProps {
 export default function SidePanel({panelVersion}: SidePanelProps) {
   const panel = panelVersion;
 
-    function handlePanelAddButtonClick(event: React.MouseEvent<HTMLButtonElement>){
+    function handlePanelAddButtonClick(){
       switch(panel){
         case Panel.COMMITTEES:
           console.log("Rendering add committee");
