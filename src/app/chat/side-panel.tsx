@@ -1,39 +1,64 @@
-import { Box } from "@mui/material";
-import React, { useState, useEffect } from "react";
-import { Panel } from "./panel";
+import { Box, Button } from "@mui/material";
+import React, {useMemo} from 'react';
+import {Panel} from './panel';
 
-export default function SidePanel({ panelVersion }: { panelVersion: Panel }) {
-  const [panelTitle, setPanelTitle] = useState("");
+
+interface SidePanelProps {
+  panelVersion: Panel;
+}
+
+export default function SidePanel({panelVersion}: SidePanelProps) {
   const panel = panelVersion;
 
-  useEffect(() => {
-    switch (panel) {
-      case Panel.COMMITTEES:
-        setPanelTitle("All Committees");
-        break;
-      case Panel.MOTIONS:
-        setPanelTitle("Committee Motions");
-        break;
-      case Panel.AGENDA:
-        setPanelTitle("Current Agenda");
-        break;
-      case Panel.ROLES:
-        setPanelTitle("Current Role");
-        break;
-      default:
-        setPanelTitle(""); // Reset title if panelVersion does not match any case
-        break;
-    }
-  }, [panelVersion]);
+    function handlePanelAddButtonClick(){
+      switch(panel){
+        case Panel.COMMITTEES:
+          console.log("Rendering add committee");
+          break;
+        case Panel.MOTIONS:
+          console.log("Rendering add motion");
+          break;
+      }
 
-  return (
-    <Box className="flex h-full w-auto min-w-[8rem] flex-grow flex-col bg-light-secondary p-2 dark:bg-extra-dark-blue">
-      <Box className="flex h-auto w-full justify-start">
-        <h2 className="panel-title m-2 h-auto w-auto font-bold text-black dark:text-white">
-          {panelTitle}
-        </h2>
-      </Box>
-      <Box className="panel-content flex h-full w-full flex-col items-center gap-y-2"></Box>
-    </Box>
-  );
-}
+    }
+
+    const panelTitle: string = useMemo(()=>{
+      switch(panel) {
+        case Panel.COMMITTEES:
+          return "All Committees";
+        case Panel.MOTIONS:
+          return "Comittee Motions";
+        case Panel.AGENDA:
+          return "Current Agenda";
+        case Panel.ROLES:
+          return "Current Role";
+      }
+    },[panel])
+
+    const panelButtonTitle = useMemo(() => {
+      switch(panel){
+        case Panel.COMMITTEES:
+          return "Add Committee";
+        case Panel.MOTIONS:
+          return "Add Motion";
+      }
+
+
+    },[panel]);
+
+
+    return(
+        <Box className="bg-light-secondary dark:bg-extra-dark-blue flex flex-grow flex-col h-full w-auto min-w-[8rem] p-2">
+            <Box className="flex justify-start w-full h-auto">
+                <h2 className="panel-title text-black dark:text-dark-text font-bold w-auto h-auto m-2">{panelTitle}</h2>
+            </Box>
+            <Box className="panel-content flex flex-col h-full w-full items-center gap-y-2">
+              {/*check version here with && and then choose to render add committee button or add motion button
+              then populate by fetching data from specific loc in db and returning a motion card or discussion card for each*/}
+              {((panel === Panel.COMMITTEES || panel === Panel.MOTIONS )&& (<Button className="text-white text-xs bg-extra-dark-blue mt-3 dark:bg-dark-background dark:text-dark-accent" onClick={handlePanelAddButtonClick}>{panelButtonTitle}</Button>))}
+              {/*Side panel content will go here --> so mapping motions and displaying below or committees */}
+            </Box>
+        </Box>
+    );
+
+  }
