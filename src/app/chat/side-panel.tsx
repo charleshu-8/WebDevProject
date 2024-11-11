@@ -1,6 +1,7 @@
 import { Box, Button } from "@mui/material";
 import React, { useMemo } from "react";
 import { Panel } from "./panel";
+import MotionCard from "./motion-card";
 
 interface SidePanelProps {
   panelVersion: Panel;
@@ -61,6 +62,7 @@ export default function SidePanel({ panelVersion }: SidePanelProps) {
           </Button>
         )}
         {/*Side panel content will go here --> so mapping motions and displaying below or committees */}
+        <MotionCard />
       </Box>
     </Box>
   );
