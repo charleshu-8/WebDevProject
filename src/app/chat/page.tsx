@@ -2,7 +2,7 @@
 
 import SideBar from "./navbar";
 import NavBar from "./sidebar";
-import ChatBox from "./chat_boxes";
+import ChatBox from "./chat-box";
 
 export default function ChatPage() {
   return (
