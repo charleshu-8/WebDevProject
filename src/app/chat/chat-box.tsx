@@ -2,19 +2,21 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { Box, Typography } from "@mui/material";
-import ChatInputField from "./chat_input_form";
+import ChatInputField from "./chat-input-form";
 
 // Helper function to get the current time in {HH:MM} format
-const getCurrentTime = () => {
+function getCurrentTime() {
   const now = new Date();
-  const hours = String(now.getHours()).padStart(2, '0');
-  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const hours = String(now.getHours()).padStart(2, "0");
+  const minutes = String(now.getMinutes()).padStart(2, "0");
   return `${hours}:${minutes}`;
-};
+}
 
-const ChatBox: React.FC = () => {
+export default function ChatBox() {
   // State to store messages as objects with text and timestamp
-  const [messages, setMessages] = useState<{ text: string; timestamp: string }[]>([]);
+  const [messages, setMessages] = useState<
+    { text: string; timestamp: string }[]
+  >([]);
   const [message, setCurrentMessage] = useState<string>("");
 
   // Ref to keep track of the container for automatic scrolling
@@ -25,13 +27,16 @@ const ChatBox: React.FC = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const sendMessage = (message: string) => {
+  function sendMessage(message: string) {
     if (message.trim()) {
       // Add message along with timestamp
-      setMessages([...messages, { text: message, timestamp: getCurrentTime() }]);
+      setMessages([
+        ...messages,
+        { text: message, timestamp: getCurrentTime() },
+      ]);
       setCurrentMessage(""); // Clear input after sending
     }
-  };
+  }
 
   return (
     <Box className="flex h-full w-full flex-col bg-gray-200 p-4">
@@ -49,13 +54,13 @@ const ChatBox: React.FC = () => {
 
               {/* Message bubble */}
               <Box className="flex items-center space-x-2">
-                <Box className="rounded bg-blue-500 p-2 text-white max-w-md">
+                <Box className="max-w-md break-words rounded bg-blue-500 p-2 text-white">
                   {message.text}
                 </Box>
 
                 {/* Circle Icon for Profile */}
                 <Box
-                  className="h-6 w-6 rounded-full bg-gray-300 flex items-center justify-center text-white font-bold"
+                  className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-300 font-bold text-white"
                   aria-label="User Icon"
                 >
                   U {/* Optional: Replace 'U' with initials or an emoji */}
@@ -79,6 +84,4 @@ const ChatBox: React.FC = () => {
       </form>
     </Box>
   );
-};
-
-export default ChatBox;
+}

@@ -1,22 +1,17 @@
 "use client";
+
 import SideBar from "./navbar";
 import NavBar from "./sidebar";
-import { Box } from "@mui/material";
-import ChatBox from "./chat_boxes";
-
+import ChatBox from "./chat-box";
 
 export default function ChatPage() {
-
   return (
-    <Box className="bg-light-background dark:bg-dark-secondary h-screen w-screen flex">
-      <NavBar/>
-      <Box id="chat-horizontal-container" className="relative top-[80px] flex flex-row w-screen h-[calc(100%-80px)]">
-        <SideBar/>
-        <Box className="discussion-content relative flex justify-center w-full min-w-[65vw] h-full">
-          {/*everything in discussion forum will go below here*/}
-          <ChatBox/>
-        </Box>
-      </Box>
-    </Box>
+    <div className="flex h-screen w-screen bg-light-background dark:bg-dark-secondary">
+      <NavBar />
+      <div className="relative top-[80px] flex h-[calc(100%-80px)] w-full flex-row">
+        <SideBar />
+        <ChatBox />
+      </div>
+    </div>
   );
 }
