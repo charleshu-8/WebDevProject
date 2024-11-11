@@ -2,7 +2,8 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { Box, Typography } from "@mui/material";
-import ChatInputField from "./chat_input_form";
+import ChatInputField from "./chat-input-form";
+import MotionInputField from "./motion-input-form";
 import {
   currentUser,
   currentMotion,
@@ -19,7 +20,11 @@ const getCurrentTime = () => {
   return `${hours}:${minutes}`;
 };
 
-const ChatBox: React.FC = () => {
+interface ChatBoxProps {
+  isNewMotion: boolean;
+}
+
+export default function ChatBox({ isNewMotion }: ChatBoxProps) {
   // State to store messages as objects with text and timestamp
   const [messages, setMessages] = useState<
     { text: string; timestamp: string; owner: string }[]
@@ -199,10 +204,12 @@ const ChatBox: React.FC = () => {
           sendMessage(message);
         }}
       >
-        <ChatInputField onSendMessage={sendMessage} />
+        {isNewMotion ? (
+          <MotionInputField onSendMessage={sendMessage} />
+        ) : (
+          <ChatInputField onSendMessage={sendMessage} />
+        )}
       </form>
     </Box>
   );
 };
-
-export default ChatBox;
