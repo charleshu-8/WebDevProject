@@ -20,17 +20,11 @@ interface MotionInputFieldProps {
 export default function MotionInputField({
   onSendMessage,
 }: MotionInputFieldProps) {
-  // State to track whether the icon is pressed
-  const [isHeartPressed, setIsHeartPressed] = useState(false);
+  // State to track whether each icon is pressed
   const [isProPressed, setIsProPressed] = useState(false);
   const [isConPressed, setIsConPressed] = useState(false);
   const [isNeutralPressed, setIsNeutralPressed] = useState(false);
   const [message, setMessage] = useState(""); // State to track the message input
-
-  // Toggle the heart button state
-  function handleHeartClick(): void {
-    setIsHeartPressed(!isHeartPressed);
-  }
 
   // Toggle the pro button state
   function handleProClick(): void {
@@ -65,16 +59,6 @@ export default function MotionInputField({
       <div className="h-full w-full flex-col items-center justify-center overflow-hidden rounded-lg bg-white">
         {/* Gray Options Bar above chat input field */}
         <div className="flex h-1/5 items-center bg-extra-dim-gray pl-6">
-          {/* Heart Icon Container */}
-          <div className="mr-2 flex h-4/5 items-center">
-            {/* Heart Button/Icon */}
-            <img
-              className="h-full cursor-pointer"
-              alt="Heart"
-              src={isHeartPressed ? pressedHeart.src : heart.src} // Conditionally render the icon
-              onClick={handleHeartClick} // Handle icon click
-            />
-          </div>
           {/* Pro Icon Container */}
           <div className="ml-2 mr-2 flex h-[70%] items-center">
             {/* Pro Button/Icon */}
