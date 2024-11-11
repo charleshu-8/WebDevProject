@@ -1,13 +1,19 @@
 import { Button, IconButton, Box } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+import { currentUser } from "/src/app/pocketbase.ts";
+import { useState } from "react";
 
 export default function NavBar() {
 
   /**
    * will have this be modular once user auth is merged
    */
-  const user = "First Name L.";
+  //const user = currentUser?.username || "Guest";
+  const [user, setUser] = useState("Guest");
+  if(currentUser && user === "Guest") {
+    setUser(currentUser.username);
+  }
 
   return (
     <Box className="bg-light-primary dark:bg-dark-background fixed left-0 top-0 flex h-[80px] w-full flex-row p-2">
