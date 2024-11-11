@@ -63,7 +63,7 @@ export default function MotionInputField({
       {/* Main White Chat Field Input Box Container */}
       <div className="h-full w-full flex-col items-center justify-center overflow-hidden rounded-lg bg-white">
         {/* Gray Options Bar above chat input field */}
-        <div className="bg-extra-dim-gray flex h-1/5 items-center pl-6">
+        <div className="flex h-1/5 items-center bg-extra-dim-gray pl-6">
           {/* Heart Icon Container */}
           <div className="mr-2 flex h-4/5 items-center">
             {/* Heart Button/Icon */}
