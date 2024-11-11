@@ -16,14 +16,13 @@ export default function Form() {
       response.get("password") as FormDataEntryValue
     ).toString();
 
-    await login(email, password);
-
+    const loginResponse = await login(email, password);
     // Check authStore data
-    console.log(pb.authStore.isValid);
+    console.log(loginResponse);
     console.log(pb.authStore.token);
     console.log(pb.authStore.model?.id);
 
-    if (currentUser) {
+    if (loginResponse) {
       // Once approved, move to chat page
       console.log("User logged in");
       router.push("/chat");

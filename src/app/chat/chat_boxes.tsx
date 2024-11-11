@@ -43,6 +43,7 @@ const ChatBox: React.FC = () => {
         ...messages,
         { text: message, timestamp: currentTime, owner: currentUser.id },
       ]);
+      publishMessage(message);
       setCurrentMessage(""); // Clear input after sending
     }
   };
@@ -83,6 +84,34 @@ const ChatBox: React.FC = () => {
     // console.log("done");
   }
 
+  async function publishMessage(message: string) {
+    try {
+      const newMessage = await pb.collection("messages").create({
+        text: message,
+        owner: currentUser.id,
+        motion: currentMotion,
+        $autoCancel: false,
+      });
+
+      console.log(newMessage);
+
+      const motion = await pb.collection("motions").getOne(currentMotion, {
+        expand: "messages",
+        $autoCancel: false,
+      });
+      console.log(motion.expand.messages);
+
+      const updatedMessages = [...motion.expand.messages, newMessage];
+      console.log(updatedMessages);
+
+      await pb.collection("motions").update(currentMotion, {
+        messages: updatedMessages.map((message) => message.id), // Ensure only message IDs are stored
+        $autoCancel: false,
+      });
+    } catch (error) {
+      console.error("Failed to publish message:", error);
+    }
+  }
   if (currentCommittee && currentMotion) {
     useEffect(() => {
       fetchMessages();
