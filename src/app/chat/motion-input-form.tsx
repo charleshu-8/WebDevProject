@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState } from "react";
 import heart from "../res/heart.svg"; // Import the default heart icon
 import pressedHeart from "../res/pressed_heart.svg"; // Import the pressed heart icon
@@ -11,23 +12,19 @@ import pressedNeutral from "../res/pressed_neutral.svg"; // Import the pressed n
 import send from "../res/send.svg"; // Import the send icon
 import Textarea from "@mui/joy/Textarea"; // Import the Input component from the MUI Joy library
 
-interface ChatInputFieldProps {
+interface MotionInputFieldProps {
   onSendMessage: (message: string) => void;
 }
+
 // Form component for requesting email for password recovery
-export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
-  // States to track whether each icon is pressed
-  // const [isHeartPressed, setIsHeartPressed] = useState(false);  // Remove for now, might bring back
+export default function MotionInputField({
+  onSendMessage,
+}: MotionInputFieldProps) {
+  // State to track whether each icon is pressed
   const [isProPressed, setIsProPressed] = useState(false);
   const [isConPressed, setIsConPressed] = useState(false);
   const [isNeutralPressed, setIsNeutralPressed] = useState(false);
   const [message, setMessage] = useState(""); // State to track the message input
-
-  //// NOTE: Uncomment this function if you want to use the heart button /////
-  // Toggle the heart button state
-  // function handleHeartClick(): void {
-  //   setIsHeartPressed(!isHeartPressed);
-  // }
 
   // Toggle the pro button state
   function handleProClick(): void {
@@ -59,7 +56,7 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
   return (
     <>
       {/* Main White Chat Field Input Box Container */}
-      <div className="h-full w-full flex-col items-center justify-center overflow-hidden rounded-lg border-2 border-extra-light-gray bg-white">
+      <div className="h-full w-full flex-col items-center justify-center overflow-hidden rounded-lg bg-white">
         {/* Gray Options Bar above chat input field */}
         <div className="flex h-1/5 items-center bg-extra-dim-gray pl-6">
           {/* Pro Icon Container */}
@@ -93,37 +90,41 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
             />
           </div>
         </div>
-        {/* MUI Input with Send Button */}
-        <div className="mb-6 ml-7 mr-7 mt-4 flex items-center justify-between">
-          {/* MUI Input Component Container*/}
-          <div className="m-1 mb-3 w-full">
-            <Textarea
-              name="Textarea"
-              placeholder="I like this motion because..."
-              variant="outlined"
-              minRows={3}
-              maxRows={3}
-              size="sm"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)} // Handle input change
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  e.preventDefault(); // Prevent default behavior of Enter key
-                  handleSendClick(); // Trigger send button click
-                }
-              }}
-            />
-          </div>
+        {/* 'Motion:' Declaration Text with Send Button */}
+        <div className="ml-7 mr-7 mt-4 flex h-1/5 items-center justify-between">
+          {/* Motion Text */}
+          <p className="text-xl font-semibold text-black dark:text-black">
+            Motion:
+          </p>
           {/* Send Button/Icon Container*/}
-          <div className="ml-2 mr-2 flex h-5/6 cursor-pointer items-center">
-            {/* Send Button/Icon */}
+          {/* Send Button/Icon */}
+          <div className="ml-2 mr-2 flex h-[95%] cursor-pointer items-center">
             <img
               className="h-full"
               alt="Send"
               src={send.src} // Conditionally render the icon
-              onClick={handleSendClick} // Handle icon click
+              onClick={handleSendClick}
             />
           </div>
+        </div>
+        {/* MUI Input Component Container*/}
+        <div className="mb-6 ml-7 mr-7 mt-2">
+          <Textarea
+            name="Textarea"
+            placeholder="I move that…"
+            variant="outlined"
+            minRows={3}
+            maxRows={3}
+            size="sm"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)} // Handle input change
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault(); // Prevent default behavior of Enter key
+                handleSendClick(); // Trigger send button click
+              }
+            }}
+          />
         </div>
       </div>
     </>

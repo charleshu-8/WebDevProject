@@ -2,22 +2,22 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { Box, Typography } from "@mui/material";
-import ChatInputField from "./chat_input_form";
-import MotionInputField from "./motion_input_form";
+import ChatInputField from "./chat-input-form";
+import MotionInputField from "./motion-input-form";
 
 // Helper function to get the current time in {HH:MM} format
-const getCurrentTime = () => {
+function getCurrentTime() {
   const now = new Date();
   const hours = String(now.getHours()).padStart(2, "0");
   const minutes = String(now.getMinutes()).padStart(2, "0");
   return `${hours}:${minutes}`;
-};
+}
 
 interface ChatBoxProps {
   isNewMotion: boolean;
 }
 
-function ChatBox({ isNewMotion }: ChatBoxProps) {
+export default function ChatBox({ isNewMotion }: ChatBoxProps) {
   // State to store messages as objects with text and timestamp
   const [messages, setMessages] = useState<
     { text: string; timestamp: string }[]
@@ -32,7 +32,7 @@ function ChatBox({ isNewMotion }: ChatBoxProps) {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const sendMessage = (message: string) => {
+  function sendMessage(message: string) {
     if (message.trim()) {
       // Add message along with timestamp
       setMessages([
@@ -41,7 +41,7 @@ function ChatBox({ isNewMotion }: ChatBoxProps) {
       ]);
       setCurrentMessage(""); // Clear input after sending
     }
-  };
+  }
 
   return (
     <Box className="flex h-full w-full flex-col bg-gray-200 p-4">
@@ -59,7 +59,7 @@ function ChatBox({ isNewMotion }: ChatBoxProps) {
 
               {/* Message bubble */}
               <Box className="flex items-center space-x-2">
-                <Box className="max-w-md rounded bg-blue-500 p-2 text-white">
+                <Box className="max-w-md break-words rounded bg-blue-500 p-2 text-white">
                   {message.text}
                 </Box>
 
@@ -94,5 +94,3 @@ function ChatBox({ isNewMotion }: ChatBoxProps) {
     </Box>
   );
 }
-
-export default ChatBox;
