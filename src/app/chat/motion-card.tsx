@@ -20,13 +20,13 @@ export default function MotionCard() {
     setIsPro(false);
   };
 
-  let shortName: string = "JS";
-  let fullName: string = "Person 1";
-  let motionText: string =
+  const shortName: string = "JS";
+  const fullName: string = "Person 1";
+  const motionText: string =
     "Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus fugiat quisquam quod ullam, voluptas hic voluptate repellat placeat ab ipsam, est iusto id tempore. Soluta deserunt blanditiis in quidem quia?";
-  let seconderShortName: string = "ML";
-  let seconderFullName: string = "Person 2";
-  let time: string = "12:30pm";
+  const seconderShortName: string = "ML";
+  const seconderFullName: string = "Person 2";
+  const time: string = "12:30pm";
 
   return (
     <Box className="flex h-[140px] flex-col justify-center gap-y-[5px] rounded-[5px] border border-gray-300 bg-white px-[5px] py-[75px]">
