@@ -16,7 +16,7 @@ export default function SideBar() {
    * Function adjusts panel version const based on button pressed
    * @param event user clicking the sidebar buttons
    */
-  const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  function handleButtonClick(event: React.MouseEvent<HTMLButtonElement>) {
     const buttonId = event.currentTarget.id;
     switch (buttonId) {
       case "sidebar-button-committee":
@@ -36,7 +36,7 @@ export default function SideBar() {
         console.log("role panel chosen!");
         break;
     }
-  };
+  }
 
   return (
     <Box className="container-sidebar-panel relative left-0 top-[80px] flex h-[calc(100vh-80px)] w-[35vw] min-w-[12rem] flex-row items-center">
