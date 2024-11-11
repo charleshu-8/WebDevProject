@@ -36,7 +36,7 @@ export default function SideBar() {
         console.log("role panel chosen!");
         break;
     }
-  };
+  }
 
   return (
     <Box className="container-sidebar-panel relative left-0 top-[80px] flex h-[calc(100vh-80px)] w-[35vw] min-w-[12rem] flex-row items-center">

@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState } from "react";
 import heart from "../res/heart.svg"; // Import the default heart icon
 import pressedHeart from "../res/pressed_heart.svg"; // Import the pressed heart icon
@@ -112,14 +113,15 @@ export default function MotionInputField({
             Motion:
           </p>
           {/* Send Button/Icon Container*/}
-            {/* Send Button/Icon */}
-            <div className="ml-2 mr-2 flex h-[95%] cursor-pointer items-center"><img
+          {/* Send Button/Icon */}
+          <div className="ml-2 mr-2 flex h-[95%] cursor-pointer items-center">
+            <img
               className="h-full"
               alt="Send"
               src={send.src} // Conditionally render the icon
               onClick={handleSendClick}
-            /></div>
-          
+            />
+          </div>
         </div>
         {/* MUI Input Component Container*/}
         <div className="mb-6 ml-7 mr-7 mt-2">
