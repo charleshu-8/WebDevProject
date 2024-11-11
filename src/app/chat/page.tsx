@@ -10,21 +10,21 @@ let messages = [];
 
 export default function ChatPage() {
 
-  //  useEffect(() => {
-  //   const fetchMessages = async () => {
-  //     try {
-  //       const result = await pb.collection("messages").getList(1, 50, {
-  //         sort: "created",
-  //         expand: "owner",
-  //         $autoCancel: false,
-  //       });
-  //       messages = result.items;
-  //       //console.log(result);
-  //     } catch (error) {
-  //       console.error('Failed to fetch messages:', error);
-  //     }
-  //   };
-  //
+   // useEffect(() => {
+   //  const fetchMessages = async () => {
+   //    try {
+   //      const result = await pb.collection("messages").getList(1, 50, {
+   //        sort: "created",
+   //        expand: "owner",
+   //        $autoCancel: false,
+   //      });
+   //      messages = result.items;
+   //      //console.log(result);
+   //    } catch (error) {
+   //      console.error('Failed to fetch messages:', error);
+   //    }
+   //  };
+
   //   fetchMessages();
   //
   //   for (const message of messages) {
