@@ -1,7 +1,7 @@
 import { Button, Box } from "@mui/material";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import { currentUser } from "/src/app/pocketbase.ts";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function NavBar() {
   /**
@@ -9,9 +9,11 @@ export default function NavBar() {
    */
   //const user = currentUser?.username || "Guest";
   const [user, setUser] = useState("Guest");
-  if(currentUser && user === "Guest") {
-    setUser(currentUser.username);
-  }
+  useEffect(() => {
+    if (currentUser && user === "Guest") {
+      setUser(currentUser.username);
+    }
+  }, [currentUser, user]);
 
   return (
     <Box className="fixed left-0 top-0 flex h-[80px] w-full flex-row bg-light-primary p-2 dark:bg-dark-background">

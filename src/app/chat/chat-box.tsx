@@ -27,7 +27,7 @@ interface ChatBoxProps {
 export default function ChatBox({ isNewMotion }: ChatBoxProps) {
   // State to store messages as objects with text and timestamp
   const [messages, setMessages] = useState<
-    { text: string; timestamp: string; owner: string }[]
+    { text: string; timestamp: string; owner: string; displayName: string }[]
   >([]);
   const [message, setCurrentMessage] = useState<string>("");
 
@@ -46,7 +46,12 @@ export default function ChatBox({ isNewMotion }: ChatBoxProps) {
         getCurrentTime() + " " + new Date().toLocaleDateString();
       setMessages([
         ...messages,
-        { text: message, timestamp: currentTime, owner: currentUser.id },
+        {
+          text: message,
+          timestamp: currentTime,
+          owner: currentUser.id,
+          displayName: currentUser.username,
+        },
       ]);
       publishMessage(message);
       setCurrentMessage(""); // Clear input after sending
@@ -63,17 +68,13 @@ export default function ChatBox({ isNewMotion }: ChatBoxProps) {
     //console.log(retval);
     //console.log(retval.expand.messages);
     retval.expand.messages.forEach((message) => {
-      //console.log(message)
-      // console.log(message.owner);
-      // console.log(currentUser.id);
-      if (message.owner === currentUser.id) {
-        console.log("they match");
-      }
+      console.log(message);
       const formattedDate = formatDate(message.created);
       helperArray.push({
         text: message.text,
         timestamp: formattedDate,
         owner: message.owner,
+        displayName: message.displayName,
       });
     });
     helperArray.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
@@ -95,6 +96,7 @@ export default function ChatBox({ isNewMotion }: ChatBoxProps) {
         text: message,
         owner: currentUser.id,
         motion: currentMotion,
+        displayName: currentUser.username,
         $autoCancel: false,
       });
 
@@ -104,7 +106,7 @@ export default function ChatBox({ isNewMotion }: ChatBoxProps) {
         expand: "messages",
         $autoCancel: false,
       });
-      console.log(motion.expand.messages);
+      //console.log(motion.expand.messages);
 
       const updatedMessages = [...motion.expand.messages, newMessage];
       console.log(updatedMessages);
@@ -142,12 +144,12 @@ export default function ChatBox({ isNewMotion }: ChatBoxProps) {
           <p className="text-gray-500"></p>
         ) : (
           messages.map((message, index) => (
-            <>
+            <Box key={index}>
               {message.owner === currentUser.id ? (
                 <Box key={index} className="mb-4 flex flex-col items-end">
                   {/* Timestamp above the message */}
                   <Typography variant="caption" className="text-gray-400">
-                    {message.timestamp}
+                    {message.displayName}
                   </Typography>
 
                   {/* Message bubble */}
@@ -170,7 +172,7 @@ export default function ChatBox({ isNewMotion }: ChatBoxProps) {
                 <Box key={index} className="mb-4 flex flex-col items-start">
                   {/* Timestamp above the message */}
                   <Typography variant="caption" className="text-gray-400">
-                    {message.timestamp}
+                    {message.displayName}
                   </Typography>
 
                   {/* Message bubble */}
@@ -190,7 +192,7 @@ export default function ChatBox({ isNewMotion }: ChatBoxProps) {
                   </Box>
                 </Box>
               )}
-            </>
+            </Box>
           ))
         )}
         {/* Invisible div to maintain scrolling to the bottom */}
@@ -212,4 +214,4 @@ export default function ChatBox({ isNewMotion }: ChatBoxProps) {
       </form>
     </Box>
   );
-};
+}
