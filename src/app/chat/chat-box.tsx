@@ -83,11 +83,6 @@ export default function ChatBox({ isNewMotion }: ChatBoxProps) {
 
   async function fetchMessages() {
     await helper();
-    console.log(messages.length);
-    // for (const message of messages) {
-    //     console.log(message);
-    //   }
-    // console.log("done");
   }
 
   async function publishMessage(message: string) {
@@ -106,7 +101,6 @@ export default function ChatBox({ isNewMotion }: ChatBoxProps) {
         expand: "messages",
         $autoCancel: false,
       });
-      //console.log(motion.expand.messages);
 
       const updatedMessages = [...motion.expand.messages, newMessage];
       console.log(updatedMessages);
@@ -119,11 +113,24 @@ export default function ChatBox({ isNewMotion }: ChatBoxProps) {
       console.error("Failed to publish message:", error);
     }
   }
-  if (currentCommittee && currentMotion) {
-    useEffect(() => {
+
+  //listens for db updates to messages to refetch messages
+  //also refetches upon motion or committee change
+  useEffect(() => {
+    if (currentCommittee && currentMotion) {
       fetchMessages();
-    }, []);
-  }
+
+      // Subscribe to updates for the specific motion
+      pb.collection("motions").subscribe(currentMotion, (e) => {
+        fetchMessages(); // Fetch new messages when updated
+      });
+
+      // Cleanup subscription on component unmount
+      return () => {
+        pb.collection("motions").unsubscribe(currentMotion);
+      };
+    }
+  }, [currentCommittee, currentMotion]);
 
   function formatDate(timestamp) {
     const date = new Date(timestamp);
