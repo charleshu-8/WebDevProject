@@ -1,4 +1,7 @@
 "use client";
+import { useState } from "react";
+
+let membersSet = new Set<string>();
 
 // Form component for making a committee
 export default function Form() {
@@ -17,6 +20,8 @@ export default function Form() {
     console.log(timeZone);
     console.log(amPM);
   }
+  
+  
 
   return (
     <form
@@ -122,15 +127,25 @@ export default function Form() {
                 alert("Please enter a valid email");
                 return;
               }
+              
 
               // Split the email at the "@" character
               const username = nameToAdd.split("@")[0];
 
               //TO DO: Save the email to later perform the actual invite
               //For now just reset the input and adds visible member element
+              if (membersSet.has(nameToAdd)) {
+                console.error("already added to committee");
+                alert("This person has already been added to the committee");
+                return;
+              }
+
+
+              membersSet.add(nameToAdd);
+              console.log(membersSet);
               email.value = "";
 
-              addNewMemberItem(username, "Member");
+              addNewMemberItem(username, "Member", nameToAdd);
             }}
           >
             Add member
@@ -181,12 +196,12 @@ export default function Form() {
   );
 }
 
-function addNewMemberItem(name: string, role: string) {
+function addNewMemberItem(name: string, role: string, email: string) {
   const members = document.getElementById("current-members") as HTMLDivElement;
 
   const memberDiv = document.createElement("div");
   memberDiv.className = "flex flex-row";
-  memberDiv.id = "member-" + name;
+  memberDiv.id = "member-" + email;
 
   const iconDiv = document.createElement("div");
   iconDiv.className = "mr-2 content-center";
@@ -218,6 +233,9 @@ function addNewMemberItem(name: string, role: string) {
   removeMember.textContent = "x";
   removeMember.type = "button";
   removeMember.onclick = function () {
+    //console.log("Deleting " + email);
+    membersSet.delete(email);
+    console.log(membersSet);
     members.removeChild(document.getElementById(memberDiv!.id!)!);
     //TODO: Remove this member from the actual list of emails to invite
   };
