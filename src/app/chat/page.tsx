@@ -1,23 +1,26 @@
 "use client";
+
+import React, { useState } from "react";
 import SideBar from "./navbar";
 import NavBar from "./sidebar";
-import {Box} from "@mui/material";
-import ChatInputField from "./chat_input_form";
+import ChatBox from "./chat-box";
 
 export default function ChatPage() {
+  // State to track whether the input is for a new motion
+  const [isNewMotion, toggleIsNewMotion] = useState(true);
+
+  // Toggle the isNewMotion state
+  function handleToggleIsNewMotion(): void {
+    toggleIsNewMotion(!isNewMotion);
+  }
 
   return (
-    <Box className="bg-light-background dark:bg-dark-secondary h-screen w-screen flex">
-      <NavBar/>
-      <Box id="chat-horizontal-container" className="relative top-[80px] flex flex-row w-screen h-[calc(100%-80px)]">
+    <div className="flex h-screen w-screen bg-light-background dark:bg-dark-secondary">
+      <NavBar />
+      <div className="relative top-[80px] flex h-[calc(100%-80px)] w-full flex-row">
         <SideBar />
-        <Box className="discussion-content relative flex justify-center w-full min-w-[65vw] h-full">
-          {/*everything in discussion forum will go below here*/}
-          <Box className="absolute bottom-0 w-[80%] h-auto p-4 m-2 rounded-md">
-            <ChatInputField/>
-          </Box>
-        </Box>
-      </Box>
-    </Box>
+        <ChatBox isNewMotion={isNewMotion} />
+      </div>
+    </div>
   );
 }
