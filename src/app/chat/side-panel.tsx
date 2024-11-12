@@ -62,7 +62,6 @@ export default function SidePanel({ panelVersion }: SidePanelProps) {
           </Button>
         )}
         {/*Side panel content will go here --> so mapping motions and displaying below or committees */}
-        <MotionCard />
       </Box>
     </Box>
   );
