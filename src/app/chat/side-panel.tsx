@@ -1,7 +1,6 @@
 import { Box, Button } from "@mui/material";
 import React, { useMemo } from "react";
 import { Panel } from "./panel";
-import MotionCard from "./motion-card";
 
 interface SidePanelProps {
   panelVersion: Panel;
