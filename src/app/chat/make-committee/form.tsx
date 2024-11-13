@@ -10,17 +10,9 @@ export default function Form() {
   // TODO: Add functionality when creating committee
   async function handleResponse(response: FormData) {
     const committeeName = response.get("committeename");
-    //const startHour = response.get("hour");
-    //const startMinutes = response.get("minutes");
-    //const timeZone = response.get("time-zone");
-    //const amPM = response.get("am-pm");
 
     console.log(committeeName);
     console.log(membersSet);
-    //console.log(startHour);
-    //console.log(startMinutes);
-    //console.log(timeZone);
-    //console.log(amPM);
     setHasName(false);
     setMembersAdded(false);
 
@@ -120,59 +112,6 @@ export default function Form() {
           className="float-right w-2/3 border-b border-black"
         />
       </div>
-      {/*Time input row commented out to reflect current async default of committees*/}
-      {/*Start time Row*/}
-      {/* <div className="w-full">
-        <label htmlFor="time" className="w-1/3">
-          Start time:
-        </label>
-        {/*Div for Time Input Boxes
-        <div className="float-right flex w-2/3 flex-row space-x-4">
-          <input
-            type="number"
-            name="hour"
-            min={1}
-            max={12}
-            className="justify-center rounded border-2 border-gray-shadow text-center align-middle"
-          />
-          <p>:</p>
-          <input
-            type="number"
-            name="minutes"
-            min={0}
-            max={59}
-            step={15}
-            className="rounded border-2 border-gray-shadow text-center"
-          />
-          <select
-            name="am-pm"
-            id="am-pm"
-            className="rounded border-2 border-gray-shadow bg-inherit px-1 text-center"
-          >
-            <option value="AM">AM</option>
-            <option value="PM">PM</option>
-          </select>
-          {/*Time zone selector for all of U.S. zones and some other
-            major time zones*
-          <select
-            name="time-zone"
-            id="time-zone"
-            className="rounded border-2 border-gray-shadow bg-inherit text-center"
-          >
-            <option value="EST">EST</option>
-            <option value="CST">CST</option>
-            <option value="MST">MST</option>
-            <option value="PST">PST</option>
-            <option value="AKST">AKST</option>
-            <option value="HST">HST</option>
-            <option value="JST">JST</option>
-            <option value="CST">CST</option>
-            <option value="IST">IST</option>
-            <option value="CET">CET</option>
-            <option value="WET">WET</option>
-          </select>
-        </div>
-      </div> */}
       {/*Invite Member Row*/}
       <div className="flex w-full flex-row">
         <label className="w-1/3" htmlFor="email">
