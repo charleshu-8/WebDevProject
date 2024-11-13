@@ -1,10 +1,11 @@
 "use client";
 import { useState } from "react";
 
-
+const membersSet = new Set<string>();
 
 // Form component for making a committee
 export default function Form() {
+  
   // Handle committee creation
   // TODO: Add functionality when creating committee
   async function handleResponse(response: FormData) {
@@ -18,7 +19,7 @@ export default function Form() {
     //TODO: send set of emails-to-be-invited to server and empty frontend set
   }
   
-  const membersSet = new Set<string>();
+  
 
   
   const [membersAdded, setMembersAdded] = useState<boolean>(false);
