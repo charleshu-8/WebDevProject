@@ -2,7 +2,7 @@
 import { useState } from "react";
 
 
-let membersSet = new Set<string>();
+const membersSet = new Set<string>();
 
 // Form component for making a committee
 export default function Form() {
@@ -95,6 +95,9 @@ export default function Form() {
   function handleNameChange(event: React.ChangeEvent<HTMLInputElement>) {
     if (event.target.value.length != 0) {
       setHasName(true);
+    }
+    else {
+      setHasName(false);
     }
   }
 
