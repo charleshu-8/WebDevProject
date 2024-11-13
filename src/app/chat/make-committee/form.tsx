@@ -2,7 +2,6 @@
 import { useState } from "react";
 
 
-const membersSet = new Set<string>();
 
 // Form component for making a committee
 export default function Form() {
@@ -19,6 +18,8 @@ export default function Form() {
     //TODO: send set of emails-to-be-invited to server and empty frontend set
   }
   
+  const membersSet = new Set<string>();
+
   
   const [membersAdded, setMembersAdded] = useState<boolean>(false);
   const [hasName, setHasName] = useState<boolean>(false);
@@ -83,7 +84,7 @@ export default function Form() {
     members.append(memberDiv);
   }
 
-  
+
   function handleAddMember() {
     //Get email from Invite Member input and discard @gmail etc.
     //console.log("Add member button pressed");
