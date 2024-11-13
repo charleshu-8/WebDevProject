@@ -17,6 +17,7 @@ export default function Form() {
     setMembersAdded(false);
 
     //TODO: send set of emails-to-be-invited to server and empty frontend set
+    membersSet.clear();
   }
   
   
