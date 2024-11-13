@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 
+
 let membersSet = new Set<string>();
 
 // Form component for making a committee
@@ -9,19 +10,93 @@ export default function Form() {
   // TODO: Add functionality when creating committee
   async function handleResponse(response: FormData) {
     const committeeName = response.get("committeename");
-    const startHour = response.get("hour");
-    const startMinutes = response.get("minutes");
-    const timeZone = response.get("time-zone");
-    const amPM = response.get("am-pm");
+    //const startHour = response.get("hour");
+    //const startMinutes = response.get("minutes");
+    //const timeZone = response.get("time-zone");
+    //const amPM = response.get("am-pm");
 
     console.log(committeeName);
-    console.log(startHour);
-    console.log(startMinutes);
-    console.log(timeZone);
-    console.log(amPM);
+    console.log(membersSet);
+    //console.log(startHour);
+    //console.log(startMinutes);
+    //console.log(timeZone);
+    //console.log(amPM);
+    setHasName(false);
+    setMembersAdded(false);
+
+    //TODO: send set of emails-to-be-invited to server and empty frontend set
   }
   
   
+  const [membersAdded, setMembersAdded] = useState<boolean>(false);
+  const [hasName, setHasName] = useState<boolean>(false);
+
+  function addNewMemberItem(name: string, role: string, email: string) {
+    const members = document.getElementById("current-members") as HTMLDivElement;
+  
+    const memberDiv = document.createElement("div");
+    memberDiv.className = "flex flex-row";
+    memberDiv.id = "member-" + email;
+  
+    const iconDiv = document.createElement("div");
+    iconDiv.className = "mr-2 content-center";
+  
+    const icon = document.createElement("div");
+    icon.className = "h-3 w-3 rounded-full";
+  
+    const textDiv = document.createElement("div");
+    textDiv.className = "flex flex-col";
+  
+    const memberName = document.createElement("p");
+    memberName.textContent = name;
+  
+    const roleDiv = document.createElement("p");
+    roleDiv.className = "text-xs text-extra-gray";
+    roleDiv.innerText = role;
+  
+    //Icon color should be red for members
+    //darker-blue for the owner
+    if ((role = "Member")) {
+      icon.className = icon.className + " bg-red-500";
+    } else if ((role = "Owner")) {
+      icon.className = icon.className + " bg-light-primary";
+    }
+  
+    const removeMember = document.createElement("button");
+    removeMember.title = "Remove Member";
+    removeMember.className = "text-xs text-extra-gray text-right pl-2";
+    removeMember.textContent = "x";
+    removeMember.type = "button";
+    removeMember.onclick = function () {
+      //console.log("Deleting " + email);
+      membersSet.delete(email);
+      if (membersSet.size == 0) {
+        //All members removed, change members added flag
+        setMembersAdded(false);
+      }
+      //console.log(membersAdded);
+      console.log(membersSet);
+      members.removeChild(document.getElementById(memberDiv!.id!)!);
+    };
+  
+    textDiv.appendChild(memberName);
+    textDiv.appendChild(roleDiv);
+  
+    iconDiv.appendChild(icon);
+  
+    memberDiv.appendChild(iconDiv);
+    memberDiv.appendChild(textDiv);
+    memberDiv.appendChild(removeMember);
+  
+    members.append(memberDiv);
+  }
+
+  //If a change has been made to the committee name input and the name is not empty, set flag
+  function handleNameChange(event: React.ChangeEvent<HTMLInputElement>) {
+    if (event.target.value.length != 0) {
+      setHasName(true);
+    }
+  }
 
   return (
     <form
@@ -38,6 +113,7 @@ export default function Form() {
           type="text"
           placeholder="committee 1"
           required
+          onChange={handleNameChange}
           className="float-right w-2/3 border-b border-black"
         />
       </div>
@@ -132,8 +208,6 @@ export default function Form() {
               // Split the email at the "@" character
               const username = nameToAdd.split("@")[0];
 
-              //TO DO: Save the email to later perform the actual invite
-              //For now just reset the input and adds visible member element
               if (membersSet.has(nameToAdd)) {
                 console.error("already added to committee");
                 alert("This person has already been added to the committee");
@@ -144,7 +218,8 @@ export default function Form() {
               membersSet.add(nameToAdd);
               console.log(membersSet);
               email.value = "";
-
+              setMembersAdded(true);
+              //console.log(membersAdded);
               addNewMemberItem(username, "Member", nameToAdd);
             }}
           >
@@ -177,8 +252,13 @@ export default function Form() {
       <div className="flex w-full items-center justify-center">
         <button
           type="submit"
-          className="mt-5 justify-center rounded-full border-2 border-light-primary px-16 py-3 font-bold text-light-primary"
+          disabled={!(membersAdded && hasName)}
+          className="disabled:opacity-25 mt-5 justify-center rounded-full border-2 border-light-primary px-16 py-3 font-bold text-light-primary"
           onClick={(event: React.MouseEvent<HTMLElement>) => {
+            if (!(membersAdded && hasName)) {
+              alert("Please add members before submitting");
+              return;
+            }
             console.log("Submit Committee Creation");
             const members = document.getElementById("current-members");
             while (
@@ -194,60 +274,4 @@ export default function Form() {
       </div>
     </form>
   );
-}
-
-function addNewMemberItem(name: string, role: string, email: string) {
-  const members = document.getElementById("current-members") as HTMLDivElement;
-
-  const memberDiv = document.createElement("div");
-  memberDiv.className = "flex flex-row";
-  memberDiv.id = "member-" + email;
-
-  const iconDiv = document.createElement("div");
-  iconDiv.className = "mr-2 content-center";
-
-  const icon = document.createElement("div");
-  icon.className = "h-3 w-3 rounded-full";
-
-  const textDiv = document.createElement("div");
-  textDiv.className = "flex flex-col";
-
-  const memberName = document.createElement("p");
-  memberName.textContent = name;
-
-  const roleDiv = document.createElement("p");
-  roleDiv.className = "text-xs text-extra-gray";
-  roleDiv.innerText = role;
-
-  //Icon color should be red for members
-  //darker-blue for the owner
-  if ((role = "Member")) {
-    icon.className = icon.className + " bg-red-500";
-  } else if ((role = "Owner")) {
-    icon.className = icon.className + " bg-light-primary";
-  }
-
-  const removeMember = document.createElement("button");
-  removeMember.title = "Remove Member";
-  removeMember.className = "text-xs text-extra-gray text-right pl-2";
-  removeMember.textContent = "x";
-  removeMember.type = "button";
-  removeMember.onclick = function () {
-    //console.log("Deleting " + email);
-    membersSet.delete(email);
-    console.log(membersSet);
-    members.removeChild(document.getElementById(memberDiv!.id!)!);
-    //TODO: Remove this member from the actual list of emails to invite
-  };
-
-  textDiv.appendChild(memberName);
-  textDiv.appendChild(roleDiv);
-
-  iconDiv.appendChild(icon);
-
-  memberDiv.appendChild(iconDiv);
-  memberDiv.appendChild(textDiv);
-  memberDiv.appendChild(removeMember);
-
-  members.append(memberDiv);
 }
