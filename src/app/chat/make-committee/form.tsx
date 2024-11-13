@@ -83,6 +83,45 @@ export default function Form() {
     members.append(memberDiv);
   }
 
+  
+  function handleAddMember() {
+    //Get email from Invite Member input and discard @gmail etc.
+    //console.log("Add member button pressed");
+    const email = document.getElementById(
+      "email-to-invite",
+    ) as HTMLInputElement;
+
+    console.log(email.value);
+
+    const nameToAdd = email.value;
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(nameToAdd)) {
+      console.error("Invalid email format.");
+      alert("Please enter a valid email");
+      return;
+    }
+    
+
+    // Split the email at the "@" character
+    const username = nameToAdd.split("@")[0];
+
+    if (membersSet.has(nameToAdd)) {
+      console.error("already added to committee");
+      alert("This person has already been added to the committee");
+      return;
+    }
+
+
+    membersSet.add(nameToAdd);
+    console.log(membersSet);
+    email.value = "";
+    setMembersAdded(true);
+    //console.log(membersAdded);
+    addNewMemberItem(username, "Member", nameToAdd);
+  }
+
+
   //If a change has been made to the committee name input and the name is not empty, set flag
   function handleNameChange(event: React.ChangeEvent<HTMLInputElement>) {
     if (event.target.value.length != 0) {
@@ -92,6 +131,7 @@ export default function Form() {
       setHasName(false);
     }
   }
+
 
   return (
     <form
@@ -124,45 +164,17 @@ export default function Form() {
             type="text"
             className="grow border-b border-black"
             placeholder="johnd@gmail.com"
+            onKeyDown={(e) => {
+              if (e.key == "Enter") {
+                handleAddMember();
+              }
+            }}
           />
           <button
             type="button"
             className="border-secondary text-secondary float-right ml-4 h-7 w-fit rounded-md border-2 px-1 text-center align-middle"
             onClick={(event: React.MouseEvent<HTMLElement>) => {
-              //Get email from Invite Member input and discard @gmail etc.
-              //console.log("Add member button pressed");
-              const email = document.getElementById(
-                "email-to-invite",
-              ) as HTMLInputElement;
-
-              console.log(email.value);
-
-              const nameToAdd = email.value;
-
-              const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-              if (!emailRegex.test(nameToAdd)) {
-                console.error("Invalid email format.");
-                alert("Please enter a valid email");
-                return;
-              }
-              
-
-              // Split the email at the "@" character
-              const username = nameToAdd.split("@")[0];
-
-              if (membersSet.has(nameToAdd)) {
-                console.error("already added to committee");
-                alert("This person has already been added to the committee");
-                return;
-              }
-
-
-              membersSet.add(nameToAdd);
-              console.log(membersSet);
-              email.value = "";
-              setMembersAdded(true);
-              //console.log(membersAdded);
-              addNewMemberItem(username, "Member", nameToAdd);
+              handleAddMember();
             }}
           >
             Add member
