@@ -87,13 +87,17 @@ export default function ChatBox({ isNewMotion }: ChatBoxProps) {
 
   async function publishMessage(message: string) {
     try {
-      const newMessage = await pb.collection("messages").create({
-        text: message,
-        owner: currentUser.id,
-        motion: currentMotion,
-        displayName: currentUser.username,
-        $autoCancel: false,
-      });
+      const newMessage = await pb.collection("messages").create(
+        {
+          text: message,
+          owner: currentUser.id,
+          motion: currentMotion,
+          displayName: currentUser.username,
+        },
+        {
+          $autoCancel: false,
+        },
+      );
 
       console.log(newMessage);
 
@@ -105,10 +109,15 @@ export default function ChatBox({ isNewMotion }: ChatBoxProps) {
       const updatedMessages = [...motion.expand.messages, newMessage];
       console.log(updatedMessages);
 
-      await pb.collection("motions").update(currentMotion, {
-        messages: updatedMessages.map((message) => message.id), // Ensure only message IDs are stored
-        $autoCancel: false,
-      });
+      await pb.collection("motions").update(
+        currentMotion,
+        {
+          messages: updatedMessages.map((message) => message.id), // Ensure only message IDs are stored
+        },
+        {
+          $autoCancel: false,
+        },
+      );
     } catch (error) {
       console.error("Failed to publish message:", error);
     }
