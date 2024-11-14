@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import SideBar from "./navbar";
 import NavBar from "./sidebar";
-import ChatBox from "./chat-box";
+import ChatBox from "./motions/chat-box";
 
 export default function ChatPage() {
   // State to track whether the input is for a new motion

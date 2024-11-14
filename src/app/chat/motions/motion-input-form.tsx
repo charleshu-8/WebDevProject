@@ -1,13 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import pro from "../res/pro.svg"; // Import the pro icon
-import pressedPro from "../res/pressed_pro.svg"; // Import the pressed pro icon
-import con from "../res/con1.svg"; // Import the con icon
-import pressedCon from "../res/pressed_con.svg"; // Import the pressed con icon
-import neutral from "../res/neutral.svg"; // Import the neutral icon
-import pressedNeutral from "../res/pressed_neutral.svg"; // Import the pressed neutral icon
-import send from "../res/send.svg"; // Import the send icon
 import Textarea from "@mui/joy/Textarea"; // Import the Input component from the MUI Joy library
 
 interface MotionInputFieldProps {
@@ -63,7 +56,11 @@ export default function MotionInputField({
             <img
               className="h-full cursor-pointer"
               alt="Pro"
-              src={isProPressed ? pressedPro.src : pro.src} // Conditionally render the icon
+              src={
+                isProPressed
+                  ? "/img/chat/pro_button_pressed.svg"
+                  : "/img/chat/pro_button.svg"
+              } // Conditionally render the icon
               onClick={handleProClick} // Handle icon click
             />
           </div>
@@ -73,7 +70,11 @@ export default function MotionInputField({
             <img
               className="h-full cursor-pointer"
               alt="Con"
-              src={isConPressed ? pressedCon.src : con.src} // Conditionally render the icon
+              src={
+                isConPressed
+                  ? "/img/chat/con_button_pressed.svg"
+                  : "/img/chat/con_button.svg"
+              } // Conditionally render the icon
               onClick={handleConClick} // Handle icon click
             />
           </div>
@@ -83,7 +84,11 @@ export default function MotionInputField({
             <img
               className="h-full cursor-pointer"
               alt="Neutral"
-              src={isNeutralPressed ? pressedNeutral.src : neutral.src} // Conditionally render the icon
+              src={
+                isNeutralPressed
+                  ? "/img/chat/neutral_button_pressed.svg"
+                  : "/img/chat/neutral_button.svg"
+              } // Conditionally render the icon
               onClick={handleNeutralClick} // Handle icon click
             />
           </div>
@@ -100,7 +105,7 @@ export default function MotionInputField({
             <img
               className="h-full"
               alt="Send"
-              src={send.src} // Conditionally render the icon
+              src={"/img/chat/send_icon.svg"} // Conditionally render the icon
               onClick={handleSendClick}
             />
           </div>
