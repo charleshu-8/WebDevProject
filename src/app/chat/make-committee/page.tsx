@@ -1,4 +1,4 @@
-import Form from "./form";
+import MakeCommitteeForm from "./form";
 
 // Page for displaying the make-committee form while in development
 export default function MakeCommittee() {
@@ -7,7 +7,7 @@ export default function MakeCommittee() {
       <main className="flex h-screen w-screen flex-col items-center justify-center bg-white">
         <h1>Testing</h1>
         <div className="h-fit w-4/5">
-          <Form />
+          <MakeCommitteeForm />
         </div>
       </main>
     </div>

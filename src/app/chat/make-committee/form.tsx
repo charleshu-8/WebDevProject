@@ -1,11 +1,11 @@
 "use client";
+
 import { useState } from "react";
 
 const membersSet = new Set<string>();
 
 // Form component for making a committee
-export default function Form() {
-  
+export default function MakeCommitteeForm() {
   // Handle committee creation
   // TODO: Add functionality when creating committee
   async function handleResponse(response: FormData) {
@@ -13,128 +13,114 @@ export default function Form() {
 
     console.log(committeeName);
     console.log(membersSet);
+
     setHasName(false);
     setMembersAdded(false);
 
-    //TODO: send set of emails-to-be-invited to server and empty frontend set
+    // TODO: send set of emails-to-be-invited to server and empty frontend set
     membersSet.clear();
   }
-  
-  
 
-  
   const [membersAdded, setMembersAdded] = useState<boolean>(false);
   const [hasName, setHasName] = useState<boolean>(false);
 
   function addNewMemberItem(name: string, role: string, email: string) {
-    const members = document.getElementById("current-members") as HTMLDivElement;
-  
+    const members = document.getElementById(
+      "current-members",
+    ) as HTMLDivElement;
+
     const memberDiv = document.createElement("div");
     memberDiv.className = "flex flex-row";
     memberDiv.id = "member-" + email;
-  
+
     const iconDiv = document.createElement("div");
     iconDiv.className = "mr-2 content-center";
-  
+
     const icon = document.createElement("div");
     icon.className = "h-3 w-3 rounded-full";
-  
+
     const textDiv = document.createElement("div");
     textDiv.className = "flex flex-col";
-  
+
     const memberName = document.createElement("p");
     memberName.textContent = name;
-  
+
     const roleDiv = document.createElement("p");
     roleDiv.className = "text-xs text-extra-gray";
     roleDiv.innerText = role;
-  
-    //Icon color should be red for members
-    //darker-blue for the owner
+
+    // Icon color should be red for members
+    // Dark blue for the owner
     if ((role = "Member")) {
       icon.className = icon.className + " bg-red-500";
     } else if ((role = "Owner")) {
       icon.className = icon.className + " bg-light-primary";
     }
-  
+
     const removeMember = document.createElement("button");
     removeMember.title = "Remove Member";
     removeMember.className = "text-xs text-extra-gray text-right pl-2";
     removeMember.textContent = "x";
     removeMember.type = "button";
     removeMember.onclick = function () {
-      //console.log("Deleting " + email);
       membersSet.delete(email);
       if (membersSet.size == 0) {
-        //All members removed, change members added flag
+        // All members removed, change members added flag
         setMembersAdded(false);
       }
-      //console.log(membersAdded);
-      console.log(membersSet);
       members.removeChild(document.getElementById(memberDiv!.id!)!);
     };
-  
+
     textDiv.appendChild(memberName);
     textDiv.appendChild(roleDiv);
-  
+
     iconDiv.appendChild(icon);
-  
+
     memberDiv.appendChild(iconDiv);
     memberDiv.appendChild(textDiv);
     memberDiv.appendChild(removeMember);
-  
+
     members.append(memberDiv);
   }
 
-
   function handleAddMember() {
-    //Get email from Invite Member input and discard @gmail etc.
-    //console.log("Add member button pressed");
+    // Get email from Invite Member input and discard @gmail etc.
     const email = document.getElementById(
       "email-to-invite",
     ) as HTMLInputElement;
-
-    console.log(email.value);
-
     const nameToAdd = email.value;
-
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
     if (!emailRegex.test(nameToAdd)) {
-      console.error("Invalid email format.");
+      console.error("Invalid email format");
       alert("Please enter a valid email");
       return;
     }
-    
 
     // Split the email at the "@" character
     const username = nameToAdd.split("@")[0];
 
     if (membersSet.has(nameToAdd)) {
-      console.error("already added to committee");
+      console.error("Already added to committee");
       alert("This person has already been added to the committee");
       return;
     }
-
 
     membersSet.add(nameToAdd);
     console.log(membersSet);
     email.value = "";
     setMembersAdded(true);
-    //console.log(membersAdded);
     addNewMemberItem(username, "Member", nameToAdd);
   }
 
-
-  //If a change has been made to the committee name input and the name is not empty, set flag
+  // If a change has been made to the committee name input and the name is not empty, set flag
   function handleNameChange(event: React.ChangeEvent<HTMLInputElement>) {
     if (event.target.value.length != 0) {
       setHasName(true);
-    }
-    else {
+    } else {
       setHasName(false);
     }
   }
-
 
   return (
     <form
@@ -167,16 +153,11 @@ export default function Form() {
             type="text"
             className="grow border-b border-black"
             placeholder="johnd@gmail.com"
-            onKeyDown={(e) => {
-              if (e.key == "Enter") {
-                handleAddMember();
-              }
-            }}
           />
           <button
             type="button"
             className="border-secondary text-secondary float-right ml-4 h-7 w-fit rounded-md border-2 px-1 text-center align-middle"
-            onClick={(event: React.MouseEvent<HTMLElement>) => {
+            onClick={() => {
               handleAddMember();
             }}
           >
@@ -210,8 +191,8 @@ export default function Form() {
         <button
           type="submit"
           disabled={!(membersAdded && hasName)}
-          className="disabled:opacity-25 mt-5 justify-center rounded-full border-2 border-light-primary px-16 py-3 font-bold text-light-primary"
-          onClick={(event: React.MouseEvent<HTMLElement>) => {
+          className="mt-5 justify-center rounded-full border-2 border-light-primary px-16 py-3 font-bold text-light-primary disabled:opacity-25"
+          onClick={() => {
             if (!(membersAdded && hasName)) {
               alert("Please add members before submitting");
               return;
