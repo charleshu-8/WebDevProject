@@ -1,6 +1,6 @@
 import { Button, Box } from "@mui/material";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
-import { currentUser } from "/src/app/pocketbase.ts";
+import { currentUser } from "@/app/pocketbase";
 import { useEffect, useState } from "react";
 
 export default function NavBar() {

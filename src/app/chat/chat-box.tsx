@@ -10,7 +10,6 @@ import {
   currentCommittee,
   pb,
 } from "@/app/pocketbase";
-import { help } from "yaml/dist/cli";
 
 // Helper function to get the current time in {HH:MM} format
 const getCurrentTime = () => {
@@ -49,8 +48,8 @@ export default function ChatBox({ isNewMotion }: ChatBoxProps) {
         {
           text: message,
           timestamp: currentTime,
-          owner: currentUser.id,
-          displayName: currentUser.username,
+          owner: currentUser?.id,
+          displayName: currentUser?.username,
         },
       ]);
       publishMessage(message);
@@ -67,7 +66,7 @@ export default function ChatBox({ isNewMotion }: ChatBoxProps) {
     const helperArray = [];
     //console.log(retval);
     //console.log(retval.expand.messages);
-    retval.expand.messages.forEach((message) => {
+    retval?.expand?.messages.forEach((message) => {
       console.log(message);
       const formattedDate = formatDate(message.created);
       helperArray.push({
@@ -90,9 +89,9 @@ export default function ChatBox({ isNewMotion }: ChatBoxProps) {
       const newMessage = await pb.collection("messages").create(
         {
           text: message,
-          owner: currentUser.id,
+          owner: currentUser?.id,
           motion: currentMotion,
-          displayName: currentUser.username,
+          displayName: currentUser?.username,
         },
         {
           $autoCancel: false,
@@ -106,7 +105,7 @@ export default function ChatBox({ isNewMotion }: ChatBoxProps) {
         $autoCancel: false,
       });
 
-      const updatedMessages = [...motion.expand.messages, newMessage];
+      const updatedMessages = [...motion?.expand?.messages, newMessage];
       console.log(updatedMessages);
 
       await pb.collection("motions").update(
@@ -161,7 +160,7 @@ export default function ChatBox({ isNewMotion }: ChatBoxProps) {
         ) : (
           messages.map((message, index) => (
             <Box key={index}>
-              {message.owner === currentUser.id ? (
+              {message.owner === currentUser?.id ? (
                 <Box key={index} className="mb-4 flex flex-col items-end">
                   {/* Timestamp above the message */}
                   <Typography variant="caption" className="text-gray-400">
