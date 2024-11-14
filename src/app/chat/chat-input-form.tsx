@@ -1,7 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import heart from "../res/heart.svg"; // Import the default heart icon
-import pressedHeart from "../res/pressed_heart.svg"; // Import the pressed heart icon
 import pro from "../res/pro.svg"; // Import the pro icon
 import pressedPro from "../res/pressed_pro.svg"; // Import the pressed pro icon
 import con from "../res/con1.svg"; // Import the con icon
