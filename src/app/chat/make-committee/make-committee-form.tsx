@@ -2,27 +2,26 @@
 
 import { useState } from "react";
 
-const membersSet = new Set<string>();
-
 // Form component for making a committee
 export default function MakeCommitteeForm() {
+  const [memberSet] = useState<Set<string>>(new Set<string>([]));
+  const [membersAdded, setMembersAdded] = useState<boolean>(false);
+  const [hasName, setHasName] = useState<boolean>(false);
+
   // Handle committee creation
   // TODO: Add functionality when creating committee
   async function handleResponse(response: FormData) {
     const committeeName = response.get("committeename");
 
     console.log(committeeName);
-    console.log(membersSet);
+    console.log(memberSet);
 
     setHasName(false);
     setMembersAdded(false);
 
     // TODO: send set of emails-to-be-invited to server and empty frontend set
-    membersSet.clear();
+    memberSet.clear();
   }
-
-  const [membersAdded, setMembersAdded] = useState<boolean>(false);
-  const [hasName, setHasName] = useState<boolean>(false);
 
   function addNewMemberItem(name: string, role: string, email: string) {
     const members = document.getElementById(
@@ -62,9 +61,9 @@ export default function MakeCommitteeForm() {
     removeMember.className = "text-xs text-extra-gray text-right pl-2";
     removeMember.textContent = "x";
     removeMember.type = "button";
-    removeMember.onclick = function () {
-      membersSet.delete(email);
-      if (membersSet.size == 0) {
+    removeMember.onclick = () => {
+      memberSet.delete(email);
+      if (memberSet.size == 0) {
         // All members removed, change members added flag
         setMembersAdded(false);
       }
@@ -100,14 +99,14 @@ export default function MakeCommitteeForm() {
     // Split the email at the "@" character
     const username = nameToAdd.split("@")[0];
 
-    if (membersSet.has(nameToAdd)) {
+    if (memberSet.has(nameToAdd)) {
       console.error("Already added to committee");
       alert("This person has already been added to the committee");
       return;
     }
 
-    membersSet.add(nameToAdd);
-    console.log(membersSet);
+    memberSet.add(nameToAdd);
+    console.log(memberSet);
     email.value = "";
     setMembersAdded(true);
     addNewMemberItem(username, "Member", nameToAdd);

@@ -1,4 +1,4 @@
-import MakeCommitteeForm from "./form";
+import MakeCommitteeForm from "./make-committee-form";
 
 // Page for displaying the make-committee form while in development
 export default function MakeCommittee() {
