@@ -1,4 +1,4 @@
-import { pb } from "../../pocketbase";
+import { pb } from "./pocketbase";
 
 // Log in given user
 export async function login(username: string, password: string) {

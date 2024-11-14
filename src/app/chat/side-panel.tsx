@@ -1,6 +1,6 @@
 import { Box, Button } from "@mui/material";
 import React, { useMemo } from "react";
-import { Panel } from "./panel";
+import { Panel } from "./panelEnum";
 
 interface SidePanelProps {
   panelVersion: Panel;
@@ -8,17 +8,6 @@ interface SidePanelProps {
 
 export default function SidePanel({ panelVersion }: SidePanelProps) {
   const panel = panelVersion;
-
-  function handlePanelAddButtonClick() {
-    switch (panel) {
-      case Panel.COMMITTEES:
-        console.log("Rendering add committee");
-        break;
-      case Panel.MOTIONS:
-        console.log("Rendering add motion");
-        break;
-    }
-  }
 
   const panelTitle: string = useMemo(() => {
     switch (panel) {
@@ -41,6 +30,17 @@ export default function SidePanel({ panelVersion }: SidePanelProps) {
         return "Add Motion";
     }
   }, [panel]);
+
+  function handlePanelAddButtonClick() {
+    switch (panel) {
+      case Panel.COMMITTEES:
+        console.log("Rendering add committee");
+        break;
+      case Panel.MOTIONS:
+        console.log("Rendering add motion");
+        break;
+    }
+  }
 
   return (
     <Box className="flex h-full w-auto min-w-[8rem] flex-grow flex-col bg-light-secondary p-2 dark:bg-extra-dark-blue">

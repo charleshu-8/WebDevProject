@@ -5,10 +5,10 @@ import EventNoteIcon from "@mui/icons-material/EventNote";
 import StarsIcon from "@mui/icons-material/Stars";
 import SettingsIcon from "@mui/icons-material/Settings";
 import React, { useState } from "react";
-import { Panel } from "./panel";
+import { Panel } from "./panelEnum";
 import SidePanel from "./side-panel";
 
-export default function SideBar() {
+export default function Sidebar() {
   /* tracks panel version for changing panel layout */
   const [panelVersion, setPanelVersion] = useState(Panel.COMMITTEES);
 

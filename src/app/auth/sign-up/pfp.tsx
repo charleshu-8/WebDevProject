@@ -1,6 +1,4 @@
 import React, { useState, useEffect, useContext } from "react";
-import defaultProfileIconLight from "./res/default_profile_icon_light.svg"; // Import the light mode SVG file
-import defaultProfileIconDark from "./res/default_profile_icon_dark.svg"; // Import the dark mode SVG file
 import { SignUpContext } from "./signUpContext";
 
 export default function UploadAndDisplayImage() {
@@ -10,6 +8,22 @@ export default function UploadAndDisplayImage() {
 
   // Reference to the file input element
   const fileInputRef = React.useRef<HTMLInputElement>(null);
+
+  // Timeout ID for differentiating between single and double click
+  let clickTimeout: NodeJS.Timeout | null = null;
+
+  function handleClick() {
+    if (clickTimeout) {
+      clearTimeout(clickTimeout);
+      clickTimeout = null;
+      setPfp(null); // Handle double-click
+    } else {
+      clickTimeout = setTimeout(() => {
+        clickTimeout = null;
+        fileInputRef.current?.click(); // Handle single-click
+      }, 300); // Adjust the delay as needed
+    }
+  }
 
   // Effect to detect dark mode preference
   useEffect(() => {
@@ -23,22 +37,6 @@ export default function UploadAndDisplayImage() {
     mediaQuery.addEventListener("change", handleChange);
     return () => mediaQuery.removeEventListener("change", handleChange);
   }, []);
-
-  // Timeout ID for differentiating between single and double click
-  let clickTimeout: NodeJS.Timeout | null = null;
-
-  const handleClick = () => {
-    if (clickTimeout) {
-      clearTimeout(clickTimeout);
-      clickTimeout = null;
-      setPfp(null); // Handle double-click
-    } else {
-      clickTimeout = setTimeout(() => {
-        clickTimeout = null;
-        fileInputRef.current?.click(); // Handle single-click
-      }, 300); // Adjust the delay as needed
-    }
-  };
 
   return (
     <div>
@@ -57,8 +55,8 @@ export default function UploadAndDisplayImage() {
             pfp
               ? URL.createObjectURL(pfp)
               : isDarkMode
-                ? defaultProfileIconDark.src // Use dark mode image
-                : defaultProfileIconLight.src // Use light mode image
+                ? "/img/auth/default_pfp_dark.svg" // Use dark mode image
+                : "/img/auth/default_pfp_light.svg" // Use light mode image
           }
           onClick={handleClick} // Handle both single and double click
         />

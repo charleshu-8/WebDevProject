@@ -1,9 +1,9 @@
 "use client";
 
-import { pb } from "@/app/pocketbase";
+import { login } from "@/app/db/authentication";
+import { pb } from "@/app/db/pocketbase";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { login } from "./authentication";
 
 // Form component for taking username and password for verification
 export default function Form() {

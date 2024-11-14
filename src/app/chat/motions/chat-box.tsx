@@ -9,65 +9,37 @@ import {
   currentMotion,
   currentCommittee,
   pb,
-} from "@/app/pocketbase";
-
-// Helper function to get the current time in {HH:MM} format
-const getCurrentTime = () => {
-  const now = new Date();
-  const hours = String(now.getHours()).padStart(2, "0");
-  const minutes = String(now.getMinutes()).padStart(2, "0");
-  return `${hours}:${minutes}`;
-};
+} from "@/app/db/pocketbase";
+import { formatDate, getCurrentTime } from "@/app/utils/time";
+import { PocketbaseMessage } from "@/app/db/pocketbaseInterfaces";
 
 interface ChatBoxProps {
   isNewMotion: boolean;
 }
 
+interface ChatMessage {
+  text: string;
+  timestamp: string;
+  owner: string;
+  displayName: string;
+}
+
 export default function ChatBox({ isNewMotion }: ChatBoxProps) {
   // State to store messages as objects with text and timestamp
-  const [messages, setMessages] = useState<
-    { text: string; timestamp: string; owner: string; displayName: string }[]
-  >([]);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [message, setCurrentMessage] = useState<string>("");
 
   // Ref to keep track of the container for automatic scrolling
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
-  // Effect to scroll to the bottom whenever the messages change
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
-
-  const sendMessage = (message: string) => {
-    if (message.trim()) {
-      // Add message along with timestamp
-      const currentTime =
-        getCurrentTime() + " " + new Date().toLocaleDateString();
-      setMessages([
-        ...messages,
-        {
-          text: message,
-          timestamp: currentTime,
-          owner: currentUser?.id,
-          displayName: currentUser?.username,
-        },
-      ]);
-      publishMessage(message);
-      setCurrentMessage(""); // Clear input after sending
-    }
-  };
-
   async function helper() {
-    const retval = await pb.collection("motions").getOne(currentMotion, {
+    const response = await pb.collection("motions").getOne(currentMotion, {
       expand: "messages",
       $autoCancel: false,
     });
 
-    const helperArray = [];
-    //console.log(retval);
-    //console.log(retval.expand.messages);
-    retval?.expand?.messages.forEach((message) => {
-      console.log(message);
+    const helperArray: ChatMessage[] = [];
+    response?.expand?.messages.forEach((message: PocketbaseMessage) => {
       const formattedDate = formatDate(message.created);
       helperArray.push({
         text: message.text,
@@ -76,14 +48,19 @@ export default function ChatBox({ isNewMotion }: ChatBoxProps) {
         displayName: message.displayName,
       });
     });
-    helperArray.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+    helperArray.sort(
+      (a, b) =>
+        new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime(),
+    );
     setMessages(helperArray);
   }
 
+  // Get all available messages for a motion
   async function fetchMessages() {
     await helper();
   }
 
+  // Push a given message to the DB
   async function publishMessage(message: string) {
     try {
       const newMessage = await pb.collection("messages").create(
@@ -122,14 +99,39 @@ export default function ChatBox({ isNewMotion }: ChatBoxProps) {
     }
   }
 
-  //listens for db updates to messages to refetch messages
-  //also refetches upon motion or committee change
+  // Process and send a given message to the DB
+  function sendMessage(message: string) {
+    if (message.trim()) {
+      // Add message along with timestamp
+      const currentTime =
+        getCurrentTime() + " " + new Date().toLocaleDateString();
+      setMessages([
+        ...messages,
+        {
+          text: message,
+          timestamp: currentTime,
+          owner: currentUser?.id,
+          displayName: currentUser?.username,
+        },
+      ]);
+      publishMessage(message);
+      setCurrentMessage(""); // Clear input after sending
+    }
+  }
+
+  // Effect to scroll to the bottom whenever the messages change
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  // Listens for DB updates to messages to refetch messages
+  // Also refetches upon motion or committee change
   useEffect(() => {
     if (currentCommittee && currentMotion) {
       fetchMessages();
 
       // Subscribe to updates for the specific motion
-      pb.collection("motions").subscribe(currentMotion, (e) => {
+      pb.collection("motions").subscribe(currentMotion, () => {
         fetchMessages(); // Fetch new messages when updated
       });
 
@@ -139,17 +141,6 @@ export default function ChatBox({ isNewMotion }: ChatBoxProps) {
       };
     }
   }, [currentCommittee, currentMotion]);
-
-  function formatDate(timestamp) {
-    const date = new Date(timestamp);
-    const day = date.getDate().toString().padStart(2, "0");
-    const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Adding 1 because getMonth() is 0-based
-    const year = date.getFullYear();
-    const hours = date.getHours().toString().padStart(2, "0");
-    const minutes = date.getMinutes().toString().padStart(2, "0");
-
-    return `${hours}:${minutes} ${month}/${day}/${year}`;
-  }
 
   return (
     <Box className="flex h-full w-full flex-col bg-gray-200 p-4">

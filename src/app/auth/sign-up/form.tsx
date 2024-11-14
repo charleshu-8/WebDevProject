@@ -3,7 +3,7 @@
 import { useContext } from "react";
 import { ClientResponseError } from "pocketbase";
 import { useRouter } from "next/navigation";
-import { pb } from "@/app/pocketbase";
+import { pb } from "@/app/db/pocketbase";
 import { SignUpContext } from "./signUpContext";
 
 // Form component for user sign up information

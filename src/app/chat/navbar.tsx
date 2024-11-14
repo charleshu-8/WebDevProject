@@ -1,14 +1,11 @@
 import { Button, Box } from "@mui/material";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
-import { currentUser } from "@/app/pocketbase";
+import { currentUser } from "@/app/db/pocketbase";
 import { useEffect, useState } from "react";
 
-export default function NavBar() {
-  /**
-   * will have this be modular once user auth is merged
-   */
-  //const user = currentUser?.username || "Guest";
+export default function Navbar() {
   const [user, setUser] = useState("Guest");
+
   useEffect(() => {
     if (currentUser && user === "Guest") {
       setUser(currentUser.username);
