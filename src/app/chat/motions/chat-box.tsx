@@ -43,7 +43,7 @@ export default function ChatBox({ isNewMotion }: ChatBoxProps) {
 
   // function to randomize color background for profile pics
   function getRandomColor() {
-    let randomColor = Math.floor(Math.random() * 16777215)
+    const randomColor = Math.floor(Math.random() * 16777215)
       .toString(16)
       .padStart(6, "0");
     return `#${randomColor}`;
@@ -56,6 +56,7 @@ export default function ChatBox({ isNewMotion }: ChatBoxProps) {
         .collection("committees")
         .getOne(currentCommittee, {
           fields: "members",
+          $autoCancel: false,
         });
       return committeeMembers.members;
     }
@@ -64,7 +65,7 @@ export default function ChatBox({ isNewMotion }: ChatBoxProps) {
   // function to sift through users collection and find current committee members & avatars
   async function getMemberAvatarsByIds() {
     setLoadingMembers(true);
-    let avatarPaths = new Map<string, string>();
+    const avatarPaths = new Map<string, string>();
     let hasMorePages = true;
     let currPage = 1;
     // pocketbase file path to each members avatar files
@@ -85,7 +86,7 @@ export default function ChatBox({ isNewMotion }: ChatBoxProps) {
       // save in hashmap
       result?.items.forEach((member) => {
         let avatarPic;
-        // check if
+        // check if avatar exists
         if (member.avatar !== "") {
           avatarPic = `${avatarPathUrl}/${member.id}/${member.avatar}`;
         } else {
@@ -232,6 +233,9 @@ export default function ChatBox({ isNewMotion }: ChatBoxProps) {
       </Box>
     );
   });
+
+  // to satisfy eslint
+  MessageBox.displayName = "MessageBox";
 
   // Process and send a given message to the DB
   function sendMessage(message: string) {
