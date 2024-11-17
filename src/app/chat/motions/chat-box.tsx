@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, memo } from "react";
 import { Box, Typography } from "@mui/material";
 import ChatInputField from "./chat-input-form";
 import MotionInputField from "./motion-input-form";
@@ -12,12 +12,14 @@ import {
 } from "@/app/db/pocketbase";
 import { formatDate, getCurrentTime } from "@/app/utils/time";
 import { PocketbaseMessage } from "@/app/db/pocketbaseInterfaces";
+import { ElevatorSharp } from "@mui/icons-material";
 
 interface ChatBoxProps {
   isNewMotion: boolean;
 }
 
 interface ChatMessage {
+  id?: string;
   text: string;
   timestamp: string;
   owner: string;
@@ -28,9 +30,78 @@ export default function ChatBox({ isNewMotion }: ChatBoxProps) {
   // State to store messages as objects with text and timestamp
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [message, setCurrentMessage] = useState<string>("");
+  // to track our asyncronous function/progress so dom is not rendered
+  const [loadingMembers, setLoadingMembers] = useState(true);
+
+  // State to store all committee members avatars --> depending on current committe
+  const [currentAvatars, setCurrentAvatars] = useState<Map<string, string>>(
+    new Map(),
+  );
 
   // Ref to keep track of the container for automatic scrolling
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+
+  // function to randomize color background for profile pics
+  function getRandomColor() {
+    let randomColor = Math.floor(Math.random() * 16777215)
+      .toString(16)
+      .padStart(6, "0");
+    return `#${randomColor}`;
+  }
+
+  // get array of member ids in committee to find member avatars
+  async function getCommitteeMembers() {
+    if (currentUser) {
+      const committeeMembers = await pb
+        .collection("committees")
+        .getOne(currentCommittee, {
+          fields: "members",
+        });
+      return committeeMembers.members;
+    }
+  }
+
+  // function to sift through users collection and find current committee members & avatars
+  async function getMemberAvatarsByIds() {
+    setLoadingMembers(true);
+    let avatarPaths = new Map<string, string>();
+    let hasMorePages = true;
+    let currPage = 1;
+    // pocketbase file path to each members avatar files
+    const avatarPathUrl =
+      "https://slackers.pockethost.io/api/files/_pb_users_auth_";
+    const memberIds = await getCommitteeMembers();
+    const memberIdFilter = memberIds
+      .map((id: string) => `id='${id}'`)
+      .join("||");
+    // look through all users that exist until all members of current committee are found
+    while (hasMorePages) {
+      // filter for specific members
+      const result = await pb.collection("users").getList(currPage, 20, {
+        fields: "username, avatar,id",
+        filter: memberIdFilter,
+        $autoCancel: false,
+      });
+      // save in hashmap
+      result?.items.forEach((member) => {
+        let avatarPic;
+        // check if
+        if (member.avatar !== "") {
+          avatarPic = `${avatarPathUrl}/${member.id}/${member.avatar}`;
+        } else {
+          // set random color as avatar
+          avatarPic = getRandomColor();
+        }
+        avatarPaths.set(member.username, avatarPic);
+      });
+      // Check if there are more pages to fetch
+      hasMorePages = result.page * 20 < result.totalItems;
+      // Move to the next page
+      currPage++;
+    }
+    setCurrentAvatars(avatarPaths);
+    setLoadingMembers(false);
+  }
 
   async function helper() {
     const response = await pb.collection("motions").getOne(currentMotion, {
@@ -42,10 +113,12 @@ export default function ChatBox({ isNewMotion }: ChatBoxProps) {
     response?.expand?.messages.forEach((message: PocketbaseMessage) => {
       const formattedDate = formatDate(message.created);
       helperArray.push({
+        id: message.id,
         text: message.text,
         timestamp: formattedDate,
         owner: message.owner,
         displayName: message.displayName,
+        // map profile path to display name
       });
     });
     helperArray.sort(
@@ -99,6 +172,67 @@ export default function ChatBox({ isNewMotion }: ChatBoxProps) {
     }
   }
 
+  // custom component to render the avatar profile pic for members
+  const AvatarPic = ({ messageOwner }: { messageOwner: string }) => {
+    
+    const avatarPic = currentAvatars.get(messageOwner) as string;
+    // check if avatar exists for message owner
+    // never should be empty
+    if (avatarPic !== "" && avatarPic !== undefined && avatarPic[0] !== "#") {
+      return (
+        <img
+          src={avatarPic}
+          className="flex h-6 w-6 items-center justify-center rounded-full"
+          loading="lazy"
+        />
+      );
+    } else {
+      return (
+        // default: show user's initial w color background
+        <Box
+          className="flex h-6 w-6 items-center justify-center rounded-full text-white"
+          sx={{ backgroundColor: avatarPic }}
+        >
+          {messageOwner[0].toUpperCase()}
+        </Box>
+      );
+    }
+  };
+
+  // custom component for creating the message box elements based on
+  // whether message owner is the current user or other committee member
+  // memo caches component so it doesn't re-render when message props don't change
+
+  const MessageBox = memo(({ messageProp }: { messageProp: ChatMessage }) => {
+    const isSender = messageProp.owner === currentUser?.id;
+    console.log(`${messageProp.displayName}--> ${messageProp.text}`);
+    return (
+      <Box
+        className={`mb-4 flex flex-col ${isSender ? "mr-1 items-end" : "items-start"}`}
+      >
+        <Typography variant="caption" className="text-gray-400">
+          {messageProp.displayName}
+        </Typography>
+        <Box
+          className="flex items-center"
+          aria-label="Message Bubble Container"
+        >
+          <Box
+            className={`max-w-md rounded p-2 text-white ${isSender ? "order-1 bg-blue-500" : "order-2 bg-gray-300"}`}
+            aria-label="Message Bubble"
+          >
+            {messageProp.text}
+          </Box>
+          <Box className={`${isSender ? "order-2 ml-2" : "order-1 mr-2"}`}>
+            {!loadingMembers && (
+              <AvatarPic messageOwner={messageProp.displayName} />
+            )}
+          </Box>
+        </Box>
+      </Box>
+    );
+  });
+
   // Process and send a given message to the DB
   function sendMessage(message: string) {
     if (message.trim()) {
@@ -130,6 +264,9 @@ export default function ChatBox({ isNewMotion }: ChatBoxProps) {
     if (currentCommittee && currentMotion) {
       fetchMessages();
 
+      // get updated members & avatar pics based on current committee
+      getMemberAvatarsByIds();
+
       // Subscribe to updates for the specific motion
       pb.collection("motions").subscribe(currentMotion, () => {
         fetchMessages(); // Fetch new messages when updated
@@ -150,55 +287,7 @@ export default function ChatBox({ isNewMotion }: ChatBoxProps) {
           <p className="text-gray-500"></p>
         ) : (
           messages.map((message, index) => (
-            <Box key={index}>
-              {message.owner === currentUser?.id ? (
-                <Box key={index} className="mb-4 flex flex-col items-end">
-                  {/* Timestamp above the message */}
-                  <Typography variant="caption" className="text-gray-400">
-                    {message.displayName}
-                  </Typography>
-
-                  {/* Message bubble */}
-                  <Box className="flex items-center space-x-2">
-                    <Box
-                      className={"max-w-md rounded bg-blue-500 p-2 text-white"}
-                    >
-                      {message.text}
-                    </Box>
-                    <Box
-                      className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-300 font-bold text-white"
-                      aria-label="User Icon"
-                    >
-                      U {/* Optional: Replace 'U' with initials or an emoji */}
-                    </Box>
-                    {/* Circle Icon for Profile */}
-                  </Box>
-                </Box>
-              ) : (
-                <Box key={index} className="mb-4 flex flex-col items-start">
-                  {/* Timestamp above the message */}
-                  <Typography variant="caption" className="text-gray-400">
-                    {message.displayName}
-                  </Typography>
-
-                  {/* Message bubble */}
-                  <Box className="flex items-center space-x-2">
-                    {/* Circle Icon for Profile */}
-                    <Box
-                      className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-300 font-bold text-white"
-                      aria-label="User Icon"
-                    >
-                      U {/* Optional: Replace 'U' with initials or an emoji */}
-                    </Box>
-                    <Box
-                      className={"max-w-md rounded bg-gray-300 p-2 text-white"}
-                    >
-                      {message.text}
-                    </Box>
-                  </Box>
-                </Box>
-              )}
-            </Box>
+            <MessageBox messageProp={message} key={index} />
           ))
         )}
         {/* Invisible div to maintain scrolling to the bottom */}
