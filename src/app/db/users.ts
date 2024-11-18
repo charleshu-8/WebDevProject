@@ -15,3 +15,12 @@ export async function getCorrespondingUserID(key: string) {
 
   return keyRecord.length === 0 ? "" : keyRecord[0].id;
 }
+
+// Returns list of participating committee IDs for given user ID
+export async function getUserCommittees(id: string) {
+  return (
+    await pb.collection("users").getOne(`${id}`, {
+      fields: "committees",
+    })
+  ).committees as string[];
+}
