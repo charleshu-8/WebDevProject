@@ -19,6 +19,9 @@ export function getCurrentCommittee() {
   return currentCommittee;
 }
 
+// Halt deletion of duplicate queries
+pb.autoCancellation(false);
+
 pb.authStore.onChange(() => {
   console.log("User changed");
   currentUser = pb.authStore.model;
