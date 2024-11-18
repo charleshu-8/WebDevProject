@@ -12,13 +12,12 @@ import {
 } from "@/app/db/pocketbase";
 import { formatDate, getCurrentTime } from "@/app/utils/time";
 import { PocketbaseMessage } from "@/app/db/pocketbaseInterfaces";
-import { ElevatorSharp } from "@mui/icons-material";
 
 interface ChatBoxProps {
   isNewMotion: boolean;
 }
 
-interface ChatMessage {
+export default interface ChatMessage {
   id?: string;
   text: string;
   timestamp: string;
