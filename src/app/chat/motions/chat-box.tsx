@@ -13,6 +13,7 @@ import {
 } from "@/app/db/pocketbase";
 import { formatDate, getCurrentTime } from "@/app/utils/time";
 import { PocketbaseMessage } from "@/app/db/pocketbaseInterfaces";
+import { addNewMotion } from "@/app/db/motions";
 
 interface ChatBoxProps {
   isNewMotion: boolean;
@@ -134,21 +135,11 @@ export default function ChatBox({
 
   function sendNewMotion(message: string) {
     if (message.trim()) {
-      pb.collection("motions")
-        .create(
-          {
-            title: message,
-            commitee: getCurrentCommittee(),
-          },
-          {
-            $autoCancel: false,
-          },
-        )
-        .then((motion) => {
-          setCurrentMotion(motion.id);
-          sendMessage(message, true);
-          handleToggleIsNewMotion();
-        });
+      addNewMotion(message, getCurrentCommittee()).then((motion) => {
+        setCurrentMotion(motion.id);
+        sendMessage(message, true);
+        handleToggleIsNewMotion();
+      });
     }
   }
 

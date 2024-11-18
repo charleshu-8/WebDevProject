@@ -17,7 +17,7 @@ export async function addNewMotion(title: string, committee: string) {
       .collection("committees")
       .update(committee, { motions: [...currentMotions, response.id] });
 
-    return true;
+    return response;
   } catch (e) {
     console.error("Motion creation error: " + e);
     return false;
