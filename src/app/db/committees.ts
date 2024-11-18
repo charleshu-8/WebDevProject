@@ -32,3 +32,12 @@ export async function addNewCommitteee(title: string, members: string[]) {
     return false;
   }
 }
+
+// Returns list of motion IDs for given committee ID
+export async function getCommitteeMotions(id: string) {
+  return (
+    await pb.collection("committees").getOne(`${id}`, {
+      fields: "motions",
+    })
+  ).motions as string[];
+}
