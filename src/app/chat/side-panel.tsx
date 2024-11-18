@@ -4,9 +4,15 @@ import { Panel } from "./panelEnum";
 
 interface SidePanelProps {
   panelVersion: Panel;
+  isNewMotion: boolean;
+  handleToggleIsNewMotion: () => void;
 }
 
-export default function SidePanel({ panelVersion }: SidePanelProps) {
+export default function SidePanel({
+  panelVersion,
+  isNewMotion,
+  handleToggleIsNewMotion,
+}: SidePanelProps) {
   const panel = panelVersion;
 
   const panelTitle: string = useMemo(() => {
@@ -38,6 +44,7 @@ export default function SidePanel({ panelVersion }: SidePanelProps) {
         break;
       case Panel.MOTIONS:
         console.log("Rendering add motion");
+        handleToggleIsNewMotion();
         break;
     }
   }
