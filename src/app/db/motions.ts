@@ -18,7 +18,7 @@ export async function addNewMotion(title: string, committee: string) {
       .collection("committees")
       .update(committee, { motions: [...currentMotions, response.id] });
 
-    return response;
+    return response as PocketbaseMotion;
   } catch (e) {
     console.error("Motion creation error: " + e);
     return false;
@@ -26,12 +26,21 @@ export async function addNewMotion(title: string, committee: string) {
 }
 
 // Return DB record for a given motion
-// Returns record if found, false otherwise
+// Returns record if found, empty object otherwise
 export async function getMotionDetails(motion: string) {
   try {
     return (await pb.collection("motions").getOne(motion)) as PocketbaseMotion;
   } catch (e) {
     console.error("Motion fetching error: " + e);
-    return false;
+    return {
+      collectionId: "",
+      collectionName: "",
+      id: "",
+      title: "",
+      committee: "",
+      messages: [],
+      created: "",
+      updated: "",
+    };
   }
 }

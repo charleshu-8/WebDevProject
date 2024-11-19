@@ -2,7 +2,7 @@ import { pb } from "./pocketbase";
 import { PocketbaseMessage } from "./pocketbaseInterfaces";
 
 // Return DB record for a given message
-// Returns record if found, false otherwise
+// Returns record if found, empty object otherwise
 export async function getMessageDetails(message: string) {
   try {
     return (await pb
@@ -10,6 +10,16 @@ export async function getMessageDetails(message: string) {
       .getOne(message)) as PocketbaseMessage;
   } catch (e) {
     console.error("Messsage fetching error: " + e);
-    return false;
+    return {
+      collectionId: "",
+      collectionName: "",
+      id: "",
+      text: "",
+      owner: "",
+      motion: "",
+      displayName: "",
+      created: "",
+      updated: "",
+    };
   }
 }
