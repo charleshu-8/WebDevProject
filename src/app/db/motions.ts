@@ -1,5 +1,6 @@
 import { getCommitteeMotions } from "./committees";
 import { pb } from "./pocketbase";
+import { PocketbaseMotion } from "./pocketbaseInterfaces";
 
 // Create a new motion in DB given a motion title and associated committee ID
 // Returns true if successful, false otherwise
@@ -20,6 +21,17 @@ export async function addNewMotion(title: string, committee: string) {
     return true;
   } catch (e) {
     console.error("Motion creation error: " + e);
+    return false;
+  }
+}
+
+// Return DB record for a given motion
+// Returns record if found, false otherwise
+export async function getMotionDetails(motion: string) {
+  try {
+    return (await pb.collection("motions").getOne(motion)) as PocketbaseMotion;
+  } catch (e) {
+    console.error("Motion fetching error: " + e);
     return false;
   }
 }
