@@ -3,44 +3,21 @@
 import React, { memo } from "react";
 import { Box, Typography } from "@mui/material";
 import {ChatMessage} from "./chat-box";
-import Image from 'next/image';
 import {
   currentUser,
 } from "@/app/db/pocketbase";
+import AvatarPic from "./avatar-pic";
 
-// custom component to render the avatar profile pic for members
-const AvatarPic = ({ messageOwner, memberAvatars }: { messageOwner: string, memberAvatars: Map<string,string>}) => {
-  // need this to get next/image component to register src path with HTTPS URL directly
-  const customLoader = ({ src }: { src: string }) => {
-    return src; // Use the HTTPS URL directly
-  };
+// function to render the avatar pic for each message box
+// using custom AvatarPic component
 
-  const avatarPic = memberAvatars.get(messageOwner) as string;
-  // check if avatar exists for message owner
-  // never should be empty
-  if (avatarPic !== "" && avatarPic !== undefined && avatarPic[0] !== "#") {
-    return (
-      <Image
-        loader={customLoader}
-        src={avatarPic}
-        className="flex h-6 w-6 items-center justify-center rounded-full"
-        alt="user-avatar"
-        width={600}
-        height={600}
-      />
-    );
-  } else {
-    return (
-      // default: show user's initial w color background
-      <Box
-        className="flex h-6 w-6 items-center justify-center rounded-full text-white"
-        sx={{ backgroundColor: avatarPic }}
-      >
-        {messageOwner[0].toUpperCase()}
-      </Box>
-    );
-  }
-};
+function renderAvatarPic (memberAvatars:Map<string,string>, messageOwner:string){
+  const currentAvatar = memberAvatars.get(messageOwner) as string;
+  const initial = messageOwner[0].toUpperCase();
+  return(
+    <AvatarPic avatarBackground={currentAvatar} displayInitial={initial}/>
+  );
+}
 
 
 // custom component for creating the message box elements based on
@@ -69,9 +46,7 @@ const AvatarPic = ({ messageOwner, memberAvatars }: { messageOwner: string, memb
             {messageProp.text}
           </Box>
           <Box className={`${isSender ? "order-2 ml-2" : "order-1 mr-2"}`}>
-            {!loadingState && (
-              <AvatarPic messageOwner={messageProp.displayName} memberAvatars={memberAvatars}/>
-            )}
+            {!loadingState && renderAvatarPic(memberAvatars, messageProp.displayName)}
           </Box>
         </Box>
       </Box>
