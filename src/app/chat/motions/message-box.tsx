@@ -3,22 +3,30 @@
 import React, { memo } from "react";
 import { Box, Typography } from "@mui/material";
 import {ChatMessage} from "./chat-box";
+import Image from 'next/image';
 import {
   currentUser,
 } from "@/app/db/pocketbase";
 
 // custom component to render the avatar profile pic for members
 const AvatarPic = ({ messageOwner, memberAvatars }: { messageOwner: string, memberAvatars: Map<string,string>}) => {
-    
+  // need this to get next/image component to register src path with HTTPS URL directly
+  const customLoader = ({ src }: { src: string }) => {
+    return src; // Use the HTTPS URL directly
+  };
+
   const avatarPic = memberAvatars.get(messageOwner) as string;
   // check if avatar exists for message owner
   // never should be empty
   if (avatarPic !== "" && avatarPic !== undefined && avatarPic[0] !== "#") {
     return (
-      <img
+      <Image
+        loader={customLoader}
         src={avatarPic}
         className="flex h-6 w-6 items-center justify-center rounded-full"
-        loading="lazy"
+        alt="user-avatar"
+        width={600}
+        height={600}
       />
     );
   } else {
