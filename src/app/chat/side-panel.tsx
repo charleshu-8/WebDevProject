@@ -4,13 +4,11 @@ import { Panel } from "./panelEnum";
 
 interface SidePanelProps {
   panelVersion: Panel;
-  isNewMotion: boolean;
   handleToggleIsNewMotion: () => void;
 }
 
 export default function SidePanel({
   panelVersion,
-  isNewMotion,
   handleToggleIsNewMotion,
 }: SidePanelProps) {
   const panel = panelVersion;

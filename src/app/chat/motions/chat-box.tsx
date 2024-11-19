@@ -14,6 +14,7 @@ import {
 import { formatDate, getCurrentTime } from "@/app/utils/time";
 import { PocketbaseMessage } from "@/app/db/pocketbaseInterfaces";
 import { addNewMotion } from "@/app/db/motions";
+import { RecordModel } from "pocketbase";
 
 interface ChatBoxProps {
   isNewMotion: boolean;
@@ -109,7 +110,7 @@ export default function ChatBox({
   }
 
   // Process and send a given message to the DB
-  //flag is set if messages should be wiped, resetting motion
+  // Flag is set if messages should be wiped, resetting motion
   function sendMessage(message: string, flag: boolean = false) {
     if (message.trim()) {
       console.log("messages", messages);
@@ -122,6 +123,7 @@ export default function ChatBox({
         owner: currentUser?.id,
         displayName: currentUser?.username,
       };
+
       if (!flag) {
         setMessages([...messages, newMessage]);
       } else {
@@ -133,10 +135,11 @@ export default function ChatBox({
     }
   }
 
+  // Publish a motion to the DB
   function sendNewMotion(message: string) {
     if (message.trim()) {
       addNewMotion(message, getCurrentCommittee()).then((motion) => {
-        setCurrentMotion(motion.id);
+        setCurrentMotion((motion as RecordModel).id);
         sendMessage(message, true);
         handleToggleIsNewMotion();
       });

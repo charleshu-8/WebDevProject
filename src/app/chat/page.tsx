@@ -16,10 +16,7 @@ export default function ChatPage() {
 
   return (
     <div className="flex h-screen w-screen bg-light-background dark:bg-dark-secondary">
-      <Sidebar
-        isNewMotion={isNewMotion}
-        handleToggleIsNewMotion={handleToggleIsNewMotion}
-      />
+      <Sidebar handleToggleIsNewMotion={handleToggleIsNewMotion} />
       <div className="relative top-[80px] flex h-[calc(100%-80px)] w-full flex-row">
         <NavBar />
         <ChatBox

@@ -2,7 +2,7 @@ import { getCommitteeMotions } from "./committees";
 import { pb } from "./pocketbase";
 
 // Create a new motion in DB given a motion title and associated committee ID
-// Returns true if successful, false otherwise
+// Returns response if successful, false otherwise
 export async function addNewMotion(title: string, committee: string) {
   try {
     // Pass motion creation request

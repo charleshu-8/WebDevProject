@@ -9,14 +9,10 @@ import { Panel } from "./panelEnum";
 import SidePanel from "./side-panel";
 
 interface SidebarProps {
-  isNewMotion: boolean;
   handleToggleIsNewMotion: () => void;
 }
 
-export default function Sidebar({
-  isNewMotion,
-  handleToggleIsNewMotion,
-}: SidebarProps) {
+export default function Sidebar({ handleToggleIsNewMotion }: SidebarProps) {
   /* tracks panel version for changing panel layout */
   const [panelVersion, setPanelVersion] = useState(Panel.COMMITTEES);
 
@@ -89,7 +85,6 @@ export default function Sidebar({
       </Box>
       <SidePanel
         panelVersion={panelVersion}
-        isNewMotion={isNewMotion}
         handleToggleIsNewMotion={handleToggleIsNewMotion}
       />
     </Box>
