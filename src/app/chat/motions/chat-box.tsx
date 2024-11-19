@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import ChatInputField from "./chat-input-form";
 import MotionInputField from "./motion-input-form";
 import {
@@ -10,18 +10,22 @@ import {
   pb,
   setCurrentMotion,
   getCurrentCommittee,
+  avatarPathUrl,
 } from "@/app/db/pocketbase";
 import { formatDate, getCurrentTime } from "@/app/utils/time";
 import { PocketbaseMessage } from "@/app/db/pocketbaseInterfaces";
 import { addNewMotion } from "@/app/db/motions";
+import getRandomColor from "@/app/utils/color";
 import { RecordModel } from "pocketbase";
+import MessageBox from "./message-box";
 
 interface ChatBoxProps {
   isNewMotion: boolean;
   handleToggleIsNewMotion: () => void;
 }
 
-interface ChatMessage {
+export interface ChatMessage {
+  id?: string;
   text: string;
   timestamp: string;
   owner: string;
@@ -38,8 +42,62 @@ export default function ChatBox({
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [message, setCurrentMessage] = useState<string>("");
 
+  // To track our asynchronous function progress so DOM is not rendered prematurely
+  const [loadingMembers, setLoadingMembers] = useState(true);
+
+  // State to store all committee members avatars depending on current committee
+  const [currentAvatars, setCurrentAvatars] = useState<Map<string, string>>(
+    new Map(),
+  );
+
   // Ref to keep track of the container for automatic scrolling
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+
+  // Get array of member IDs in committee to find member avatars
+  async function getCommitteeMembersIds() {
+    if (currentUser) {
+      const committeeMembers = await pb
+        .collection("committees")
+        .getOne(getCurrentCommittee(), {
+          fields: "members",
+          $autoCancel: false,
+        });
+      return committeeMembers.members;
+    }
+  }
+
+  // Sift through users collection and find current committee members & avatars
+  async function getMemberAvatarsByIds() {
+    setLoadingMembers(true);
+    const avatarPaths = new Map<string, string>();
+    // Get list of member ids
+    const memberIds = await getCommitteeMembersIds();
+    const memberIdFilter = memberIds
+      .map((id: string) => `id='${id}'`)
+      .join("||");
+
+    // Look through all users that exist until all members of current committee are found
+    const result = await pb.collection("users").getFullList({
+      fields: "username, avatar,id",
+      filter: memberIdFilter,
+    });
+
+    // Save in hashmap
+    result?.forEach((member) => {
+      let avatarPic;
+      // Check if avatar exists
+      if (member.avatar !== "") {
+        avatarPic = `${avatarPathUrl}/${member.id}/${member.avatar}`;
+      } else {
+        // Set random color as avatar otherwise
+        avatarPic = getRandomColor();
+      }
+      avatarPaths.set(member.username, avatarPic);
+    });
+
+    setCurrentAvatars(avatarPaths);
+    setLoadingMembers(false);
+  }
 
   async function helper() {
     const response = await pb.collection("motions").getOne(getCurrentMotion(), {
@@ -51,10 +109,12 @@ export default function ChatBox({
     response?.expand?.messages.forEach((message: PocketbaseMessage) => {
       const formattedDate = formatDate(message.created);
       helperArray.push({
+        id: message.id,
         text: message.text,
         timestamp: formattedDate,
         owner: message.owner,
         displayName: message.displayName,
+        // map profile path to display name
       });
     });
     helperArray.sort(
@@ -157,6 +217,9 @@ export default function ChatBox({
     if (getCurrentCommittee() && getCurrentMotion()) {
       fetchMessages();
 
+      // get updated members & avatar pics based on current committee
+      getMemberAvatarsByIds();
+
       // Subscribe to updates for the specific motion
       pb.collection("motions").subscribe(getCurrentMotion(), () => {
         fetchMessages(); // Fetch new messages when updated
@@ -178,55 +241,12 @@ export default function ChatBox({
           <p className="text-gray-500"></p>
         ) : (
           messages.map((message, index) => (
-            <Box key={index}>
-              {message.owner === currentUser?.id ? (
-                <Box key={index} className="mb-4 flex flex-col items-end">
-                  {/* Timestamp above the message */}
-                  <Typography variant="caption" className="text-gray-400">
-                    {message.displayName}
-                  </Typography>
-
-                  {/* Message bubble */}
-                  <Box className="flex items-center space-x-2">
-                    <Box
-                      className={"max-w-md rounded bg-blue-500 p-2 text-white"}
-                    >
-                      {message.text}
-                    </Box>
-                    <Box
-                      className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-300 font-bold text-white"
-                      aria-label="User Icon"
-                    >
-                      U {/* Optional: Replace 'U' with initials or an emoji */}
-                    </Box>
-                    {/* Circle Icon for Profile */}
-                  </Box>
-                </Box>
-              ) : (
-                <Box key={index} className="mb-4 flex flex-col items-start">
-                  {/* Timestamp above the message */}
-                  <Typography variant="caption" className="text-gray-400">
-                    {message.displayName}
-                  </Typography>
-
-                  {/* Message bubble */}
-                  <Box className="flex items-center space-x-2">
-                    {/* Circle Icon for Profile */}
-                    <Box
-                      className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-300 font-bold text-white"
-                      aria-label="User Icon"
-                    >
-                      U {/* Optional: Replace 'U' with initials or an emoji */}
-                    </Box>
-                    <Box
-                      className={"max-w-md rounded bg-gray-300 p-2 text-white"}
-                    >
-                      {message.text}
-                    </Box>
-                  </Box>
-                </Box>
-              )}
-            </Box>
+            <MessageBox
+              messageProp={message}
+              loadingState={loadingMembers}
+              memberAvatars={currentAvatars}
+              key={index}
+            />
           ))
         )}
         {/* Invisible div to maintain scrolling to the bottom */}
