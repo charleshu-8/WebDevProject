@@ -2,7 +2,7 @@
 
 import React, { memo } from "react";
 import { Box, Typography } from "@mui/material";
-import ChatMessage from "./chat-box";
+import {ChatMessage} from "./chat-box";
 import {
   currentUser,
 } from "@/app/db/pocketbase";
@@ -72,3 +72,4 @@ const AvatarPic = ({ messageOwner, memberAvatars }: { messageOwner: string, memb
 
   // to satisfy eslint
   MessageBox.displayName = "MessageBox";
+  export default MessageBox;
