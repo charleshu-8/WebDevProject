@@ -10,12 +10,14 @@ import {
   pb,
   setCurrentMotion,
   getCurrentCommittee,
+  avatarPathUrl,
 } from "@/app/db/pocketbase";
 import { formatDate, getCurrentTime } from "@/app/utils/time";
 import { PocketbaseMessage } from "@/app/db/pocketbaseInterfaces";
 import { addNewMotion } from "@/app/db/motions";
-import getRandomColor from "../../utils/colors";
+import getRandomColor from "@/app/utils/color";
 import { RecordModel } from "pocketbase";
+import MessageBox from "./message-box";
 
 interface ChatBoxProps {
   isNewMotion: boolean;
@@ -39,7 +41,8 @@ export default function ChatBox({
   // State to store messages as objects with text and timestamp
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [message, setCurrentMessage] = useState<string>("");
-  // to track our asyncronous function/progress so DOM is not rendered prematurely
+
+  // To track our asynchronous function progress so DOM is not rendered prematurely
   const [loadingMembers, setLoadingMembers] = useState(true);
 
   // State to store all committee members avatars depending on current committee
@@ -50,13 +53,12 @@ export default function ChatBox({
   // Ref to keep track of the container for automatic scrolling
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
-
-  // get array of member ids in committee to find member avatars
+  // Get array of member IDs in committee to find member avatars
   async function getCommitteeMembersIds() {
     if (currentUser) {
       const committeeMembers = await pb
         .collection("committees")
-        .getOne(currentCommittee, {
+        .getOne(getCurrentCommittee(), {
           fields: "members",
           $autoCancel: false,
         });
@@ -64,33 +66,35 @@ export default function ChatBox({
     }
   }
 
-  // function to sift through users collection and find current committee members & avatars
+  // Sift through users collection and find current committee members & avatars
   async function getMemberAvatarsByIds() {
     setLoadingMembers(true);
     const avatarPaths = new Map<string, string>();
-    // get list of member ids 
+    // Get list of member ids
     const memberIds = await getCommitteeMembersIds();
     const memberIdFilter = memberIds
       .map((id: string) => `id='${id}'`)
       .join("||");
-    // look through all users that exist until all members of current committee are found
-    const result = await pb.collection("users").getFullList(20, {
+
+    // Look through all users that exist until all members of current committee are found
+    const result = await pb.collection("users").getFullList({
       fields: "username, avatar,id",
       filter: memberIdFilter,
-      $autoCancel: false,
     });
-    // save in hashmap
+
+    // Save in hashmap
     result?.forEach((member) => {
       let avatarPic;
-      // check if avatar exists
+      // Check if avatar exists
       if (member.avatar !== "") {
         avatarPic = `${avatarPathUrl}/${member.id}/${member.avatar}`;
       } else {
-        // set random color as avatar
+        // Set random color as avatar otherwise
         avatarPic = getRandomColor();
       }
       avatarPaths.set(member.username, avatarPic);
     });
+
     setCurrentAvatars(avatarPaths);
     setLoadingMembers(false);
   }
@@ -165,7 +169,6 @@ export default function ChatBox({
     }
   }
 
-
   // Process and send a given message to the DB
   // Flag is set if messages should be wiped, resetting motion
   function sendMessage(message: string, flag: boolean = false) {
@@ -238,7 +241,12 @@ export default function ChatBox({
           <p className="text-gray-500"></p>
         ) : (
           messages.map((message, index) => (
-            <MessageBox messageProp={message} loadingState={loadingMembers} memberAvatars={currentAvatars} key={index} />
+            <MessageBox
+              messageProp={message}
+              loadingState={loadingMembers}
+              memberAvatars={currentAvatars}
+              key={index}
+            />
           ))
         )}
         {/* Invisible div to maintain scrolling to the bottom */}
