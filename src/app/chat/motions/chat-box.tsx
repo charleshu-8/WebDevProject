@@ -40,13 +40,6 @@ export default function ChatBox({ isNewMotion }: ChatBoxProps) {
   // Ref to keep track of the container for automatic scrolling
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
-  // function to randomize color background for profile pics
-  function getRandomColor() {
-    const randomColor = Math.floor(Math.random() * 16777215)
-      .toString(16)
-      .padStart(6, "0");
-    return `#${randomColor}`;
-  }
 
   // get array of member ids in committee to find member avatars
   async function getCommitteeMembers() {
