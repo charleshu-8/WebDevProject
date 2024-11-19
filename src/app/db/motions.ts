@@ -3,7 +3,7 @@ import { pb } from "./pocketbase";
 import { PocketbaseMotion } from "./pocketbaseInterfaces";
 
 // Create a new motion in DB given a motion title and associated committee ID
-// Returns true if successful, false otherwise
+// Returns response if successful, false otherwise
 export async function addNewMotion(title: string, committee: string) {
   try {
     // Pass motion creation request
@@ -18,7 +18,7 @@ export async function addNewMotion(title: string, committee: string) {
       .collection("committees")
       .update(committee, { motions: [...currentMotions, response.id] });
 
-    return true;
+    return response;
   } catch (e) {
     console.error("Motion creation error: " + e);
     return false;

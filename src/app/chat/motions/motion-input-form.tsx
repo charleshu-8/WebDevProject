@@ -97,7 +97,7 @@ export default function MotionInputField({
         <div className="ml-7 mr-7 mt-4 flex h-1/5 items-center justify-between">
           {/* Motion Text */}
           <p className="text-xl font-semibold text-black dark:text-black">
-            Motion:
+            Adding New Motion:
           </p>
           {/* Send Button/Icon Container*/}
           {/* Send Button/Icon */}
