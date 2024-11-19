@@ -6,17 +6,20 @@ import ChatInputField from "./chat-input-form";
 import MotionInputField from "./motion-input-form";
 import {
   currentUser,
-  currentMotion,
-  currentCommittee,
-  pb, avatarPathUrl
+  getCurrentMotion,
+  pb,
+  setCurrentMotion,
+  getCurrentCommittee,
 } from "@/app/db/pocketbase";
 import { formatDate, getCurrentTime } from "@/app/utils/time";
 import { PocketbaseMessage } from "@/app/db/pocketbaseInterfaces";
+import { addNewMotion } from "@/app/db/motions";
 import getRandomColor from "../../utils/colors";
-import MessageBox from "./message-box";
+import { RecordModel } from "pocketbase";
 
 interface ChatBoxProps {
   isNewMotion: boolean;
+  handleToggleIsNewMotion: () => void;
 }
 
 export interface ChatMessage {
@@ -27,7 +30,12 @@ export interface ChatMessage {
   displayName: string;
 }
 
-export default function ChatBox({ isNewMotion }: ChatBoxProps) {
+//let currentMotion = getCurrentMotion();
+
+export default function ChatBox({
+  isNewMotion,
+  handleToggleIsNewMotion,
+}: ChatBoxProps) {
   // State to store messages as objects with text and timestamp
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [message, setCurrentMessage] = useState<string>("");
@@ -88,7 +96,7 @@ export default function ChatBox({ isNewMotion }: ChatBoxProps) {
   }
 
   async function helper() {
-    const response = await pb.collection("motions").getOne(currentMotion, {
+    const response = await pb.collection("motions").getOne(getCurrentMotion(), {
       expand: "messages",
       $autoCancel: false,
     });
@@ -124,7 +132,7 @@ export default function ChatBox({ isNewMotion }: ChatBoxProps) {
         {
           text: message,
           owner: currentUser?.id,
-          motion: currentMotion,
+          motion: getCurrentMotion(),
           displayName: currentUser?.username,
         },
         {
@@ -132,18 +140,19 @@ export default function ChatBox({ isNewMotion }: ChatBoxProps) {
         },
       );
 
-      console.log(newMessage);
-
-      const motion = await pb.collection("motions").getOne(currentMotion, {
+      const motion = await pb.collection("motions").getOne(getCurrentMotion(), {
         expand: "messages",
         $autoCancel: false,
       });
 
-      const updatedMessages = [...motion?.expand?.messages, newMessage];
+      const oldMessages = motion?.expand?.messages;
+      const updatedMessages = oldMessages
+        ? [...motion?.expand?.messages, newMessage]
+        : [newMessage];
       console.log(updatedMessages);
 
       await pb.collection("motions").update(
-        currentMotion,
+        getCurrentMotion(),
         {
           messages: updatedMessages.map((message) => message.id), // Ensure only message IDs are stored
         },
@@ -158,22 +167,39 @@ export default function ChatBox({ isNewMotion }: ChatBoxProps) {
 
 
   // Process and send a given message to the DB
-  function sendMessage(message: string) {
+  // Flag is set if messages should be wiped, resetting motion
+  function sendMessage(message: string, flag: boolean = false) {
     if (message.trim()) {
+      console.log("messages", messages);
       // Add message along with timestamp
       const currentTime =
         getCurrentTime() + " " + new Date().toLocaleDateString();
-      setMessages([
-        ...messages,
-        {
-          text: message,
-          timestamp: currentTime,
-          owner: currentUser?.id,
-          displayName: currentUser?.username,
-        },
-      ]);
+      const newMessage = {
+        text: message,
+        timestamp: currentTime,
+        owner: currentUser?.id,
+        displayName: currentUser?.username,
+      };
+
+      if (!flag) {
+        setMessages([...messages, newMessage]);
+      } else {
+        setMessages([newMessage]);
+      }
+
       publishMessage(message);
       setCurrentMessage(""); // Clear input after sending
+    }
+  }
+
+  // Publish a motion to the DB
+  function sendNewMotion(message: string) {
+    if (message.trim()) {
+      addNewMotion(message, getCurrentCommittee()).then((motion) => {
+        setCurrentMotion((motion as RecordModel).id);
+        sendMessage(message, true);
+        handleToggleIsNewMotion();
+      });
     }
   }
 
@@ -185,23 +211,24 @@ export default function ChatBox({ isNewMotion }: ChatBoxProps) {
   // Listens for DB updates to messages to refetch messages
   // Also refetches upon motion or committee change
   useEffect(() => {
-    if (currentCommittee && currentMotion) {
+    if (getCurrentCommittee() && getCurrentMotion()) {
       fetchMessages();
 
       // get updated members & avatar pics based on current committee
       getMemberAvatarsByIds();
 
       // Subscribe to updates for the specific motion
-      pb.collection("motions").subscribe(currentMotion, () => {
+      pb.collection("motions").subscribe(getCurrentMotion(), () => {
         fetchMessages(); // Fetch new messages when updated
+        console.log("something changed");
       });
 
       // Cleanup subscription on component unmount
       return () => {
-        pb.collection("motions").unsubscribe(currentMotion);
+        pb.collection("motions").unsubscribe(getCurrentMotion());
       };
     }
-  }, [currentCommittee, currentMotion]);
+  }, []);
 
   return (
     <Box className="flex h-full w-full flex-col bg-gray-200 p-4">
@@ -226,7 +253,7 @@ export default function ChatBox({ isNewMotion }: ChatBoxProps) {
         }}
       >
         {isNewMotion ? (
-          <MotionInputField onSendMessage={sendMessage} />
+          <MotionInputField onSendMessage={sendNewMotion} />
         ) : (
           <ChatInputField onSendMessage={sendMessage} />
         )}

@@ -8,9 +8,15 @@ import React, { useState } from "react";
 import { Panel } from "./panelEnum";
 import SidePanel from "./side-panel";
 
-export default function Sidebar() {
+interface SidebarProps {
+  handleToggleIsNewMotion: () => void;
+}
+
+export default function Sidebar({ handleToggleIsNewMotion }: SidebarProps) {
   /* tracks panel version for changing panel layout */
   const [panelVersion, setPanelVersion] = useState(Panel.COMMITTEES);
+
+  //console.log("handleToggleIsNewMotion:", handleToggleIsNewMotion);
 
   /**
    * Function adjusts panel version const based on button pressed
@@ -77,7 +83,10 @@ export default function Sidebar() {
           </IconButton>
         </Box>
       </Box>
-      <SidePanel panelVersion={panelVersion} />
+      <SidePanel
+        panelVersion={panelVersion}
+        handleToggleIsNewMotion={handleToggleIsNewMotion}
+      />
     </Box>
   );
 }

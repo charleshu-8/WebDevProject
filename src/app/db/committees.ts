@@ -2,7 +2,7 @@ import { pb } from "./pocketbase";
 import { getCorrespondingUserID, getUserCommittees } from "./users";
 
 // Create a new committee in DB given a committee title and list of members
-// Returns true if successful, false otherwise
+// Returns response if successful, false otherwise
 export async function addNewCommitteee(title: string, members: string[]) {
   // Map member list to corresponding internal ID in DB
   for (const member in members) {
@@ -26,7 +26,7 @@ export async function addNewCommitteee(title: string, members: string[]) {
         .update(member, { committees: [...currentCommittees, response.id] });
     }
 
-    return true;
+    return response;
   } catch (e) {
     console.error("Committee creation error: " + e);
     return false;
