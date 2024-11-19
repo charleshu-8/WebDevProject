@@ -60,8 +60,6 @@ export default function ChatBox({ isNewMotion }: ChatBoxProps) {
   async function getMemberAvatarsByIds() {
     setLoadingMembers(true);
     const avatarPaths = new Map<string, string>();
-    let hasMorePages = true;
-    let currPage = 1;
     // get list of member ids 
     const memberIds = await getCommitteeMembersIds();
     const memberIdFilter = memberIds
