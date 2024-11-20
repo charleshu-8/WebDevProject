@@ -2,7 +2,7 @@ import { pb } from "./pocketbase";
 
 // Takes given email or username and maps it to the corresponding ID in the DB
 // If ID for email or username not found, returns empty string
-export async function getCorrespondingUserID(key: string) {
+export async function getCorrespondingUserID(emailOrUsername: string) {
   try {
     // Pull users records
     const records = await pb.collection("users").getFullList({
@@ -11,7 +11,8 @@ export async function getCorrespondingUserID(key: string) {
 
     // Check if we can find an ID for given key
     const keyRecord = records.filter(
-      (record) => record.username === key || record.email === key,
+      (record) =>
+        record.username === emailOrUsername || record.email === emailOrUsername,
     );
 
     return keyRecord.length === 0 ? "" : keyRecord[0].id;
@@ -23,10 +24,10 @@ export async function getCorrespondingUserID(key: string) {
 
 // Returns list of participating committee IDs for given user ID
 // If none found, return empty array
-export async function getUserCommittees(id: string) {
+export async function getUserCommittees(user: string) {
   try {
     return (
-      await pb.collection("users").getOne(`${id}`, {
+      await pb.collection("users").getOne(`${user}`, {
         fields: "committees",
       })
     ).committees as string[];

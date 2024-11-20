@@ -36,16 +36,30 @@ export async function addNewCommitteee(title: string, members: string[]) {
 
 // Returns list of motion IDs for given committee ID
 // If none found, return empty array
-
-export async function getCommitteeMotions(id: string) {
+export async function getCommitteeMotions(committee: string) {
   try {
     return (
-      await pb.collection("committees").getOne(`${id}`, {
+      await pb.collection("committees").getOne(`${committee}`, {
         fields: "motions",
       })
     ).motions as string[];
   } catch (e) {
     console.error("Committee motions fetching error: " + e);
+    return [];
+  }
+}
+
+// Returns list of member IDs for given committee ID
+// If none found, return empty array
+export async function getCommitteeMembers(committee: string) {
+  try {
+    return (
+      await pb.collection("committees").getOne(`${committee}`, {
+        fields: "members",
+      })
+    ).members as string[];
+  } catch (e) {
+    console.error("Committee members fetching error: " + e);
     return [];
   }
 }
