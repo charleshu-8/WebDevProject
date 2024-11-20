@@ -68,7 +68,6 @@ export default function ChatBox({
 
   // Sift through users collection and find current committee members & avatars
   async function getMemberAvatarsByIds() {
-    setLoadingMembers(true);
     const avatarPaths = new Map<string, string>();
     // Get list of member ids
     const memberIds = await getCommitteeMembersIds();
@@ -94,7 +93,6 @@ export default function ChatBox({
       }
       avatarPaths.set(member.username, avatarPic);
     });
-
     setCurrentAvatars(avatarPaths);
     setLoadingMembers(false);
   }
@@ -206,18 +204,11 @@ export default function ChatBox({
     }
   }
 
-  // Effect to scroll to the bottom whenever the messages change
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    console.log(messages);
-  }, [messages]);
-
   // Listens for DB updates to messages to refetch messages
   // Also refetches upon motion or committee change
   useEffect(() => {
     if (getCurrentCommittee() && getCurrentMotion()) {
       fetchMessages();
-
       // get updated members & avatar pics based on current committee
       getMemberAvatarsByIds();
 
@@ -233,6 +224,13 @@ export default function ChatBox({
       };
     }
   }, []);
+
+   // Effect to scroll to the bottom whenever the messages change
+   useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    console.log(messages);
+  }, [messages]);
+
 
   return (
     <Box className="flex h-full w-full flex-col bg-gray-200 p-4">
