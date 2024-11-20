@@ -209,6 +209,7 @@ export default function ChatBox({
   // Effect to scroll to the bottom whenever the messages change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    console.log(messages);
   }, [messages]);
 
   // Listens for DB updates to messages to refetch messages
@@ -240,12 +241,12 @@ export default function ChatBox({
         {messages.length === 0 ? (
           <p className="text-gray-500"></p>
         ) : (
-          messages.map((message, index) => (
+          messages.map((message) => (
             <MessageBox
               messageProp={message}
               loadingState={loadingMembers}
               memberAvatars={currentAvatars}
-              key={index}
+              key={message.id}
             />
           ))
         )}
