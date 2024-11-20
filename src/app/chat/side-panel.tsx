@@ -1,6 +1,7 @@
 import { Box, Button } from "@mui/material";
 import React, { useMemo } from "react";
 import { Panel } from "./panelEnum";
+import MotionCard from "./motions/motion-card"; // Adjust the import path as necessary
 
 interface SidePanelProps {
   panelVersion: Panel;
@@ -66,6 +67,18 @@ export default function SidePanel({
           </Button>
         )}
         {/*Side panel content will go here --> so mapping motions and displaying below or committees */}
+        {panel === Panel.MOTIONS && (
+          <MotionCard
+            motionTitle="Sample Motion"
+            motionStatus="Pending"
+            shortName="JD"
+            fullName="John Doe"
+            motionText="This is a sample motion text."
+            seconderShortName="JS"
+            seconderFullName="Jane Smith"
+            time="12:00 PM"
+          />
+        )}
       </Box>
     </Box>
   );
