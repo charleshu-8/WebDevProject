@@ -1,4 +1,5 @@
 import { pb } from "./pocketbase";
+import { PocketbaseCommittee, PocketbaseMotion } from "./pocketbaseInterfaces";
 import { getCorrespondingUserID, getUserCommittees } from "./users";
 
 // Create a new committee in DB given a committee title and list of members
@@ -26,7 +27,7 @@ export async function addNewCommitteee(title: string, members: string[]) {
         .update(member, { committees: [...currentCommittees, response.id] });
     }
 
-    return response;
+    return response as PocketbaseCommittee;
   } catch (e) {
     console.error("Committee creation error: " + e);
     return false;
@@ -34,10 +35,40 @@ export async function addNewCommitteee(title: string, members: string[]) {
 }
 
 // Returns list of motion IDs for given committee ID
-export async function getCommitteeMotions(id: string) {
+// If none found, return empty array
+export async function getCommitteeMotions(committee: string) {
+  try {
+    return (
+      await pb.collection("committees").getOne(`${committee}`, {
+        fields: "motions",
+      })
+    ).motions as string[];
+  } catch (e) {
+    console.error("Committee motions fetching error: " + e);
+    return [];
+  }
+}
+
+// Returns list of member IDs for given committee ID
+// If none found, return empty array
+export async function getCommitteeMembers(committee: string) {
+  try {
+    return (
+      await pb.collection("committees").getOne(`${committee}`, {
+        fields: "members",
+      })
+    ).members as string[];
+  } catch (e) {
+    console.error("Committee members fetching error: " + e);
+    return [];
+  }
+}
+
+// Returns list of motion objects for given committee ID
+export async function getFullCommitteeMotions(committee: string) {
   return (
-    await pb.collection("committees").getOne(`${id}`, {
-      fields: "motions",
+    await pb.collection("committees").getOne(`${committee}`, {
+      expand: "motions",
     })
-  ).motions as string[];
+  ).expand?.motions as PocketbaseMotion[];
 }
