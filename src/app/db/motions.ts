@@ -7,9 +7,9 @@ import { PocketbaseMotion } from "./pocketbaseInterfaces";
 export async function addNewMotion(title: string, committee: string) {
   try {
     // Pass motion creation request
-    const response = await pb
+    const response = (await pb
       .collection("motions")
-      .create({ title: title, committee: committee });
+      .create({ title: title, committee: committee })) as PocketbaseMotion;
 
     // Pull current motion list for the committee
     const currentMotions = await getCommitteeMotions(committee);
@@ -18,7 +18,7 @@ export async function addNewMotion(title: string, committee: string) {
       .collection("committees")
       .update(committee, { motions: [...currentMotions, response.id] });
 
-    return response as PocketbaseMotion;
+    return response;
   } catch (e) {
     console.error("Motion creation error: " + e);
     return false;

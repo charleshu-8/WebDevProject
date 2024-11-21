@@ -14,10 +14,11 @@ import {
 } from "@/app/db/pocketbase";
 import { formatDate, getCurrentTime } from "@/app/utils/time";
 import { PocketbaseMessage } from "@/app/db/pocketbaseInterfaces";
-import { addNewMotion } from "@/app/db/motions";
+import { addNewMotion, getMotionDetails } from "@/app/db/motions";
 import getRandomColor from "@/app/utils/color";
 import MessageBox from "./message-box";
 import { getCommitteeMembers } from "@/app/db/committees";
+import { addNewMessage } from "@/app/db/messages";
 
 interface ChatBoxProps {
   isNewMotion: boolean;
@@ -116,49 +117,9 @@ export default function ChatBox({
     await queryMessages();
   }
 
-  // Push a given message to the DB
-  async function publishMessage(message: string) {
-    try {
-      const newMessage = await pb.collection("messages").create(
-        {
-          text: message,
-          owner: currentUser?.id,
-          motion: getCurrentMotion(),
-          displayName: currentUser?.username,
-        },
-        {
-          $autoCancel: false,
-        },
-      );
-
-      const motion = await pb.collection("motions").getOne(getCurrentMotion(), {
-        expand: "messages",
-        $autoCancel: false,
-      });
-
-      const oldMessages = motion?.expand?.messages;
-      const updatedMessages = oldMessages
-        ? [...motion?.expand?.messages, newMessage]
-        : [newMessage];
-      console.log(updatedMessages);
-
-      await pb.collection("motions").update(
-        getCurrentMotion(),
-        {
-          messages: updatedMessages.map((message) => message.id), // Ensure only message IDs are stored
-        },
-        {
-          $autoCancel: false,
-        },
-      );
-    } catch (error) {
-      console.error("Failed to publish message:", error);
-    }
-  }
-
   // Process and send a given message to the DB
   // Flag is set if messages should be wiped, resetting motion
-  function sendMessage(message: string, flag: boolean = false) {
+  async function sendMessage(message: string, flag: boolean = false) {
     if (message.trim()) {
       console.log("messages", messages);
       // Add message along with timestamp
@@ -177,7 +138,16 @@ export default function ChatBox({
         setMessages([newMessage]);
       }
 
-      publishMessage(message);
+      if (
+        !(await addNewMessage(
+          message,
+          currentUser?.id,
+          getCurrentMotion(),
+          currentUser?.username,
+        ))
+      ) {
+        console.error("Failed to publish message");
+      }
       setCurrentMessage(""); // Clear input after sending
     }
   }
