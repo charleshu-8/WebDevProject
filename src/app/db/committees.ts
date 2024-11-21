@@ -1,5 +1,5 @@
 import { pb } from "./pocketbase";
-import { PocketbaseCommittee } from "./pocketbaseInterfaces";
+import { PocketbaseCommittee, PocketbaseMotion } from "./pocketbaseInterfaces";
 import { getCorrespondingUserID, getUserCommittees } from "./users";
 
 // Create a new committee in DB given a committee title and list of members
@@ -62,4 +62,13 @@ export async function getCommitteeMembers(committee: string) {
     console.error("Committee members fetching error: " + e);
     return [];
   }
+}
+
+// Returns list of motion objects for given committee ID
+export async function getFullCommitteeMotions(id: string) {
+  return (
+    await pb.collection("committees").getOne(`${id}`, {
+      expand: "motions",
+    })
+  ).expand?.motions as PocketbaseMotion[];
 }

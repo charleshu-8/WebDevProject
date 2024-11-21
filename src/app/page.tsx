@@ -1,22 +1,6 @@
-"use client";
-
 import Link from "next/link";
-import { getMotionDetails } from "./db/motions";
-import { getCurrentMotion } from "./db/pocketbase";
-import { addNewMessage } from "./db/messages";
 
 export default function Home() {
-  async function test() {
-    console.log(
-      await addNewMessage(
-        "this is a test",
-        "c8txbfn3j9lchaz",
-        "4fc4fjfp7ofwo2p",
-        "dummy",
-      ),
-    );
-  }
-
   return (
     <main className="flex h-screen w-screen flex-col bg-light-background from-light-primary to-black dark:bg-gradient-to-r">
       <div className="text-light-text dark:text-dark-text">
@@ -52,12 +36,6 @@ export default function Home() {
           {/*you can delete this testing chatpage button whenever*/}
           <button className="h-auto w-auto bg-light-primary text-white">
             <Link href={"/chat"}>Go To Chat Page</Link>
-          </button>
-          <button
-            className="h-auto w-auto bg-light-primary text-white"
-            onClick={test}
-          >
-            dsfffffffffffffffffffffffffffffffffffffffff{" "}
           </button>
         </div>
       </div>
