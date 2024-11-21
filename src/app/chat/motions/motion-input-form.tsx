@@ -58,8 +58,8 @@ export default function MotionInputField({
               alt="Pro"
               src={
                 isProPressed
-                  ? "/img/chat/pro_button_pressed.svg"
-                  : "/img/chat/pro_button.svg"
+                  ? "img/chat/pro_button_pressed.svg"
+                  : "img/chat/pro_button.svg"
               } // Conditionally render the icon
               onClick={handleProClick} // Handle icon click
             />
@@ -72,8 +72,8 @@ export default function MotionInputField({
               alt="Con"
               src={
                 isConPressed
-                  ? "/img/chat/con_button_pressed.svg"
-                  : "/img/chat/con_button.svg"
+                  ? "img/chat/con_button_pressed.svg"
+                  : "img/chat/con_button.svg"
               } // Conditionally render the icon
               onClick={handleConClick} // Handle icon click
             />
@@ -86,8 +86,8 @@ export default function MotionInputField({
               alt="Neutral"
               src={
                 isNeutralPressed
-                  ? "/img/chat/neutral_button_pressed.svg"
-                  : "/img/chat/neutral_button.svg"
+                  ? "img/chat/neutral_button_pressed.svg"
+                  : "img/chat/neutral_button.svg"
               } // Conditionally render the icon
               onClick={handleNeutralClick} // Handle icon click
             />
@@ -105,7 +105,7 @@ export default function MotionInputField({
             <img
               className="h-full"
               alt="Send"
-              src={"/img/chat/send_icon.svg"} // Conditionally render the icon
+              src={"img/chat/send_icon.svg"} // Conditionally render the icon
               onClick={handleSendClick}
             />
           </div>
