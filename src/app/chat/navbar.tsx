@@ -1,12 +1,17 @@
-import { Button, Box } from "@mui/material";
+import { Button, Box, Menu, MenuItem } from "@mui/material";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import { currentUser } from "@/app/db/pocketbase";
-import { useEffect, useState } from "react";
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
+import { useEffect, useState, useRef} from "react";
+import {useOutsideClick} from '../utils/outside-click';
 
 export default function Navbar() {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [open, setOpen] = useState(false);
   const [user, setUser] = useState("Guest");
+
+  const menuRef = useOutsideClick(() => {
+    setOpen(false);
+  });
 
   useEffect(() => {
     if (currentUser && user === "Guest") {
@@ -14,15 +19,14 @@ export default function Navbar() {
     }
   }, [user]);
 
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
 
   const handleProfileClick = (event: React.MouseEvent<HTMLButtonElement>) =>{
     setAnchorEl(event.currentTarget);
+    setOpen(true);
   }
 
-  const handleMenuClose = () =>{
-    setAnchorEl(null);
+  const handleLogoutClick = () => {
+    setOpen(false);
   }
 
   return (
@@ -35,18 +39,19 @@ export default function Navbar() {
           aria-controls={open ? 'profile-button-menu' : undefined}
           aria-haspopup="true"
           aria-expanded={open ? 'true' : undefined}
+          ref={menuRef}
           onClick={handleProfileClick}>
             <PersonOutlineIcon />
             <span className="text-sm">{user}</span>
           </Button>
-          <Menu
+          {open && (<Menu
           id="profile-button-menu"
           open={open}
           anchorEl={anchorEl}
-
           >
-            <MenuItem className="text-sm flex justify-center text-light-primary" onClick={handleMenuClose}>Logout</MenuItem>
-          </Menu>
+            <MenuItem className="text-sm flex justify-center text-light-primary" onClick={handleLogoutClick}>Logout</MenuItem>
+          </Menu>)}
+          
       </Box>
     </Box>
   );
