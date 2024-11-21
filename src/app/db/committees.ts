@@ -65,9 +65,9 @@ export async function getCommitteeMembers(committee: string) {
 }
 
 // Returns list of motion objects for given committee ID
-export async function getFullCommitteeMotions(id: string) {
+export async function getFullCommitteeMotions(committee: string) {
   return (
-    await pb.collection("committees").getOne(`${id}`, {
+    await pb.collection("committees").getOne(`${committee}`, {
       expand: "motions",
     })
   ).expand?.motions as PocketbaseMotion[];
