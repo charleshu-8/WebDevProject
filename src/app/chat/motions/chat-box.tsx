@@ -14,7 +14,7 @@ import {
 } from "@/app/db/pocketbase";
 import { formatDate, getCurrentTime } from "@/app/utils/time";
 import { PocketbaseMessage } from "@/app/db/pocketbaseInterfaces";
-import { addNewMotion, getMotionDetails } from "@/app/db/motions";
+import { addNewMotion } from "@/app/db/motions";
 import getRandomColor from "@/app/utils/color";
 import MessageBox from "./message-box";
 import { getCommitteeMembers } from "@/app/db/committees";
