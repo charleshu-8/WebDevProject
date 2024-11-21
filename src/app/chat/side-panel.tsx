@@ -78,12 +78,12 @@ export default function SidePanel({
     );
     const motionCardProps = pocketbaseMotions.map((motion) => ({
       motionTitle: motion.title,
-      motionStatus: "Blank",
-      shortName: motion.title,
-      fullName: motion.title,
+      motionStatus: "TBD",
+      shortName: "CR:",
+      fullName: "YEET",
       motionText: motion.title,
-      seconderShortName: "YEET",
-      seconderFullName: "YEET",
+      seconderShortName: "SD:",
+      seconderFullName: "YEET2",
       time: motion.created,
     }));
     setMotions(motionCardProps);
@@ -121,7 +121,7 @@ export default function SidePanel({
           {panelTitle}
         </h2>
       </Box>
-      <Box className="panel-content flex h-full w-full flex-col items-center gap-y-2">
+      <Box className="panel-content flex h-full w-full flex-col items-center gap-y-2 overflow-auto">
         {/*check version here with && and then choose to render add committee button or add motion button
               then populate by fetching data from specific loc in db and returning a motion card or discussion card for each*/}
         {(panel === Panel.COMMITTEES || panel === Panel.MOTIONS) && (
@@ -135,29 +135,21 @@ export default function SidePanel({
         {/*Side panel content will go here --> so mapping motions and displaying below or committees */}
         {panel === Panel.MOTIONS && (
           <>
-            <MotionCard
-              motionTitle="Sample Motion"
-              motionStatus="Pending"
-              shortName="JD"
-              fullName="John Doe"
-              motionText="This is a sample motion text."
-              seconderShortName="JS"
-              seconderFullName="Jane Smith"
-              time="12:00 PM"
-            />
-            {motions.map((motion, index) => (
-              <MotionCard
-                key={index}
-                motionTitle={motion.motionTitle}
-                motionStatus={motion.motionStatus}
-                shortName={motion.shortName}
-                fullName={motion.fullName}
-                motionText={motion.motionText}
-                seconderShortName={motion.seconderShortName}
-                seconderFullName={motion.seconderFullName}
-                time={motion.time}
-              />
-            ))}
+            <Box className="h-full w-[90%] overflow-auto">
+              {motions.map((motion, index) => (
+                <MotionCard
+                  key={index}
+                  motionTitle={motion.motionTitle}
+                  motionStatus={motion.motionStatus}
+                  shortName={motion.shortName}
+                  fullName={motion.fullName}
+                  motionText={motion.motionText}
+                  seconderShortName={motion.seconderShortName}
+                  seconderFullName={motion.seconderFullName}
+                  time={motion.time}
+                />
+              ))}
+            </Box>
           </>
         )}
       </Box>
