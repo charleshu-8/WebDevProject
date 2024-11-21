@@ -1,17 +1,17 @@
-import { Button, Box, Menu, MenuItem } from "@mui/material";
+import { Button, Box, Menu, MenuItem} from "@mui/material";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import { currentUser } from "@/app/db/pocketbase";
-import { useEffect, useState, useRef} from "react";
-import {useOutsideClick} from '../utils/outside-click';
+import { useEffect, useState} from "react";
+import useOutsideClick from '../utils/outside-click';
+import { logout } from "../db/authentication";
+import Link from "next/link";
 
 export default function Navbar() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [open, setOpen] = useState(false);
   const [user, setUser] = useState("Guest");
-
-  const menuRef = useOutsideClick(() => {
-    setOpen(false);
-  });
+  // callback w custom hook to close menu
+  const menuRef = useOutsideClick(() => setOpen(false));
 
   useEffect(() => {
     if (currentUser && user === "Guest") {
@@ -27,6 +27,8 @@ export default function Navbar() {
 
   const handleLogoutClick = () => {
     setOpen(false);
+    logout();
+    console.log(`current user: ${currentUser}`)
   }
 
   return (
@@ -49,7 +51,10 @@ export default function Navbar() {
           open={open}
           anchorEl={anchorEl}
           >
-            <MenuItem className="text-sm flex justify-center text-light-primary" onClick={handleLogoutClick}>Logout</MenuItem>
+            <Link href={'/'}>
+              <MenuItem className="text-sm flex justify-center text-light-primary" onClick={handleLogoutClick}>Logout</MenuItem>
+            </Link>
+            
           </Menu>)}
           
       </Box>

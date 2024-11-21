@@ -3,7 +3,7 @@ import {useEffect, useRef} from 'react';
 // custom hook function to handle outside clicks that trigger callbacks to carry out some function
 // returns ref instance that can then listen for outside events to trigger the callback
 
-export const useOutsideClick = (callback: () => void ) => {
+const useOutsideClick = (callback: () => void ) => {
 
     const ref = useRef<HTMLButtonElement>(null);
 
@@ -27,3 +27,5 @@ export const useOutsideClick = (callback: () => void ) => {
       return ref;
 
 }
+
+export default useOutsideClick;
