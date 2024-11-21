@@ -16,8 +16,9 @@ import { formatDate, getCurrentTime } from "@/app/utils/time";
 import { PocketbaseMessage } from "@/app/db/pocketbaseInterfaces";
 import { addNewMotion } from "@/app/db/motions";
 import getRandomColor from "@/app/utils/color";
-import { RecordModel } from "pocketbase";
 import MessageBox from "./message-box";
+import { getCommitteeMembers } from "@/app/db/committees";
+import { addNewMessage } from "@/app/db/messages";
 
 interface ChatBoxProps {
   isNewMotion: boolean;
@@ -53,32 +54,19 @@ export default function ChatBox({
   // Ref to keep track of the container for automatic scrolling
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
-  // Get array of member IDs in committee to find member avatars
-  async function getCommitteeMembersIds() {
-    if (currentUser) {
-      const committeeMembers = await pb
-        .collection("committees")
-        .getOne(getCurrentCommittee(), {
-          fields: "members",
-          $autoCancel: false,
-        });
-      return committeeMembers.members;
-    }
-  }
-
   // Sift through users collection and find current committee members & avatars
   async function getMemberAvatarsByIds() {
     setLoadingMembers(true);
     const avatarPaths = new Map<string, string>();
     // Get list of member ids
-    const memberIds = await getCommitteeMembersIds();
+    const memberIds = await getCommitteeMembers(getCurrentCommittee());
     const memberIdFilter = memberIds
       .map((id: string) => `id='${id}'`)
       .join("||");
 
     // Look through all users that exist until all members of current committee are found
     const result = await pb.collection("users").getFullList({
-      fields: "username, avatar,id",
+      fields: "username, avatar, id",
       filter: memberIdFilter,
     });
 
@@ -99,7 +87,7 @@ export default function ChatBox({
     setLoadingMembers(false);
   }
 
-  async function helper() {
+  async function queryMessages() {
     const response = await pb.collection("motions").getOne(getCurrentMotion(), {
       expand: "messages",
       $autoCancel: false,
@@ -114,7 +102,7 @@ export default function ChatBox({
         timestamp: formattedDate,
         owner: message.owner,
         displayName: message.displayName,
-        // map profile path to display name
+        // Map profile path to display name
       });
     });
     helperArray.sort(
@@ -126,52 +114,12 @@ export default function ChatBox({
 
   // Get all available messages for a motion
   async function fetchMessages() {
-    await helper();
-  }
-
-  // Push a given message to the DB
-  async function publishMessage(message: string) {
-    try {
-      const newMessage = await pb.collection("messages").create(
-        {
-          text: message,
-          owner: currentUser?.id,
-          motion: getCurrentMotion(),
-          displayName: currentUser?.username,
-        },
-        {
-          $autoCancel: false,
-        },
-      );
-
-      const motion = await pb.collection("motions").getOne(getCurrentMotion(), {
-        expand: "messages",
-        $autoCancel: false,
-      });
-
-      const oldMessages = motion?.expand?.messages;
-      const updatedMessages = oldMessages
-        ? [...motion?.expand?.messages, newMessage]
-        : [newMessage];
-      console.log(updatedMessages);
-
-      await pb.collection("motions").update(
-        getCurrentMotion(),
-        {
-          messages: updatedMessages.map((message) => message.id), // Ensure only message IDs are stored
-        },
-        {
-          $autoCancel: false,
-        },
-      );
-    } catch (error) {
-      console.error("Failed to publish message:", error);
-    }
+    await queryMessages();
   }
 
   // Process and send a given message to the DB
   // Flag is set if messages should be wiped, resetting motion
-  function sendMessage(message: string, flag: boolean = false) {
+  async function sendMessage(message: string, flag: boolean = false) {
     if (message.trim()) {
       console.log("messages", messages);
       // Add message along with timestamp
@@ -190,7 +138,16 @@ export default function ChatBox({
         setMessages([newMessage]);
       }
 
-      publishMessage(message);
+      if (
+        !(await addNewMessage(
+          message,
+          currentUser?.id,
+          getCurrentMotion(),
+          currentUser?.username,
+        ))
+      ) {
+        console.error("Failed to publish message");
+      }
       setCurrentMessage(""); // Clear input after sending
     }
   }
@@ -199,7 +156,7 @@ export default function ChatBox({
   function sendNewMotion(message: string) {
     if (message.trim()) {
       addNewMotion(message, getCurrentCommittee()).then((motion) => {
-        setCurrentMotion((motion as RecordModel).id);
+        setCurrentMotion(motion === false ? "" : motion.id);
         sendMessage(message, true);
         handleToggleIsNewMotion();
       });
