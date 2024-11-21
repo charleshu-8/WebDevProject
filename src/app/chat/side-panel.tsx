@@ -10,6 +10,7 @@ import {
   getCurrentCommittee,
   avatarPathUrl,
 } from "@/app/db/pocketbase";
+import { getFullCommitteeMotions } from "@/app/db/committees";
 
 interface SidePanelProps {
   panelVersion: Panel;
@@ -88,7 +89,25 @@ export default function SidePanel({
               time="12:00 PM"
             />
             <div>
-              <p>{getCurrentCommittee()}</p>
+              {getFullCommitteeMotions(getCurrentCommittee()).then(
+                (motions) => (
+                  <div>
+                    {motions.map((motion) => (
+                      <MotionCard
+                        key={motion.id}
+                        motionTitle={motion.title}
+                        motionStatus="Pending"
+                        shortName="JD"
+                        fullName="John Doe"
+                        motionText="This is a sample motion text."
+                        seconderShortName="JS"
+                        seconderFullName="Jane Smith"
+                        time={motion.created}
+                      />
+                    ))}
+                  </div>
+                ),
+              )}
             </div>
           </>
         )}
