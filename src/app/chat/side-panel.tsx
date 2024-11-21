@@ -2,6 +2,14 @@ import { Box, Button } from "@mui/material";
 import React, { useMemo } from "react";
 import { Panel } from "./panelEnum";
 import MotionCard from "./motions/motion-card"; // Adjust the import path as necessary
+import {
+  currentUser,
+  getCurrentMotion,
+  pb,
+  setCurrentMotion,
+  getCurrentCommittee,
+  avatarPathUrl,
+} from "@/app/db/pocketbase";
 
 interface SidePanelProps {
   panelVersion: Panel;
