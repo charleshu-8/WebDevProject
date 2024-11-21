@@ -1,5 +1,5 @@
 import { Box, Button } from "@mui/material";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Panel } from "./panelEnum";
 import MotionCard from "./motions/motion-card"; // Adjust the import path as necessary
 import {
@@ -15,6 +15,17 @@ import { getFullCommitteeMotions } from "@/app/db/committees";
 interface SidePanelProps {
   panelVersion: Panel;
   handleToggleIsNewMotion: () => void;
+}
+
+interface MotionCardProps {
+  motionTitle: string;
+  motionStatus: string;
+  shortName: string;
+  fullName: string;
+  motionText: string;
+  seconderShortName: string;
+  seconderFullName: string;
+  time: string;
 }
 
 export default function SidePanel({
@@ -57,6 +68,52 @@ export default function SidePanel({
     }
   }
 
+  // State to store motions as objects
+  const [motions, setMotions] = useState<MotionCardProps[]>([]);
+
+  // asycn function to query all motions from the current committee
+  async function queryMotions() {
+    const pocketbaseMotions = await getFullCommitteeMotions(
+      getCurrentCommittee(),
+    );
+    const motionCardProps = pocketbaseMotions.map((motion) => ({
+      motionTitle: motion.title,
+      motionStatus: "Blank",
+      shortName: motion.title,
+      fullName: motion.title,
+      motionText: motion.title,
+      seconderShortName: "YEET",
+      seconderFullName: "YEET",
+      time: motion.created,
+    }));
+    setMotions(motionCardProps);
+    return motions;
+  }
+
+  // Get all available messages for a motion
+  async function fetchMotions() {
+    await queryMotions();
+  }
+
+  // Listens for DB updates to motions to refetch motions
+  // Also refetches upon motion or committee change
+  useEffect(() => {
+    if (getCurrentCommittee() && getCurrentMotion()) {
+      fetchMotions();
+
+      // Subscribe to updates for the specific motion
+      pb.collection("committees").subscribe(getCurrentCommittee(), () => {
+        fetchMotions(); // Fetch new messages when updated
+        console.log("something changed");
+      });
+
+      // Cleanup subscription on component unmount
+      return () => {
+        pb.collection("committees").unsubscribe(getCurrentCommittee());
+      };
+    }
+  }, []);
+
   return (
     <Box className="flex h-full w-auto min-w-[8rem] flex-grow flex-col bg-light-secondary p-2 dark:bg-extra-dark-blue">
       <Box className="flex h-auto w-full justify-start">
@@ -88,27 +145,19 @@ export default function SidePanel({
               seconderFullName="Jane Smith"
               time="12:00 PM"
             />
-            <div>
-              {getFullCommitteeMotions(getCurrentCommittee()).then(
-                (motions) => (
-                  <div>
-                    {motions.map((motion) => (
-                      <MotionCard
-                        key={motion.id}
-                        motionTitle={motion.title}
-                        motionStatus="Pending"
-                        shortName="JD"
-                        fullName="John Doe"
-                        motionText="This is a sample motion text."
-                        seconderShortName="JS"
-                        seconderFullName="Jane Smith"
-                        time={motion.created}
-                      />
-                    ))}
-                  </div>
-                ),
-              )}
-            </div>
+            {motions.map((motion, index) => (
+              <MotionCard
+                key={index}
+                motionTitle={motion.motionTitle}
+                motionStatus={motion.motionStatus}
+                shortName={motion.shortName}
+                fullName={motion.fullName}
+                motionText={motion.motionText}
+                seconderShortName={motion.seconderShortName}
+                seconderFullName={motion.seconderFullName}
+                time={motion.time}
+              />
+            ))}
           </>
         )}
       </Box>
