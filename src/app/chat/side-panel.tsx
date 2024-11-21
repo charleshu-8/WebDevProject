@@ -76,16 +76,21 @@ export default function SidePanel({
         )}
         {/*Side panel content will go here --> so mapping motions and displaying below or committees */}
         {panel === Panel.MOTIONS && (
-          <MotionCard
-            motionTitle="Sample Motion"
-            motionStatus="Pending"
-            shortName="JD"
-            fullName="John Doe"
-            motionText="This is a sample motion text."
-            seconderShortName="JS"
-            seconderFullName="Jane Smith"
-            time="12:00 PM"
-          />
+          <>
+            <MotionCard
+              motionTitle="Sample Motion"
+              motionStatus="Pending"
+              shortName="JD"
+              fullName="John Doe"
+              motionText="This is a sample motion text."
+              seconderShortName="JS"
+              seconderFullName="Jane Smith"
+              time="12:00 PM"
+            />
+            <div>
+              <p>{getCurrentCommittee()}</p>
+            </div>
+          </>
         )}
       </Box>
     </Box>
