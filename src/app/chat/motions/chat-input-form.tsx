@@ -3,13 +3,13 @@
 import React, { useState } from "react";
 import Textarea from "@mui/joy/Textarea"; // Import the Input component from the MUI Joy library
 import Image from "next/image";
-import proButton from "@/app/assets/img/chat/pro_button.svg"
-import proButtonPressed from "@/app/assets/img/chat/pro_button_pressed.svg"
-import conButton from "@/app/assets/img/chat/con_button.svg"
-import conButtonPressed from "@/app/assets/img/chat/con_button_pressed.svg"
-import neutralButton from "@/app/assets/img/chat/neutral_button.svg"
-import neutralButtonPressed from "@/app/assets/img/chat/neutral_button_pressed.svg"
-import sendIcon from "@/app/assets/img/chat/send_icon.svg"
+import proButton from "@/app/assets/chat/pro_button.svg"
+import proButtonPressed from "@/app/assets/chat/pro_button_pressed.svg"
+import conButton from "@/app/assets/chat/con_button.svg"
+import conButtonPressed from "@/app/assets/chat/con_button_pressed.svg"
+import neutralButton from "@/app/assets/chat/neutral_button.svg"
+import neutralButtonPressed from "@/app/assets/chat/neutral_button_pressed.svg"
+import sendIcon from "@/app/assets/chat/send_icon.svg"
 
 interface ChatInputFieldProps {
   onSendMessage: (message: string) => void;

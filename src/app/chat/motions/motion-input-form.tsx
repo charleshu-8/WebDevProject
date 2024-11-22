@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Textarea from "@mui/joy/Textarea"; // Import the Input component from the MUI Joy library
 import Image from "next/image";
-import sendIcon from "@/app/assets/img/chat/send_icon.svg"
+import sendIcon from "@/app/assets/chat/send_icon.svg"
 
 interface MotionInputFieldProps {
   onSendMessage: (message: string) => void;
