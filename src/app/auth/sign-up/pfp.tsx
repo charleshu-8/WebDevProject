@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { SignUpContext } from "./signUpContext";
+import Image from "next/image";
 
 export default function UploadAndDisplayImage() {
   // Define state variable to store the selected image
@@ -43,7 +44,7 @@ export default function UploadAndDisplayImage() {
       {/* Conditionally render the selected image or the default image */}
       <div style={{ width: "100%" }}>
         {/* Set the width of the parent element */}
-        <img
+        <Image
           alt="Profile"
           style={{
             width: "100%",
@@ -58,6 +59,8 @@ export default function UploadAndDisplayImage() {
                 ? "/img/auth/default_pfp_dark.svg" // Use dark mode image
                 : "/img/auth/default_pfp_light.svg" // Use light mode image
           }
+          width={1000}
+          height={1000}
           onClick={handleClick} // Handle both single and double click
         />
       </div>
