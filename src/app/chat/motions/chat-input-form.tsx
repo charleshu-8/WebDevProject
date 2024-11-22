@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import Textarea from "@mui/joy/Textarea"; // Import the Input component from the MUI Joy library
 import Image from "next/image";
-import { prefix } from "@/app/utils/prefix";
 
 interface ChatInputFieldProps {
   onSendMessage: (message: string) => void;
@@ -58,8 +57,8 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
               alt="Pro"
               src={
                 isProPressed
-                  ? `${prefix}/img/chat/pro_button_pressed.svg`
-                  : `${prefix}/img/chat/pro_button.svg`
+                  ? "../../../public/img/chat/pro_button_pressed.svg"
+                  : "../../../public/img/chat/pro_button.svg"
               } // Conditionally render the icon
               width="56"
               height="20"
@@ -74,8 +73,8 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
               alt="Con"
               src={
                 isConPressed
-                  ? `${prefix}/img/chat/con_button_pressed.svg`
-                  : `${prefix}/img/chat/con_button.svg`
+                  ? "../../../public/img/chat/con_button_pressed.svg"
+                  : "../../../public/img/chat/con_button.svg"
               } // Conditionally render the icon
               width="58"
               height="20"
@@ -90,8 +89,8 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
               alt="Neutral"
               src={
                 isNeutralPressed
-                  ? `${prefix}/img/chat/neutral_button_pressed.svg`
-                  : `${prefix}/img/chat/neutral_button.svg`
+                  ? "../../../public/img/chat/neutral_button_pressed.svg"
+                  : "../../../public/img/chat/neutral_button.svg"
               } // Conditionally render the icon
               width="74"
               height="20"
@@ -126,7 +125,7 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
             <Image
               className="h-full"
               alt="Send"
-              src={`${prefix}/img/chat/send_icon.svg`} // Conditionally render the icon
+              src={"../../../public/img/chat/send_icon.svg"} // Conditionally render the icon
               width="40"
               height="40"
               onClick={handleSendClick} // Handle icon click
