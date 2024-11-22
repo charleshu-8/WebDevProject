@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
 import { SignUpContext } from "./signUpContext";
 import Image from "next/image";
+import defaultPfpLight from "@/app/assets/img/auth/default_pfp_light.svg"
+import defaultPfpDark from "@/app/assets/img/auth/default_pfp_dark.svg"
 
 export default function UploadAndDisplayImage() {
   // Define state variable to store the selected image
@@ -56,8 +58,8 @@ export default function UploadAndDisplayImage() {
             pfp
               ? URL.createObjectURL(pfp)
               : isDarkMode
-                ? '../../../public/img/auth/default_pfp_dark.svg' // Use dark mode image
-                : '../../../public/img/auth/default_pfp_light.svg' // Use light mode image
+                ? defaultPfpDark // Use dark mode image
+                : defaultPfpLight // Use light mode image
           }
           width={1000}
           height={1000}

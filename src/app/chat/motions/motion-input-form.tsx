@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Textarea from "@mui/joy/Textarea"; // Import the Input component from the MUI Joy library
 import Image from "next/image";
+import sendIcon from "@/app/assets/img/chat/send_icon.svg"
 
 interface MotionInputFieldProps {
   onSendMessage: (message: string) => void;
@@ -37,7 +38,7 @@ export default function MotionInputField({
             <Image
               className="h-full"
               alt="Send"
-              src={"../../../public/img/chat/send_icon.svg"} // Conditionally render the icon
+              src={sendIcon} 
               width="40"
               height="40"
               onClick={handleSendClick}
