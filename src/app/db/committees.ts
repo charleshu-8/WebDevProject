@@ -72,3 +72,18 @@ export async function getFullCommitteeMotions(committee: string) {
     })
   ).expand?.motions as PocketbaseMotion[];
 }
+
+// Returns ID of chair for given committee ID
+// If none found, return empty string
+export async function getCommitteeChair(committee: string) {
+  try {
+    return (
+      await pb.collection("committees").getOne(`${committee}`, {
+        fields: "chair",
+      })
+    ).chair as string;
+  } catch (e) {
+    console.error("Committee chair fetching error: " + e);
+    return "";
+  }
+}
