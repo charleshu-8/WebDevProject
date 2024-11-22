@@ -4,7 +4,11 @@ import { getCorrespondingUserID, getUserCommittees } from "./users";
 
 // Create a new committee in DB given a committee title and list of members
 // Returns response if successful, false otherwise
-export async function addNewCommitteee(title: string, members: string[]) {
+export async function addNewCommitteee(
+  title: string,
+  members: string[],
+  chair: string,
+) {
   // Map member list to corresponding internal ID in DB
   for (const member in members) {
     members[member] = await getCorrespondingUserID(members[member]);
@@ -15,6 +19,7 @@ export async function addNewCommitteee(title: string, members: string[]) {
     const response = await pb.collection("committees").create({
       title: title,
       members: members,
+      chair: await getCorrespondingUserID(chair),
     });
 
     // Then update each member to note inclusion in committee
