@@ -70,12 +70,18 @@ export async function getCommitteeMembers(committee: string) {
 }
 
 // Returns list of motion objects for given committee ID
+// If none found, return empty array
 export async function getFullCommitteeMotions(committee: string) {
-  return (
-    await pb.collection("committees").getOne(`${committee}`, {
-      expand: "motions",
-    })
-  ).expand?.motions as PocketbaseMotion[];
+  try {
+    return (
+      await pb.collection("committees").getOne(`${committee}`, {
+        expand: "motions",
+      })
+    ).expand?.motions as PocketbaseMotion[];
+  } catch (e) {
+    console.error("Full committee motions fetching error: " + e);
+    return [];
+  }
 }
 
 // Returns ID of chair for given committee ID
