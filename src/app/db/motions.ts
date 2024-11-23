@@ -1,6 +1,6 @@
 import { getCommitteeMotions } from "./committees";
 import { pb } from "./pocketbase";
-import { PocketbaseMotion } from "./pocketbaseInterfaces";
+import { PocketbaseMessage, PocketbaseMotion } from "./pocketbaseInterfaces";
 
 // Create a new motion in DB given a motion title and associated committee ID
 // Returns response if successful, false otherwise
@@ -42,5 +42,20 @@ export async function getMotionDetails(motion: string) {
       created: "",
       updated: "",
     };
+  }
+}
+
+// Returns list of message objects for given motion ID
+// If none found, returns empty array
+export async function getFullMotionMessages(motion: string) {
+  try {
+    return (
+      await pb.collection("motions").getOne(`${motion}`, {
+        expand: "messages",
+      })
+    ).expand?.messages as PocketbaseMessage[];
+  } catch (e) {
+    console.error("Full motion messages fetching error: " + e);
+    return [];
   }
 }

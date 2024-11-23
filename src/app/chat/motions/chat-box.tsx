@@ -14,7 +14,7 @@ import {
 } from "@/app/db/pocketbase";
 import { formatDate, getCurrentTime } from "@/app/utils/time";
 import { PocketbaseMessage } from "@/app/db/pocketbaseInterfaces";
-import { addNewMotion } from "@/app/db/motions";
+import { addNewMotion, getFullMotionMessages } from "@/app/db/motions";
 import getRandomColor from "@/app/utils/color";
 import MessageBox from "./message-box";
 import { getCommitteeMembers } from "@/app/db/committees";
@@ -87,14 +87,12 @@ export default function ChatBox({
     setLoadingMembers(false);
   }
 
-  async function queryMessages() {
-    const response = await pb.collection("motions").getOne(getCurrentMotion(), {
-      expand: "messages",
-      $autoCancel: false,
-    });
+  // Get all available messages for a motion
+  async function fetchMessages() {
+    const messages = await getFullMotionMessages(getCurrentMotion());
 
     const helperArray: ChatMessage[] = [];
-    response?.expand?.messages.forEach((message: PocketbaseMessage) => {
+    messages.forEach((message: PocketbaseMessage) => {
       const formattedDate = formatDate(message.created);
       helperArray.push({
         id: message.id,
@@ -109,19 +107,14 @@ export default function ChatBox({
       (a, b) =>
         new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime(),
     );
-    setMessages(helperArray);
-  }
 
-  // Get all available messages for a motion
-  async function fetchMessages() {
-    await queryMessages();
+    setMessages(helperArray);
   }
 
   // Process and send a given message to the DB
   // Flag is set if messages should be wiped, resetting motion
   async function sendMessage(message: string, flag: boolean = false) {
     if (message.trim()) {
-      console.log("messages", messages);
       // Add message along with timestamp
       const currentTime =
         getCurrentTime() + " " + new Date().toLocaleDateString();
@@ -180,7 +173,7 @@ export default function ChatBox({
       // Subscribe to updates for the specific motion
       pb.collection("motions").subscribe(getCurrentMotion(), () => {
         fetchMessages(); // Fetch new messages when updated
-        console.log("something changed");
+        console.log("Messages have changed");
       });
 
       // Cleanup subscription on component unmount
