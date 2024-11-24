@@ -4,9 +4,10 @@ import { Panel } from "./panelEnum";
 
 interface SidePanelProps {
   panelVersion: Panel;
+  handleToggleMakeCommittee: () => void;
 }
 
-export default function SidePanel({ panelVersion }: SidePanelProps) {
+export default function SidePanel({ panelVersion, handleToggleMakeCommittee = () => {} }: SidePanelProps) {
   const panel = panelVersion;
 
   const panelTitle: string = useMemo(() => {
@@ -35,6 +36,7 @@ export default function SidePanel({ panelVersion }: SidePanelProps) {
     switch (panel) {
       case Panel.COMMITTEES:
         console.log("Rendering add committee");
+        handleToggleMakeCommittee();
         break;
       case Panel.MOTIONS:
         console.log("Rendering add motion");

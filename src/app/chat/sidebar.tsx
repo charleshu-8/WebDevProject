@@ -8,7 +8,11 @@ import React, { useState } from "react";
 import { Panel } from "./panelEnum";
 import SidePanel from "./side-panel";
 
-export default function Sidebar() {
+interface SideBarProps {
+  handleToggleMakeCommittee: () => void;
+}
+
+export default function Sidebar({ handleToggleMakeCommittee = () => {}}: SideBarProps) {
   /* tracks panel version for changing panel layout */
   const [panelVersion, setPanelVersion] = useState(Panel.COMMITTEES);
 
@@ -77,7 +81,7 @@ export default function Sidebar() {
           </IconButton>
         </Box>
       </Box>
-      <SidePanel panelVersion={panelVersion} />
+      <SidePanel panelVersion={panelVersion} handleToggleMakeCommittee={handleToggleMakeCommittee}/>
     </Box>
   );
 }

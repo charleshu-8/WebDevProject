@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 
-
+interface props {
+  onSubmit: () => void;
+}
 
 // Form component for making a committee
-export default function MakeCommitteeForm() {
+export default function MakeCommitteeForm({ onSubmit = () => {} }: props ) {
   const [memberSet] = useState<Set<string>>(new Set<string>([]));
   const [membersAdded, setMembersAdded] = useState<boolean>(false);
   const [hasName, setHasName] = useState<boolean>(false);
@@ -17,7 +19,7 @@ export default function MakeCommitteeForm() {
 
     console.log(committeeName);
     console.log(memberSet);
-    //onToggle();
+    onSubmit();
 
     setHasName(false);
     setMembersAdded(false);
