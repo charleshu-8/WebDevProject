@@ -1,6 +1,7 @@
 import { Box, Button } from "@mui/material";
 import React, { useMemo } from "react";
 import { Panel } from "./panel";
+import MotionCard from "./motion-card";
 
 interface SidePanelProps {
   panelVersion: Panel;
@@ -54,7 +55,7 @@ export default function SidePanel({ panelVersion }: SidePanelProps) {
               then populate by fetching data from specific loc in db and returning a motion card or discussion card for each*/}
         {(panel === Panel.COMMITTEES || panel === Panel.MOTIONS) && (
           <Button
-            className="mt-3 bg-extra-dark-blue text-xs text-white dark:bg-dark-background dark:text-dark-accent"
+            className="mt-3 bg-extra-dark-blue text-xs text-white dark:bg-dark-primary dark:text-light-text"
             onClick={handlePanelAddButtonClick}
           >
             {panelButtonTitle}

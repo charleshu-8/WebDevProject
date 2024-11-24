@@ -54,9 +54,9 @@ export default function MotionInputField({
   return (
     <>
       {/* Main White Chat Field Input Box Container */}
-      <div className="h-full w-full flex-col items-center justify-center overflow-hidden rounded-lg bg-white">
+      <div className="h-full w-full flex-col items-center justify-center overflow-hidden rounded-lg bg-white dark:bg-extra-gray">
         {/* Gray Options Bar above chat input field */}
-        <div className="flex h-1/5 items-center bg-extra-dim-gray pl-6">
+        <div className="flex h-1/5 items-center bg-extra-dim-gray pl-6 dark:bg-extra-dim-gray">
           {/* Pro Icon Container */}
           <div className="ml-2 mr-2 flex h-[70%] items-center">
             {/* Pro Button/Icon */}
@@ -91,7 +91,7 @@ export default function MotionInputField({
         {/* 'Motion:' Declaration Text with Send Button */}
         <div className="ml-7 mr-7 mt-4 flex h-1/5 items-center justify-between">
           {/* Motion Text */}
-          <p className="text-xl font-semibold text-black dark:text-black">
+          <p className="text-xl font-semibold text-black dark:text-dark-text">
             Motion:
           </p>
           {/* Send Button/Icon Container*/}

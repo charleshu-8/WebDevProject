@@ -14,7 +14,7 @@ interface MotionCardProps {
 
 export default function MotionCard(props: MotionCardProps) {
   return (
-    <Box className="flex h-[140px] flex-col justify-center gap-y-[5px] rounded-[5px] border border-gray-300 bg-white px-[5px] py-[75px]">
+    <Box className="flex h-[140px] flex-col justify-center gap-y-[5px] rounded-[5px] border border-gray-300 bg-white px-[5px] py-[75px] dark:border-dark-background dark:bg-dark-primary">
       <Box className="flex h-[20px] w-full flex-row items-end justify-start gap-x-3">
         <p className="text-[12px] font-bold text-black">
           Motion: {props.motionTitle}

@@ -44,11 +44,11 @@ export default function ChatBox({ isNewMotion }: ChatBoxProps) {
   }
 
   return (
-    <Box className="flex h-full w-full flex-col bg-gray-200 p-4">
+    <Box className="flex h-full w-full flex-col bg-gray-200 p-4 dark:bg-extra-dark-gray">
       {/* Display messages */}
-      <Box className="mb-2 flex-grow overflow-y-auto bg-white p-4">
+      <Box className="mb-2 flex-grow overflow-y-auto bg-white p-4 dark:bg-extra-gray">
         {messages.length === 0 ? (
-          <p className="text-gray-500">No messages yet</p>
+          <p className="text-gray-500 dark:text-dark-text">No messages yet</p>
         ) : (
           messages.map((message, index) => (
             <Box key={index} className="mb-4 flex flex-col items-end">
