@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+
+
 // Form component for making a committee
 export default function MakeCommitteeForm() {
   const [memberSet] = useState<Set<string>>(new Set<string>([]));
@@ -15,6 +17,7 @@ export default function MakeCommitteeForm() {
 
     console.log(committeeName);
     console.log(memberSet);
+    //onToggle();
 
     setHasName(false);
     setMembersAdded(false);
@@ -122,10 +125,15 @@ export default function MakeCommitteeForm() {
   }
 
   return (
+    
     <form
       action={handleResponse}
-      className="flex h-full w-full flex-col space-y-6 rounded-xl border-2 border-light-secondary bg-white p-8"
+      className="flex h-full w-full flex-col items-center bg-white"
     >
+      <header className="text-xl text-left p-8 w-full font-bold">
+        Make Committee
+      </header>
+      <div className="h-fit w-4/5 flex flex-col  space-y-6 rounded-xl border-2 border-light-secondary  p-8">
       {/*Committee Name Row*/}
       <div className="flex w-full flex-row">
         <label htmlFor="committeename" className="w-1/3">
@@ -208,6 +216,7 @@ export default function MakeCommitteeForm() {
         >
           Submit
         </button>
+      </div>
       </div>
     </form>
   );
