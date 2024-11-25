@@ -2,6 +2,14 @@
 
 import React, { useState } from "react";
 import Textarea from "@mui/joy/Textarea"; // Import the Input component from the MUI Joy library
+import Image from "next/image";
+import proButton from "@/app/assets/chat/pro_button.svg"
+import proButtonPressed from "@/app/assets/chat/pro_button_pressed.svg"
+import conButton from "@/app/assets/chat/con_button.svg"
+import conButtonPressed from "@/app/assets/chat/con_button_pressed.svg"
+import neutralButton from "@/app/assets/chat/neutral_button.svg"
+import neutralButtonPressed from "@/app/assets/chat/neutral_button_pressed.svg"
+import sendIcon from "@/app/assets/chat/send_icon.svg"
 
 interface ChatInputFieldProps {
   onSendMessage: (message: string) => void;
@@ -51,42 +59,48 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
           {/* Pro Icon Container */}
           <div className="ml-2 mr-2 flex h-[70%] items-center">
             {/* Pro Button/Icon */}
-            <img
+            <Image
               className="h-full cursor-pointer"
               alt="Pro"
               src={
                 isProPressed
-                  ? "/img/chat/pro_button_pressed.svg"
-                  : "/img/chat/pro_button.svg"
+                  ? proButtonPressed
+                  : proButton
               } // Conditionally render the icon
+              width="56"
+              height="20"
               onClick={handleProClick} // Handle icon click
             />
           </div>
           {/* Con Icon Container */}
           <div className="ml-2 mr-2 flex h-[70%] items-center">
             {/* Con Button/Icon */}
-            <img
+            <Image
               className="h-full cursor-pointer"
               alt="Con"
               src={
                 isConPressed
-                  ? "/img/chat/con_button_pressed.svg"
-                  : "/img/chat/con_button.svg"
+                  ? conButtonPressed
+                  : conButton
               } // Conditionally render the icon
+              width="58"
+              height="20"
               onClick={handleConClick} // Handle icon click
             />
           </div>
           {/* Neutral Icon Container */}
           <div className="ml-2 mr-2 flex h-[70%] items-center">
             {/* Neutral Button/Icon */}
-            <img
+            <Image
               className="h-full cursor-pointer"
               alt="Neutral"
               src={
                 isNeutralPressed
-                  ? "/img/chat/neutral_button_pressed.svg"
-                  : "/img/chat/neutral_button.svg"
+                  ? neutralButtonPressed
+                  : neutralButton
               } // Conditionally render the icon
+              width="74"
+              height="20"
               onClick={handleNeutralClick} // Handle icon click
             />
           </div>
@@ -115,10 +129,12 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
           {/* Send Button/Icon Container*/}
           <div className="ml-2 mr-2 flex h-5/6 cursor-pointer items-center">
             {/* Send Button/Icon */}
-            <img
+            <Image
               className="h-full"
               alt="Send"
-              src={"/img/chat/send_icon.svg"} // Conditionally render the icon
+              src={sendIcon} // Conditionally render the icon
+              width="40"
+              height="40"
               onClick={handleSendClick} // Handle icon click
             />
           </div>

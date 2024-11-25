@@ -6,9 +6,13 @@ interface SidePanelProps {
   panelVersion: Panel;
   handleToggleMakeCommittee: (value: boolean) => void;
   isMakeCommittee: boolean;
+  handleToggleIsNewMotion: () => void;
 }
 
-export default function SidePanel({ isMakeCommittee, panelVersion, handleToggleMakeCommittee = (value: boolean) => {} }: SidePanelProps) {
+export default function SidePanel({ isMakeCommittee,
+  panelVersion, handleToggleMakeCommittee = (value: boolean) => {},
+  handleToggleIsNewMotion,
+}: SidePanelProps) {
   const panel = panelVersion;
 
   const panelTitle: string = useMemo(() => {
@@ -46,6 +50,7 @@ export default function SidePanel({ isMakeCommittee, panelVersion, handleToggleM
         break;
       case Panel.MOTIONS:
         console.log("Rendering add motion");
+        handleToggleIsNewMotion();
         break;
     }
   }

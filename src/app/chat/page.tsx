@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import SideBar from "./navbar";
-import NavBar from "./sidebar";
+import NavBar from "./navbar";
+import Sidebar from "./sidebar";
 import ChatBox from "./motions/chat-box";
 import MakeCommitteeForm from "./committees/make-committee-form";
 
@@ -24,18 +24,19 @@ export default function ChatPage() {
 
   return (
     <div className="flex h-screen w-screen bg-light-background dark:bg-dark-secondary">
-      <SideBar />
+      <Sidebar 
+        handleToggleIsNewMotion={handleToggleIsNewMotion} 
+        handleToggleMakeCommittee={handleToggleMakeCommittee}
+        isMakeCommittee={isMakeCommittee}/>
       <div className="relative top-[80px] flex h-[calc(100%-80px)] w-full flex-row">
-      <NavBar handleToggleMakeCommittee={handleToggleMakeCommittee} isMakeCommittee={isMakeCommittee}/>
-        
-          {isMakeCommittee ? (
-              <MakeCommitteeForm handleToggleMakeCommittee={handleToggleMakeCommittee}/>
-            ) : (
-              <ChatBox isNewMotion={isNewMotion} />
-            )}
-          
-        {/* <ChatBox isNewMotion={isNewMotion} />*/}
-        
+      <NavBar/>
+      {isMakeCommittee ? (
+        <MakeCommitteeForm handleToggleMakeCommittee={handleToggleMakeCommittee}/>
+        ) : (
+        <ChatBox 
+          isNewMotion={isNewMotion} 
+          handleToggleIsNewMotion={handleToggleIsNewMotion}/>
+        )}
       </div>
     </div>
   );

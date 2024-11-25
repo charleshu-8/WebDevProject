@@ -10,7 +10,7 @@ export default function Navbar() {
     if (currentUser && user === "Guest") {
       setUser(currentUser.username);
     }
-  }, [currentUser, user]);
+  }, [user]);
 
   return (
     <Box className="fixed left-0 top-0 flex h-[80px] w-full flex-row bg-light-primary p-2 dark:bg-dark-background">
