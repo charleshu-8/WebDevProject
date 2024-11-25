@@ -5,9 +5,10 @@ import { Panel } from "./panelEnum";
 interface SidePanelProps {
   panelVersion: Panel;
   handleToggleMakeCommittee: (value: boolean) => void;
+  isMakeCommittee: boolean;
 }
 
-export default function SidePanel({ panelVersion, handleToggleMakeCommittee = (value: boolean) => {} }: SidePanelProps) {
+export default function SidePanel({ isMakeCommittee, panelVersion, handleToggleMakeCommittee = (value: boolean) => {} }: SidePanelProps) {
   const panel = panelVersion;
 
   const panelTitle: string = useMemo(() => {
@@ -25,7 +26,7 @@ export default function SidePanel({ panelVersion, handleToggleMakeCommittee = (v
 
   const panelButtonTitle = useMemo(() => {
     switch (panel) {
-      case Panel.COMMITTEES:
+      case (Panel.COMMITTEES):
         return "Add Committee";
       case Panel.MOTIONS:
         return "Add Motion";
@@ -35,8 +36,13 @@ export default function SidePanel({ panelVersion, handleToggleMakeCommittee = (v
   function handlePanelAddButtonClick() {
     switch (panel) {
       case Panel.COMMITTEES:
-        console.log("Rendering add committee");
-        handleToggleMakeCommittee(true);
+        if (!isMakeCommittee) {
+          console.log("Rendering add committee");
+        }
+        else {
+          console.log("Returning from add committee");
+        }
+        handleToggleMakeCommittee(!isMakeCommittee);
         break;
       case Panel.MOTIONS:
         console.log("Rendering add motion");

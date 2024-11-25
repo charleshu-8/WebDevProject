@@ -24,7 +24,7 @@ export default function ChatPage() {
 
   return (
     <div className="flex h-screen w-screen bg-light-background dark:bg-dark-secondary">
-      <NavBar handleToggleMakeCommittee={handleToggleMakeCommittee}/>
+      <NavBar handleToggleMakeCommittee={handleToggleMakeCommittee} isMakeCommittee={isMakeCommittee}/>
       <div className="relative top-[80px] flex h-[calc(100%-80px)] w-full flex-row">
         <SideBar />
           {isMakeCommittee ? (

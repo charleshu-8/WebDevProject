@@ -10,9 +10,10 @@ import SidePanel from "./side-panel";
 
 interface SideBarProps {
   handleToggleMakeCommittee: (value: boolean) => void;
+  isMakeCommittee: boolean;
 }
 
-export default function Sidebar({ handleToggleMakeCommittee = (value: boolean) => {}}: SideBarProps) {
+export default function Sidebar({ handleToggleMakeCommittee = (value: boolean) => {}, isMakeCommittee}: SideBarProps) {
   /* tracks panel version for changing panel layout */
   const [panelVersion, setPanelVersion] = useState(Panel.COMMITTEES);
 
@@ -81,7 +82,7 @@ export default function Sidebar({ handleToggleMakeCommittee = (value: boolean) =
           </IconButton>
         </Box>
       </Box>
-      <SidePanel panelVersion={panelVersion} handleToggleMakeCommittee={handleToggleMakeCommittee}/>
+      <SidePanel panelVersion={panelVersion} handleToggleMakeCommittee={handleToggleMakeCommittee} isMakeCommittee={isMakeCommittee}/>
     </Box>
   );
 }
