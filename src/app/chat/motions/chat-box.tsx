@@ -118,10 +118,10 @@ export default function ChatBox({
       // Add message along with timestamp
       const currentTime =
         getCurrentTime() + " " + new Date().toLocaleDateString();
-      const newMessage = {
+      const newMessage: ChatMessage = {
         text: message,
         timestamp: currentTime,
-        owner: currentUser?.id,
+        owner: currentUser?.id as string,
         displayName: currentUser?.username,
       };
 
@@ -134,7 +134,7 @@ export default function ChatBox({
       if (
         !(await addNewMessage(
           message,
-          currentUser?.id,
+          currentUser?.id as string,
           getCurrentMotion(),
           currentUser?.username,
         ))
