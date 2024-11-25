@@ -9,10 +9,10 @@ import { Panel } from "./panelEnum";
 import SidePanel from "./side-panel";
 
 interface SideBarProps {
-  handleToggleMakeCommittee: () => void;
+  handleToggleMakeCommittee: (value: boolean) => void;
 }
 
-export default function Sidebar({ handleToggleMakeCommittee = () => {}}: SideBarProps) {
+export default function Sidebar({ handleToggleMakeCommittee = (value: boolean) => {}}: SideBarProps) {
   /* tracks panel version for changing panel layout */
   const [panelVersion, setPanelVersion] = useState(Panel.COMMITTEES);
 

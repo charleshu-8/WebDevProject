@@ -1,13 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { addNewCommitteee } from "@/app/db/committees";
 
 interface props {
-  onSubmit: () => void;
+  handleToggleMakeCommittee: (value: boolean) => void;
 }
 
 // Form component for making a committee
-export default function MakeCommitteeForm({ onSubmit = () => {} }: props ) {
+export default function MakeCommitteeForm({ handleToggleMakeCommittee = (value: boolean) => {} }: props ) {
   const [memberSet] = useState<Set<string>>(new Set<string>([]));
   const [membersAdded, setMembersAdded] = useState<boolean>(false);
   const [hasName, setHasName] = useState<boolean>(false);
@@ -15,16 +16,21 @@ export default function MakeCommitteeForm({ onSubmit = () => {} }: props ) {
   // Handle committee creation
   // TODO: Add functionality when creating committee
   async function handleResponse(response: FormData) {
-    const committeeName = response.get("committeename");
-
-    console.log(committeeName);
-    console.log(memberSet);
-    onSubmit();
-
+    const committeeNameResponse = response.get("committeename");
+    if (committeeNameResponse == null) {
+      console.error("committeeNameResponse got null");
+      return;
+    }
+    else {
+      const committeeName = committeeNameResponse as string;
+      const membersArray = [...memberSet];
+      console.log(committeeName);
+      console.log(membersArray);
+      handleToggleMakeCommittee(false);
+      addNewCommitteee(committeeName, membersArray);
+    }
     setHasName(false);
     setMembersAdded(false);
-
-    // TODO: send set of emails-to-be-invited to server and empty frontend set
     memberSet.clear();
   }
 

@@ -16,8 +16,9 @@ export default function ChatPage() {
     toggleIsNewMotion(!isNewMotion);
   }
 
-  function handleToggleMakeCommittee(): void {
-    toggleIsMakeCommittee(!isMakeCommittee);
+  // Toggle the isMakeCommittee state to display the committee form
+  function handleToggleMakeCommittee(value: boolean): void {
+    toggleIsMakeCommittee(value);
     console.log("Toggling make committee");
   }
 
@@ -27,7 +28,7 @@ export default function ChatPage() {
       <div className="relative top-[80px] flex h-[calc(100%-80px)] w-full flex-row">
         <SideBar />
           {isMakeCommittee ? (
-              <MakeCommitteeForm onSubmit={handleToggleMakeCommittee}/>
+              <MakeCommitteeForm handleToggleMakeCommittee={handleToggleMakeCommittee}/>
             ) : (
               <ChatBox isNewMotion={isNewMotion} />
             )}
