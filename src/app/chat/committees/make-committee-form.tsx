@@ -26,12 +26,14 @@ export default function MakeCommitteeForm({ handleToggleMakeCommittee = (value: 
       const committeeName = committeeNameResponse as string;
       //console.log(currentUser?.email);
       //console.log(typeof(currentUser?.email));
-      memberSet.add(currentUser?.email);
-      const membersArray: string[] = Array.from(memberSet);
+      const currentUserEmail = currentUser?.email;
+      memberSet.add(currentUserEmail);
+      const membersArray: string[] = Array.from(memberSet.values());
       console.log(committeeName);
       console.log(membersArray);
-      handleToggleMakeCommittee(false);
-      addNewCommitteee(committeeName, membersArray);
+      console.log(typeof(membersArray));
+      //handleToggleMakeCommittee(false);
+      //addNewCommitteee(committeeName, membersArray, currentUserEmail);
     }
     setHasName(false);
     setMembersAdded(false);

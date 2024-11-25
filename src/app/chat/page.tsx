@@ -19,7 +19,6 @@ export default function ChatPage() {
   // Toggle the isMakeCommittee state to display the committee form
   function handleToggleMakeCommittee(value: boolean): void {
     toggleIsMakeCommittee(value);
-    console.log("Toggling make committee");
   }
 
   return (
