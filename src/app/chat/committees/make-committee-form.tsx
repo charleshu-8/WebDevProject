@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { addNewCommitteee } from "@/app/db/committees";
+import { currentUser } from "@/app/db/pocketbase";
 
 interface props {
   handleToggleMakeCommittee: (value: boolean) => void;
@@ -23,11 +24,14 @@ export default function MakeCommitteeForm({ handleToggleMakeCommittee = (value: 
     }
     else {
       const committeeName = committeeNameResponse as string;
+      //console.log(currentUser?.email);
+      //console.log(typeof(currentUser?.email));
+      memberSet.add(currentUser?.email);
       const membersArray = [...memberSet];
       console.log(committeeName);
       console.log(membersArray);
       handleToggleMakeCommittee(false);
-      addNewCommitteee(committeeName, membersArray);
+      //addNewCommitteee(committeeName, membersArray);
     }
     setHasName(false);
     setMembersAdded(false);
