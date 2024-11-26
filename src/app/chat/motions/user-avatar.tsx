@@ -13,8 +13,8 @@ export default function UserAvatar({
   displayInitial: displayInitial,
 }: UserAvatarProps) {
   // Use Next Image component to register src path with HTTPS URL directly
-  function customLoader({ src }: { src: string }) {
-    return src;
+  function customLoader({ src, width }: { src: string; width: number }) {
+    return `${src}?w=${width}`;
   }
 
   // Check if avatar exists for message owner

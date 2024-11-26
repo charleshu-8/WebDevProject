@@ -5,6 +5,7 @@ export interface PocketbaseCommittee {
   title: string;
   members: string[];
   motions: string[];
+  chair: string;
   created: string;
   updated: string;
 }
