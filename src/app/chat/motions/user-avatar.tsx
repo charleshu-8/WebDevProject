@@ -13,7 +13,7 @@ export default function UserAvatar({
   displayInitial: displayInitial,
 }: UserAvatarProps) {
   // Use Next Image component to register src path with HTTPS URL directly
-  function customLoader({ src, width }:{src:string, width:number}) {
+  function customLoader({ src, width }: { src: string; width: number }) {
     return `${src}?w=${width}`;
   }
 
