@@ -82,7 +82,6 @@ export default function ChatBox({
       }
       avatarPaths.set(member.username, avatarPic);
     });
-
     setCurrentAvatars(avatarPaths);
     setLoadingMembers(false);
   }
@@ -156,18 +155,12 @@ export default function ChatBox({
     }
   }
 
-  // Effect to scroll to the bottom whenever the messages change
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
-
   // Listens for DB updates to messages to refetch messages
   // Also refetches upon motion or committee change
   useEffect(() => {
     if (getCurrentCommittee() && getCurrentMotion()) {
       fetchMessages();
-
-      // get updated members & avatar pics based on current committee
+      // Get updated members & avatar pics based on current committee
       getMemberAvatarsByIds();
 
       // Subscribe to updates for the specific motion
@@ -183,6 +176,12 @@ export default function ChatBox({
     }
   }, []);
 
+  // Effect to scroll to the bottom whenever the messages change
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    console.log(messages);
+  }, [messages]);
+
   return (
     <Box className="flex h-full w-full flex-col bg-gray-200 p-4">
       {/* Display messages */}
@@ -190,12 +189,12 @@ export default function ChatBox({
         {messages.length === 0 ? (
           <p className="text-gray-500"></p>
         ) : (
-          messages.map((message, index) => (
+          messages.map((message) => (
             <MessageBox
               messageProp={message}
               loadingState={loadingMembers}
               memberAvatars={currentAvatars}
-              key={index}
+              key={message.id}
             />
           ))
         )}
