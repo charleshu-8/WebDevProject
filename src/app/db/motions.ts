@@ -1,14 +1,15 @@
 import { getCommitteeMotions } from "./committees";
 import { pb } from "./pocketbase";
+import { PocketbaseMessage, PocketbaseMotion } from "./pocketbaseInterfaces";
 
 // Create a new motion in DB given a motion title and associated committee ID
 // Returns response if successful, false otherwise
 export async function addNewMotion(title: string, committee: string) {
   try {
     // Pass motion creation request
-    const response = await pb
+    const response = (await pb
       .collection("motions")
-      .create({ title: title, committee: committee });
+      .create({ title: title, committee: committee })) as PocketbaseMotion;
 
     // Pull current motion list for the committee
     const currentMotions = await getCommitteeMotions(committee);
@@ -21,5 +22,40 @@ export async function addNewMotion(title: string, committee: string) {
   } catch (e) {
     console.error("Motion creation error: " + e);
     return false;
+  }
+}
+
+// Return DB record for a given motion
+// Returns record if found, empty object otherwise
+export async function getMotionDetails(motion: string) {
+  try {
+    return (await pb.collection("motions").getOne(motion)) as PocketbaseMotion;
+  } catch (e) {
+    console.error("Motion fetching error: " + e);
+    return {
+      collectionId: "",
+      collectionName: "",
+      id: "",
+      title: "",
+      committee: "",
+      messages: [],
+      created: "",
+      updated: "",
+    };
+  }
+}
+
+// Returns list of message objects for given motion ID
+// If none found, returns empty array
+export async function getFullMotionMessages(motion: string) {
+  try {
+    return (
+      await pb.collection("motions").getOne(`${motion}`, {
+        expand: "messages",
+      })
+    ).expand?.messages as PocketbaseMessage[];
+  } catch (e) {
+    console.error("Full motion messages fetching error: " + e);
+    return [];
   }
 }

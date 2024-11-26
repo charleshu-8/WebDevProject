@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
 import { SignUpContext } from "./signUpContext";
+import Image from "next/image";
+import defaultPfpLight from "@/app/assets/auth/default_pfp_light.svg"
+import defaultPfpDark from "@/app/assets/auth/default_pfp_dark.svg"
 
 export default function UploadAndDisplayImage() {
   // Define state variable to store the selected image
@@ -43,7 +46,7 @@ export default function UploadAndDisplayImage() {
       {/* Conditionally render the selected image or the default image */}
       <div style={{ width: "100%" }}>
         {/* Set the width of the parent element */}
-        <img
+        <Image
           alt="Profile"
           style={{
             width: "100%",
@@ -55,9 +58,11 @@ export default function UploadAndDisplayImage() {
             pfp
               ? URL.createObjectURL(pfp)
               : isDarkMode
-                ? "/img/auth/default_pfp_dark.svg" // Use dark mode image
-                : "/img/auth/default_pfp_light.svg" // Use light mode image
+                ? defaultPfpDark // Use dark mode image
+                : defaultPfpLight // Use light mode image
           }
+          width={1000}
+          height={1000}
           onClick={handleClick} // Handle both single and double click
         />
       </div>
