@@ -3,7 +3,7 @@ import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import { currentUser } from "@/app/db/pocketbase";
 import { useEffect, useState } from "react";
 import useOutsideClick from "../utils/outside-click";
-import { logout } from "../db/authentication";
+import { logout } from "@/app/db/authentication";
 import Link from "next/link";
 
 export default function Navbar() {
