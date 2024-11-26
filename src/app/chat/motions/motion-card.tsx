@@ -10,6 +10,8 @@ interface MotionCardProps {
   seconderShortName: string;
   seconderFullName: string;
   time: string;
+  key: string;
+  onClick: () => void;
 }
 
 export default function MotionCard(props: MotionCardProps) {
