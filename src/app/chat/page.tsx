@@ -1,9 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import NavBar from "./navbar";
 import Sidebar from "./sidebar";
 import ChatBox from "./motions/chat-box";
+import { currentUser } from "../db/pocketbase";
+import { redirect } from "next/navigation";
 
 export default function ChatPage() {
   // State to track whether the input is for a new motion
@@ -15,6 +17,13 @@ export default function ChatPage() {
   function handleToggleIsNewMotion(): void {
     toggleIsNewMotion(!isNewMotion);
   }
+
+  // Redirects user to landing page if not logged in
+  useLayoutEffect(() => {
+    if (!currentUser) {
+      redirect("/");
+    }
+  });
 
   return (
     <div className="flex h-screen w-screen bg-light-background dark:bg-dark-secondary">
