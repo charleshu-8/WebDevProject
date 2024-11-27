@@ -11,6 +11,9 @@ import {
 import { getCommitteeMotions } from "@/app/db/committees";
 import { getFilteredMotions, getMotionDetails } from "@/app/db/motions";
 import { CircularProgress } from "@mui/material";
+import { ChatMessage } from "./motions/chat-box";
+import { PocketbaseMessage } from "../db/pocketbaseInterfaces";
+import { formatDate, getCurrentTime } from "@/app/utils/time";
 
 interface SidePanelProps {
   panelVersion: Panel;
@@ -82,6 +85,33 @@ export default function SidePanel({
   const [motionIds, setMotionIds] = useState<string[]>([]);
   const [selectedMotion, setSelectedMotion] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+
+  async function getCreatorAndSeconder(motion: string): Promise<string[]> {
+    const response = await pb.collection("motions").getOne(motion, {
+      expand: "messages",
+      $autoCancel: false,
+    });
+
+    const helperArray: ChatMessage[] = [];
+    response?.expand?.messages.forEach((message: PocketbaseMessage) => {
+      const formattedDate = formatDate(message.created);
+      helperArray.push({
+        id: message.id,
+        text: message.text,
+        timestamp: formattedDate,
+        owner: message.owner,
+        displayName: message.displayName,
+      });
+    });
+    helperArray.sort(
+      (a, b) =>
+        new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime(),
+    );
+    let retArray = [];
+    retArray.push(helperArray[0].owner);
+    retArray.push(helperArray[1].owner);
+    return retArray;
+  }
 
   // asycn function to query all motions from the current committee
   async function queryMotions() {
