@@ -19,7 +19,11 @@ export default function UserAvatar({
 
   // Check if avatar exists for message owner
   // Should never be empty
-  if (avatarBackground !== "" && avatarBackground[0] !== "#") {
+  if (
+    avatarBackground &&
+    avatarBackground !== "" &&
+    avatarBackground[0] !== "#"
+  ) {
     return (
       <Image
         loader={customLoader}
