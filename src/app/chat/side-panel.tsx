@@ -12,6 +12,7 @@ import { getCommitteeMotions } from "@/app/db/committees";
 import { getFilteredMotions, getMotionDetails } from "@/app/db/motions";
 import { CircularProgress } from "@mui/material";
 import { getIdUsernameMapping } from "../db/users";
+import { getInitials } from "../utils/initials";
 
 interface SidePanelProps {
   panelVersion: Panel;
@@ -82,6 +83,17 @@ export default function SidePanel({
     setReloadChatBox(true); // Toggle the reload state
   }
 
+  function getClassNameForMotionCard(motionKey: string): string {
+    console.info("Selected motion:", selectedMotion);
+    console.info("Checking against:", motionKey);
+    if (selectedMotion === motionKey) {
+      //console.info("Selected motion:", selectedMotion);
+      //console.info("Checking against:", motionKey);
+      return "border-[6px] border-blue-500 rounded-[7px]";
+    }
+    return "";
+  }
+
   // State to store motions as objects
   const [motions, setMotions] = useState<MotionCardProps[]>([]);
   const [motionIds, setMotionIds] = useState<string[]>([]);
@@ -97,15 +109,6 @@ export default function SidePanel({
       .map((id: string) => `id='${id}'`)
       .join("||");
 
-    // Helper function to get initials from a full name
-    const getInitials = (name: string) => {
-      const words = name.split(" ");
-      if (words.length === 1) {
-        return words[0][0].toUpperCase();
-      }
-      return (words[0][0] + words[words.length - 1][0]).toUpperCase();
-    };
-
     // Retrieve all motions according to the ID filter
     const motions = await getFilteredMotions(
       motionIdFilter,
@@ -119,18 +122,19 @@ export default function SidePanel({
     // Loop through each motion and convert into a motion card property
     const motionCardProps = motions.map(async (motion) => {
       let seconderFullName = "";
+      let ownerFullName = "";
       try {
         seconderFullName = motion.expand.messages[1].owner;
+        ownerFullName = motion.expand.messages[0].owner;
       } catch (e) {
         console.info("No seconder on motion " + motion.title);
+        console.info("No owner on motion " + motion.title);
       }
       return {
         motionTitle: motion.title,
         motionStatus: "TBD",
-        shortName: getInitials(
-          idMap?.get(motion.expand.messages[0].owner) as string,
-        ),
-        fullName: idMap?.get(motion.expand.messages[0].owner) as string,
+        shortName: getInitials(idMap?.get(ownerFullName) || "N/A"),
+        fullName: idMap?.get(ownerFullName) || "N/A",
         motionText: motion.title,
         seconderShortName: getInitials(idMap?.get(seconderFullName) || "N/A"),
         seconderFullName: idMap?.get(seconderFullName) || "N/A",
@@ -177,6 +181,15 @@ export default function SidePanel({
     }
   }, []);
 
+  // Set selected motion and call handleMotionCardClick on mount
+  useEffect(() => {
+    const currentMotion = getCurrentMotion();
+    if (currentMotion) {
+      setSelectedMotion(currentMotion);
+      handleMotionCardClick(currentMotion);
+    }
+  }, []);
+
   return (
     <Box className="flex h-full w-[80%] min-w-[8rem] flex-grow flex-col bg-light-secondary p-2 dark:bg-extra-dark-blue">
       <Box className="flex h-auto w-full justify-start">
@@ -196,24 +209,17 @@ export default function SidePanel({
           </Button>
         )}
         {panel === Panel.MOTIONS && (
-          <Box className="mt-2 text-xs text-black dark:text-dark-text">
-            {selectedMotion
-              ? `Selected Motion: ${selectedMotion}`
-              : "No motion selected"}
-          </Box>
-        )}
-        {panel === Panel.MOTIONS && (
           <>
             {loading ? (
               <Box className="mt-10 flex h-full w-[90%] justify-center">
                 <CircularProgress />
               </Box>
             ) : (
-              <Box className="h-full w-[90%] overflow-auto">
+              <Box className="mt-2 h-full w-[90%] overflow-auto">
                 {motions.map((motion) => (
                   <Box
                     key={motion.key}
-                    className="flex h-[30%] w-full items-center justify-center gap-y-2"
+                    className={`mb-4 flex h-[30%] w-[90%] items-center justify-center gap-y-2 ${getClassNameForMotionCard(motion.motionTitle)}`}
                     onClick={() => handleMotionCardClick(motion.key)}
                   >
                     <MotionCard

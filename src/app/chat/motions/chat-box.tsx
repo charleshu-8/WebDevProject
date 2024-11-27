@@ -58,11 +58,6 @@ export default function ChatBox({
   // Ref to keep track of the container for automatic scrolling
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
-  // // Fetch messages whenever reload changes
-  // useEffect(() => {
-  //   fetchMessages();
-  // }, [reload]);
-
   // Fetch messages whenever reload changes
   useEffect(() => {
     if (reload) {
