@@ -16,8 +16,6 @@ export default function Sidebar({ handleToggleIsNewMotion }: SidebarProps) {
   /* tracks panel version for changing panel layout */
   const [panelVersion, setPanelVersion] = useState(Panel.COMMITTEES);
 
-  //console.log("handleToggleIsNewMotion:", handleToggleIsNewMotion);
-
   /**
    * Function adjusts panel version const based on button pressed
    * @param event user clicking the sidebar buttons

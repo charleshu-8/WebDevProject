@@ -13,9 +13,6 @@ export default function MakeCommitteeForm() {
   async function handleResponse(response: FormData) {
     const committeeName = response.get("committeename");
 
-    console.log(committeeName);
-    console.log(memberSet);
-
     setHasName(false);
     setMembersAdded(false);
 

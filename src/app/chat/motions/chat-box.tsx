@@ -14,7 +14,7 @@ import {
 } from "@/app/db/pocketbase";
 import { formatDate, getCurrentTime } from "@/app/utils/time";
 import { PocketbaseMessage } from "@/app/db/pocketbaseInterfaces";
-import { addNewMotion } from "@/app/db/motions";
+import { addNewMotion, getFullMotionMessages } from "@/app/db/motions";
 import getRandomColor from "@/app/utils/color";
 import MessageBox from "./message-box";
 import { getCommitteeMembers } from "@/app/db/committees";
@@ -82,19 +82,16 @@ export default function ChatBox({
       }
       avatarPaths.set(member.username, avatarPic);
     });
-
     setCurrentAvatars(avatarPaths);
     setLoadingMembers(false);
   }
 
-  async function queryMessages() {
-    const response = await pb.collection("motions").getOne(getCurrentMotion(), {
-      expand: "messages",
-      $autoCancel: false,
-    });
+  // Get all available messages for a motion
+  async function fetchMessages() {
+    const messages = await getFullMotionMessages(getCurrentMotion());
 
     const helperArray: ChatMessage[] = [];
-    response?.expand?.messages.forEach((message: PocketbaseMessage) => {
+    messages.forEach((message: PocketbaseMessage) => {
       const formattedDate = formatDate(message.created);
       helperArray.push({
         id: message.id,
@@ -109,26 +106,21 @@ export default function ChatBox({
       (a, b) =>
         new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime(),
     );
-    setMessages(helperArray);
-  }
 
-  // Get all available messages for a motion
-  async function fetchMessages() {
-    await queryMessages();
+    setMessages(helperArray);
   }
 
   // Process and send a given message to the DB
   // Flag is set if messages should be wiped, resetting motion
   async function sendMessage(message: string, flag: boolean = false) {
     if (message.trim()) {
-      console.log("messages", messages);
       // Add message along with timestamp
       const currentTime =
         getCurrentTime() + " " + new Date().toLocaleDateString();
-      const newMessage = {
+      const newMessage: ChatMessage = {
         text: message,
         timestamp: currentTime,
-        owner: currentUser?.id,
+        owner: currentUser?.id as string,
         displayName: currentUser?.username,
       };
 
@@ -141,7 +133,7 @@ export default function ChatBox({
       if (
         !(await addNewMessage(
           message,
-          currentUser?.id,
+          currentUser?.id as string,
           getCurrentMotion(),
           currentUser?.username,
         ))
@@ -163,24 +155,18 @@ export default function ChatBox({
     }
   }
 
-  // Effect to scroll to the bottom whenever the messages change
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
-
   // Listens for DB updates to messages to refetch messages
   // Also refetches upon motion or committee change
   useEffect(() => {
     if (getCurrentCommittee() && getCurrentMotion()) {
       fetchMessages();
-
-      // get updated members & avatar pics based on current committee
+      // Get updated members & avatar pics based on current committee
       getMemberAvatarsByIds();
 
       // Subscribe to updates for the specific motion
       pb.collection("motions").subscribe(getCurrentMotion(), () => {
         fetchMessages(); // Fetch new messages when updated
-        console.log("something changed");
+        console.log("Messages have changed");
       });
 
       // Cleanup subscription on component unmount
@@ -190,6 +176,12 @@ export default function ChatBox({
     }
   }, []);
 
+  // Effect to scroll to the bottom whenever the messages change
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    console.log(messages);
+  }, [messages]);
+
   return (
     <Box className="flex h-full w-full flex-col bg-gray-200 p-4">
       {/* Display messages */}
@@ -197,12 +189,12 @@ export default function ChatBox({
         {messages.length === 0 ? (
           <p className="text-gray-500"></p>
         ) : (
-          messages.map((message, index) => (
+          messages.map((message) => (
             <MessageBox
               messageProp={message}
               loadingState={loadingMembers}
               memberAvatars={currentAvatars}
-              key={index}
+              key={message.id}
             />
           ))
         )}

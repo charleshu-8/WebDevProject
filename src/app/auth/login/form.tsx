@@ -17,10 +17,6 @@ export default function Form() {
     ).toString();
 
     const loginResponse = await login(email, password);
-    // Check authStore data
-    console.log(loginResponse);
-    console.log(pb.authStore.token);
-    console.log(pb.authStore.model?.id);
 
     if (loginResponse) {
       // Once approved, move to chat page
