@@ -41,6 +41,12 @@ export default function SidePanel({
 }: SidePanelProps) {
   const panel = panelVersion;
 
+  // State to store motions as objects
+  const [motions, setMotions] = useState<MotionCardProps[]>([]);
+  const [motionIds, setMotionIds] = useState<string[]>([]);
+  const [selectedMotion, setSelectedMotion] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+
   const panelTitle: string = useMemo(() => {
     switch (panel) {
       case Panel.COMMITTEES:
@@ -93,12 +99,6 @@ export default function SidePanel({
     }
     return "";
   }
-
-  // State to store motions as objects
-  const [motions, setMotions] = useState<MotionCardProps[]>([]);
-  const [motionIds, setMotionIds] = useState<string[]>([]);
-  const [selectedMotion, setSelectedMotion] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
 
   // asycn function to query all motions from the current committee
   async function queryMotions() {

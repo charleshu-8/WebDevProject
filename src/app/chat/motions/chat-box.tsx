@@ -58,23 +58,6 @@ export default function ChatBox({
   // Ref to keep track of the container for automatic scrolling
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
-  // Fetch messages whenever reload changes
-  useEffect(() => {
-    let isMounted = true;
-
-    if (reload) {
-      fetchMessages().then(() => {
-        if (isMounted) {
-          setReload(false);
-        }
-      });
-    }
-
-    return () => {
-      isMounted = false;
-    };
-  }, [reload, setReload]);
-
   // Sift through users collection and find current committee members & avatars
   async function getMemberAvatarsByIds() {
     setLoadingMembers(true);
@@ -202,6 +185,23 @@ export default function ChatBox({
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     console.log(messages);
   }, [messages]);
+
+  // Fetch messages whenever reload changes
+  useEffect(() => {
+    let isMounted = true;
+
+    if (reload) {
+      fetchMessages().then(() => {
+        if (isMounted) {
+          setReload(false);
+        }
+      });
+    }
+
+    return () => {
+      isMounted = false;
+    };
+  }, [reload, setReload]);
 
   // Fetch messages whenever reload changes
   useEffect(() => {
