@@ -18,6 +18,9 @@ import { getMotionDetails } from "@/app/db/motions";
 import { get } from "http";
 import { on } from "events";
 import { CircularProgress } from "@mui/material";
+import { ChatMessage } from "./motions/chat-box";
+import { PocketbaseMessage } from "../db/pocketbaseInterfaces";
+import { formatDate, getCurrentTime } from "@/app/utils/time";
 
 interface SidePanelProps {
   panelVersion: Panel;
@@ -90,6 +93,33 @@ export default function SidePanel({
   const [selectedMotion, setSelectedMotion] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
+  async function getCreatorAndSeconder(motion: string): Promise<string[]> {
+    const response = await pb.collection("motions").getOne(motion, {
+      expand: "messages",
+      $autoCancel: false,
+    });
+
+    const helperArray: ChatMessage[] = [];
+    response?.expand?.messages.forEach((message: PocketbaseMessage) => {
+      const formattedDate = formatDate(message.created);
+      helperArray.push({
+        id: message.id,
+        text: message.text,
+        timestamp: formattedDate,
+        owner: message.owner,
+        displayName: message.displayName,
+      });
+    });
+    helperArray.sort(
+      (a, b) =>
+        new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime(),
+    );
+    let retArray = [];
+    retArray.push(helperArray[0].owner);
+    retArray.push(helperArray[1].owner);
+    return retArray;
+  }
+
   // asycn function to query all motions from the current committee
   async function queryMotions() {
     // Get the list of motion keys for the current committee
@@ -101,14 +131,15 @@ export default function SidePanel({
     // Loop through each motion key and get the motion details
     for (const key of motionKeys) {
       const motion = await getMotionDetails(key);
+      const owners = await getCreatorAndSeconder(key);
       motionCardProps.push({
         motionTitle: motion.title,
         motionStatus: "TBD",
-        shortName: "CR:",
-        fullName: "YEET",
+        shortName: "CR: ",
+        fullName: owners[0],
         motionText: motion.title,
         seconderShortName: "SD:",
-        seconderFullName: "YEET2",
+        seconderFullName: owners[1],
         time: motion.created,
         key: key,
         onClick: () => handleMotionCardClick(key),
