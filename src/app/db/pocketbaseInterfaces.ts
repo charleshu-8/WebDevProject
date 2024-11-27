@@ -19,6 +19,7 @@ export interface PocketbaseMotion {
   messages: string[];
   created: string;
   updated: string;
+  // eslint-disable-next-line
   expand: { [key: string]: any };
 }
 
