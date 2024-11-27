@@ -3,20 +3,13 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Panel } from "./panelEnum";
 import MotionCard from "./motions/motion-card"; // Adjust the import path as necessary
 import {
-  currentUser,
   getCurrentMotion,
   pb,
   setCurrentMotion,
   getCurrentCommittee,
-  avatarPathUrl,
 } from "@/app/db/pocketbase";
-import {
-  getCommitteeMotions,
-  getFullCommitteeMotions,
-} from "@/app/db/committees";
-import { getMotionDetails } from "@/app/db/motions";
-import { get } from "http";
-import { on } from "events";
+import { getCommitteeMotions } from "@/app/db/committees";
+import { getFilteredMotions, getMotionDetails } from "@/app/db/motions";
 import { CircularProgress } from "@mui/material";
 
 interface SidePanelProps {
@@ -86,39 +79,38 @@ export default function SidePanel({
 
   // State to store motions as objects
   const [motions, setMotions] = useState<MotionCardProps[]>([]);
-  const [motionKeys, setMotionKeys] = useState<string[]>([]);
+  const [motionIds, setMotionIds] = useState<string[]>([]);
   const [selectedMotion, setSelectedMotion] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   // asycn function to query all motions from the current committee
   async function queryMotions() {
     // Get the list of motion keys for the current committee
-    const motionKeys = await getCommitteeMotions(getCurrentCommittee());
+    const motionIds = await getCommitteeMotions(getCurrentCommittee());
+    // Convert it into a filter string
+    const motionIdFilter = motionIds
+      .map((id: string) => `id='${id}'`)
+      .join("||");
 
-    // Initialize an array to hold the motion card properties
-    const motionCardProps: MotionCardProps[] = [];
+    // Retrieve all motions according to the ID filter
+    const motions = await getFilteredMotions(motionIdFilter, "-updated");
 
-    // Loop through each motion key and get the motion details
-    for (const key of motionKeys) {
-      const motion = await getMotionDetails(key);
-      motionCardProps.push({
-        motionTitle: motion.title,
-        motionStatus: "TBD",
-        shortName: "CR:",
-        fullName: "YEET",
-        motionText: motion.title,
-        seconderShortName: "SD:",
-        seconderFullName: "YEET2",
-        time: motion.created,
-        key: key,
-        onClick: () => handleMotionCardClick(key),
-      });
-      setCurrentMotion(key);
-      setSelectedMotion((await getMotionDetails(getCurrentMotion())).title);
-    }
+    // Loop through each motion and convert into a motion card property
+    const motionCardProps: MotionCardProps[] = motions.map((motion) => ({
+      motionTitle: motion.title,
+      motionStatus: "TBD",
+      shortName: "CR:",
+      fullName: "YEET",
+      motionText: motion.title,
+      seconderShortName: "SD:",
+      seconderFullName: "YEET2",
+      time: motion.created,
+      key: motion.id,
+      onClick: () => handleMotionCardClick(motion.id),
+    }));
 
     // Update the state with the list of motion keys and motion card properties
-    setMotionKeys(motionKeys);
+    setMotionIds(motionIds);
     setMotions(motionCardProps);
   }
 
