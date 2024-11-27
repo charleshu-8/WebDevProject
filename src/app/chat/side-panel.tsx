@@ -16,6 +16,7 @@ import { getIdUsernameMapping } from "../db/users";
 interface SidePanelProps {
   panelVersion: Panel;
   handleToggleIsNewMotion: () => void;
+  setReloadChatBox: (value: boolean) => void; // Add this prop
   onClick?: () => void;
 }
 
@@ -35,6 +36,7 @@ interface MotionCardProps {
 export default function SidePanel({
   panelVersion,
   handleToggleIsNewMotion,
+  setReloadChatBox, // Add this prop
 }: SidePanelProps) {
   const panel = panelVersion;
 
@@ -76,6 +78,7 @@ export default function SidePanel({
     // You can add additional logic here to handle the motionKey
     setCurrentMotion(key); // Update the current motion
     setSelectedMotion((await getMotionDetails(getCurrentMotion())).title); // Update the state variable
+    setReloadChatBox(true); // Toggle the reload state
   }
 
   // State to store motions as objects

@@ -23,6 +23,8 @@ import { addNewMessage } from "@/app/db/messages";
 interface ChatBoxProps {
   isNewMotion: boolean;
   handleToggleIsNewMotion: () => void;
+  reload: boolean;
+  setReload: (value: boolean) => void; // Add this prop
 }
 
 export interface ChatMessage {
@@ -38,6 +40,8 @@ export interface ChatMessage {
 export default function ChatBox({
   isNewMotion,
   handleToggleIsNewMotion,
+  reload, // Add this prop
+  setReload, // Add this prop
 }: ChatBoxProps) {
   // State to store messages as objects with text and timestamp
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -53,6 +57,18 @@ export default function ChatBox({
 
   // Ref to keep track of the container for automatic scrolling
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+
+  // // Fetch messages whenever reload changes
+  // useEffect(() => {
+  //   fetchMessages();
+  // }, [reload]);
+
+  // Fetch messages whenever reload changes
+  useEffect(() => {
+    if (reload) {
+      fetchMessages().then(() => setReload(false));
+    }
+  }, [reload, setReload]);
 
   // Sift through users collection and find current committee members & avatars
   async function getMemberAvatarsByIds() {
@@ -181,6 +197,11 @@ export default function ChatBox({
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     console.log(messages);
   }, [messages]);
+
+  // Fetch messages whenever reload changes
+  useEffect(() => {
+    fetchMessages();
+  }, [reload]);
 
   return (
     <Box className="flex h-full w-full flex-col bg-gray-200 p-4">
