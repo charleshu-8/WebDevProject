@@ -11,13 +11,7 @@ import {
 import { getCommitteeMotions } from "@/app/db/committees";
 import { getFilteredMotions, getMotionDetails } from "@/app/db/motions";
 import { CircularProgress } from "@mui/material";
-import { ChatMessage } from "./motions/chat-box";
-import { PocketbaseMessage } from "../db/pocketbaseInterfaces";
-import { formatDate, getCurrentTime } from "@/app/utils/time";
-import {
-  getCorrespondingUsernameFromID,
-  getIdUsernameMapping,
-} from "../db/users";
+import { getIdUsernameMapping } from "../db/users";
 
 interface SidePanelProps {
   panelVersion: Panel;
