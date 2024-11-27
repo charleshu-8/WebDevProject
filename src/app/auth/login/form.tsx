@@ -33,7 +33,9 @@ export default function Form() {
 
   return (
     <>
-      {!isPending && (
+      {isPending ? (
+        <CircularProgress />
+      ) : (
         <form
           action={handleResponse}
           className="items-left flex flex-col justify-center"
@@ -87,7 +89,6 @@ export default function Form() {
           </div>
         </form>
       )}
-      {isPending && <CircularProgress />}
     </>
   );
 }
