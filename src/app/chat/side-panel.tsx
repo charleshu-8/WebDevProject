@@ -93,6 +93,15 @@ export default function SidePanel({
       .map((id: string) => `id='${id}'`)
       .join("||");
 
+    // Helper function to get initials from a full name
+    const getInitials = (name: string) => {
+      const words = name.split(" ");
+      if (words.length === 1) {
+        return words[0][0].toUpperCase();
+      }
+      return (words[0][0] + words[words.length - 1][0]).toUpperCase();
+    };
+
     // Retrieve all motions according to the ID filter
     const motions = await getFilteredMotions(
       motionIdFilter,
@@ -114,10 +123,12 @@ export default function SidePanel({
       return {
         motionTitle: motion.title,
         motionStatus: "TBD",
-        shortName: "CR:",
+        shortName: getInitials(
+          idMap?.get(motion.expand.messages[0].owner) as string,
+        ),
         fullName: idMap?.get(motion.expand.messages[0].owner) as string,
         motionText: motion.title,
-        seconderShortName: "SD:",
+        seconderShortName: getInitials(idMap?.get(seconderFullName) || "N/A"),
         seconderFullName: idMap?.get(seconderFullName) || "N/A",
         time: motion.created,
         key: motion.id,
@@ -163,7 +174,7 @@ export default function SidePanel({
   }, []);
 
   return (
-    <Box className="flex h-full w-auto min-w-[8rem] flex-grow flex-col bg-light-secondary p-2 dark:bg-extra-dark-blue">
+    <Box className="flex h-full w-[80%] min-w-[8rem] flex-grow flex-col bg-light-secondary p-2 dark:bg-extra-dark-blue">
       <Box className="flex h-auto w-full justify-start">
         <h2 className="panel-title m-2 h-auto w-auto font-bold text-black dark:text-dark-text">
           {panelTitle}
