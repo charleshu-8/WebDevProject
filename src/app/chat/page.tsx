@@ -8,7 +8,8 @@ import ChatBox from "./motions/chat-box";
 export default function ChatPage() {
   // State to track whether the input is for a new motion
   const [isNewMotion, toggleIsNewMotion] = useState(false);
-  const [reloadChatBox, setReloadChatBox] = useState(false); // Add this state
+  // State to track whether the chat box should be reloaded
+  const [reloadChatBox, setReloadChatBox] = useState(false);
 
   // Toggle the isNewMotion state
   function handleToggleIsNewMotion(): void {

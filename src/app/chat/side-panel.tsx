@@ -36,7 +36,7 @@ interface MotionCardProps {
 export default function SidePanel({
   panelVersion,
   handleToggleIsNewMotion,
-  setReloadChatBox, // Add this prop
+  setReloadChatBox,
 }: SidePanelProps) {
   const panel = panelVersion;
 
@@ -74,6 +74,7 @@ export default function SidePanel({
     }
   }
 
+  // Function to handle when a motion card is clicked
   async function handleMotionCardClick(key: string): Promise<void> {
     // You can add additional logic here to handle the motionKey
     setCurrentMotion(key); // Update the current motion
@@ -148,14 +149,14 @@ export default function SidePanel({
   }
 
   // Get all available messages for a motion
-  const fetchMotions = async () => {
+  async function fetchMotions() {
     setLoading(true);
     try {
       await queryMotions();
     } finally {
       setLoading(false);
     }
-  };
+  }
 
   // Listens for DB updates to motions to refetch motions
   // Also refetches upon motion or committee change
