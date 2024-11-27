@@ -16,6 +16,8 @@ import { getInitials } from "../utils/initials";
 
 interface SidePanelProps {
   panelVersion: Panel;
+  handleToggleMakeCommittee: (value: boolean) => void;
+  isMakeCommittee: boolean;
   handleToggleIsNewMotion: () => void;
   setReloadChatBox: (value: boolean) => void; // Add this prop
   onClick?: () => void;
@@ -35,7 +37,9 @@ interface MotionCardProps {
 }
 
 export default function SidePanel({
+  isMakeCommittee,
   panelVersion,
+  handleToggleMakeCommittee = (value: boolean) => {},
   handleToggleIsNewMotion,
   setReloadChatBox,
 }: SidePanelProps) {
@@ -63,16 +67,25 @@ export default function SidePanel({
   const panelButtonTitle = useMemo(() => {
     switch (panel) {
       case Panel.COMMITTEES:
-        return "Add Committee";
+        if (!isMakeCommittee) {
+          return "Add Committee";
+        } else {
+          return "Exit Committee Creation";
+        }
       case Panel.MOTIONS:
         return "Add Motion";
     }
-  }, [panel]);
+  }, [panel, isMakeCommittee]);
 
   function handlePanelAddButtonClick() {
     switch (panel) {
       case Panel.COMMITTEES:
-        console.log("Rendering add committee");
+        if (!isMakeCommittee) {
+          console.log("Rendering add committee");
+        } else {
+          console.log("Returning from add committee");
+        }
+        handleToggleMakeCommittee(!isMakeCommittee);
         break;
       case Panel.MOTIONS:
         console.log("Rendering add motion");
