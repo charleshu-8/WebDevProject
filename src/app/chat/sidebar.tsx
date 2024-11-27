@@ -14,7 +14,11 @@ interface SidebarProps {
   isMakeCommittee: boolean;
 }
 
-export default function Sidebar({ handleToggleIsNewMotion, handleToggleMakeCommittee = (value: boolean) => {}, isMakeCommittee }: SidebarProps) {
+export default function Sidebar({
+  handleToggleIsNewMotion,
+  handleToggleMakeCommittee = (value: boolean) => {},
+  isMakeCommittee,
+}: SidebarProps) {
   /* tracks panel version for changing panel layout */
   const [panelVersion, setPanelVersion] = useState(Panel.COMMITTEES);
 
@@ -83,11 +87,12 @@ export default function Sidebar({ handleToggleIsNewMotion, handleToggleMakeCommi
           </IconButton>
         </Box>
       </Box>
-      <SidePanel 
-        panelVersion={panelVersion} 
+      <SidePanel
+        panelVersion={panelVersion}
         handleToggleIsNewMotion={handleToggleIsNewMotion}
         handleToggleMakeCommittee={handleToggleMakeCommittee}
-        isMakeCommittee={isMakeCommittee}/>
+        isMakeCommittee={isMakeCommittee}
+      />
     </Box>
   );
 }
