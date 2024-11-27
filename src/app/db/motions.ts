@@ -59,3 +59,22 @@ export async function getFullMotionMessages(motion: string) {
     return [];
   }
 }
+
+// Get all motions according to the given filter
+// If none found, returns empty array
+export async function getFilteredMotions(
+  filter: string,
+  sortBy: string,
+  expand: string,
+) {
+  try {
+    return (await pb.collection("motions").getFullList({
+      sort: sortBy,
+      filter: filter,
+      expand: expand,
+    })) as PocketbaseMotion[];
+  } catch (e) {
+    console.error("Motions fetching error: " + e);
+    return [];
+  }
+}

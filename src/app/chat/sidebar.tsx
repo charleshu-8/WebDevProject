@@ -12,12 +12,14 @@ interface SidebarProps {
   handleToggleIsNewMotion: () => void;
   handleToggleMakeCommittee: (value: boolean) => void;
   isMakeCommittee: boolean;
+  setReloadChatBox: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function Sidebar({
   handleToggleIsNewMotion,
   handleToggleMakeCommittee = (value: boolean) => {},
   isMakeCommittee,
+  setReloadChatBox,
 }: SidebarProps) {
   /* tracks panel version for changing panel layout */
   const [panelVersion, setPanelVersion] = useState(Panel.COMMITTEES);
@@ -92,6 +94,7 @@ export default function Sidebar({
         handleToggleIsNewMotion={handleToggleIsNewMotion}
         handleToggleMakeCommittee={handleToggleMakeCommittee}
         isMakeCommittee={isMakeCommittee}
+        setReloadChatBox={setReloadChatBox}
       />
     </Box>
   );

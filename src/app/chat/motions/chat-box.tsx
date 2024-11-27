@@ -23,6 +23,8 @@ import { addNewMessage } from "@/app/db/messages";
 interface ChatBoxProps {
   isNewMotion: boolean;
   handleToggleIsNewMotion: () => void;
+  reload: boolean;
+  setReload: (value: boolean) => void; // Add this prop
 }
 
 export interface ChatMessage {
@@ -38,6 +40,8 @@ export interface ChatMessage {
 export default function ChatBox({
   isNewMotion,
   handleToggleIsNewMotion,
+  reload, // Add this prop
+  setReload, // Add this prop
 }: ChatBoxProps) {
   // State to store messages as objects with text and timestamp
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -182,6 +186,28 @@ export default function ChatBox({
     console.log(messages);
   }, [messages]);
 
+  // Fetch messages whenever reload changes
+  useEffect(() => {
+    let isMounted = true;
+
+    if (reload) {
+      fetchMessages().then(() => {
+        if (isMounted) {
+          setReload(false);
+        }
+      });
+    }
+
+    return () => {
+      isMounted = false;
+    };
+  }, [reload, setReload]);
+
+  // Fetch messages whenever reload changes
+  useEffect(() => {
+    fetchMessages();
+  }, [reload]);
+
   return (
     <Box className="flex h-full w-full flex-col bg-gray-200 p-4">
       {/* Display messages */}
@@ -189,12 +215,12 @@ export default function ChatBox({
         {messages.length === 0 ? (
           <p className="text-gray-500"></p>
         ) : (
-          messages.map((message) => (
+          messages.map((message, index) => (
             <MessageBox
               messageProp={message}
               loadingState={loadingMembers}
               memberAvatars={currentAvatars}
-              key={message.id}
+              key={message.id || index}
             />
           ))
         )}

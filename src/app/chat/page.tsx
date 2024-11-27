@@ -12,6 +12,8 @@ export default function ChatPage() {
   // State to track whether the input is for a new motion
   const [isNewMotion, toggleIsNewMotion] = useState(true);
   const [isMakeCommittee, toggleIsMakeCommittee] = useState(false);
+  // State to track whether the chat box should be reloaded
+  const [reloadChatBox, setReloadChatBox] = useState(false);
 
   // Toggle the isNewMotion state
   function handleToggleIsNewMotion(): void {
@@ -35,6 +37,7 @@ export default function ChatPage() {
         handleToggleIsNewMotion={handleToggleIsNewMotion}
         handleToggleMakeCommittee={handleToggleMakeCommittee}
         isMakeCommittee={isMakeCommittee}
+        setReloadChatBox={setReloadChatBox}
       />
       <div className="relative top-[80px] flex h-[calc(100%-80px)] w-full flex-row">
         <NavBar />
@@ -46,6 +49,8 @@ export default function ChatPage() {
           <ChatBox
             isNewMotion={isNewMotion}
             handleToggleIsNewMotion={handleToggleIsNewMotion}
+            reload={reloadChatBox} // Pass the reload state as a prop
+            setReload={setReloadChatBox} // Pass the setReload state as a prop
           />
         )}
       </div>
