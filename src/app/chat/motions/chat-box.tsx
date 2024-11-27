@@ -60,9 +60,19 @@ export default function ChatBox({
 
   // Fetch messages whenever reload changes
   useEffect(() => {
+    let isMounted = true;
+
     if (reload) {
-      fetchMessages().then(() => setReload(false));
+      fetchMessages().then(() => {
+        if (isMounted) {
+          setReload(false);
+        }
+      });
     }
+
+    return () => {
+      isMounted = false;
+    };
   }, [reload, setReload]);
 
   // Sift through users collection and find current committee members & avatars
@@ -205,12 +215,12 @@ export default function ChatBox({
         {messages.length === 0 ? (
           <p className="text-gray-500"></p>
         ) : (
-          messages.map((message) => (
+          messages.map((message, index) => (
             <MessageBox
               messageProp={message}
               loadingState={loadingMembers}
               memberAvatars={currentAvatars}
-              key={message.id}
+              key={message.id || index}
             />
           ))
         )}
