@@ -22,6 +22,22 @@ export async function getCorrespondingUserID(emailOrUsername: string) {
   }
 }
 
+// Creates a mapping from ID to username
+// Returns null if query attempt fails
+export async function getIdUsernameMapping() {
+  const idMap = new Map<string, string>();
+  try {
+    const response = await pb.collection("users").getFullList({
+      fields: "id, username",
+    });
+    response.map((user) => idMap.set(user.id, user.username));
+    return idMap;
+  } catch (e) {
+    console.error("ID-to-username translation error: " + e);
+    return null;
+  }
+}
+
 // Returns list of participating committee IDs for given user ID
 // If none found, return empty array
 export async function getUserCommittees(user: string) {

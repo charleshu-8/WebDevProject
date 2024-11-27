@@ -10,9 +10,13 @@ import SidePanel from "./side-panel";
 
 interface SidebarProps {
   handleToggleIsNewMotion: () => void;
+  setReloadChatBox: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function Sidebar({ handleToggleIsNewMotion }: SidebarProps) {
+export default function Sidebar({
+  handleToggleIsNewMotion,
+  setReloadChatBox,
+}: SidebarProps) {
   /* tracks panel version for changing panel layout */
   const [panelVersion, setPanelVersion] = useState(Panel.COMMITTEES);
 
@@ -84,6 +88,7 @@ export default function Sidebar({ handleToggleIsNewMotion }: SidebarProps) {
       <SidePanel
         panelVersion={panelVersion}
         handleToggleIsNewMotion={handleToggleIsNewMotion}
+        setReloadChatBox={setReloadChatBox}
       />
     </Box>
   );
