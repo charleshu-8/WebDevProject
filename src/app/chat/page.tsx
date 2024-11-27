@@ -1,10 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import NavBar from "./navbar";
 import Sidebar from "./sidebar";
 import ChatBox from "./motions/chat-box";
 import MakeCommitteeForm from "./committees/make-committee-form";
+import { currentUser } from "../db/pocketbase";
+import { redirect } from "next/navigation";
 
 export default function ChatPage() {
   // State to track whether the input is for a new motion
@@ -20,21 +22,31 @@ export default function ChatPage() {
   function handleToggleMakeCommittee(value: boolean): void {
     toggleIsMakeCommittee(value);
   }
+  // Redirects user to landing page if not logged in
+  useLayoutEffect(() => {
+    if (!currentUser) {
+      redirect("/");
+    }
+  });
 
   return (
     <div className="flex h-screen w-screen bg-light-background dark:bg-dark-secondary">
-      <Sidebar 
-        handleToggleIsNewMotion={handleToggleIsNewMotion} 
+      <Sidebar
+        handleToggleIsNewMotion={handleToggleIsNewMotion}
         handleToggleMakeCommittee={handleToggleMakeCommittee}
-        isMakeCommittee={isMakeCommittee}/>
+        isMakeCommittee={isMakeCommittee}
+      />
       <div className="relative top-[80px] flex h-[calc(100%-80px)] w-full flex-row">
-      <NavBar/>
-      {isMakeCommittee ? (
-        <MakeCommitteeForm handleToggleMakeCommittee={handleToggleMakeCommittee}/>
+        <NavBar />
+        {isMakeCommittee ? (
+          <MakeCommitteeForm
+            handleToggleMakeCommittee={handleToggleMakeCommittee}
+          />
         ) : (
-        <ChatBox 
-          isNewMotion={isNewMotion} 
-          handleToggleIsNewMotion={handleToggleIsNewMotion}/>
+          <ChatBox
+            isNewMotion={isNewMotion}
+            handleToggleIsNewMotion={handleToggleIsNewMotion}
+          />
         )}
       </div>
     </div>
