@@ -14,6 +14,10 @@ import { CircularProgress } from "@mui/material";
 import { ChatMessage } from "./motions/chat-box";
 import { PocketbaseMessage } from "../db/pocketbaseInterfaces";
 import { formatDate, getCurrentTime } from "@/app/utils/time";
+import {
+  getCorrespondingUsernameFromID,
+  getIdUsernameMapping,
+} from "../db/users";
 
 interface SidePanelProps {
   panelVersion: Panel;
@@ -86,33 +90,6 @@ export default function SidePanel({
   const [selectedMotion, setSelectedMotion] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
-  async function getCreatorAndSeconder(motion: string): Promise<string[]> {
-    const response = await pb.collection("motions").getOne(motion, {
-      expand: "messages",
-      $autoCancel: false,
-    });
-
-    const helperArray: ChatMessage[] = [];
-    response?.expand?.messages.forEach((message: PocketbaseMessage) => {
-      const formattedDate = formatDate(message.created);
-      helperArray.push({
-        id: message.id,
-        text: message.text,
-        timestamp: formattedDate,
-        owner: message.owner,
-        displayName: message.displayName,
-      });
-    });
-    helperArray.sort(
-      (a, b) =>
-        new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime(),
-    );
-    let retArray = [];
-    retArray.push(helperArray[0].owner);
-    retArray.push(helperArray[1].owner);
-    return retArray;
-  }
-
   // asycn function to query all motions from the current committee
   async function queryMotions() {
     // Get the list of motion keys for the current committee
@@ -123,25 +100,43 @@ export default function SidePanel({
       .join("||");
 
     // Retrieve all motions according to the ID filter
-    const motions = await getFilteredMotions(motionIdFilter, "-updated");
+    const motions = await getFilteredMotions(
+      motionIdFilter,
+      "-updated",
+      "messages",
+    );
+
+    // Get ID -> username map
+    const idMap = await getIdUsernameMapping();
 
     // Loop through each motion and convert into a motion card property
-    const motionCardProps: MotionCardProps[] = motions.map((motion) => ({
-      motionTitle: motion.title,
-      motionStatus: "TBD",
-      shortName: "CR:",
-      fullName: "YEET",
-      motionText: motion.title,
-      seconderShortName: "SD:",
-      seconderFullName: "YEET2",
-      time: motion.created,
-      key: motion.id,
-      onClick: () => handleMotionCardClick(motion.id),
-    }));
+    const motionCardProps = motions.map(async (motion) => {
+      let seconderFullName = "";
+      try {
+        seconderFullName = motion.expand.messages[1].owner;
+      } catch (e) {
+        console.info("No seconder on motion " + motion.title);
+      }
+      return {
+        motionTitle: motion.title,
+        motionStatus: "TBD",
+        shortName: "CR:",
+        fullName: idMap?.get(motion.expand.messages[0].owner) as string,
+        motionText: motion.title,
+        seconderShortName: "SD:",
+        seconderFullName: idMap?.get(seconderFullName) || "N/A",
+        time: motion.created,
+        key: motion.id,
+        onClick: () => handleMotionCardClick(motion.id),
+      };
+    });
+
+    // Wait for all promises to resolve
+    const resolvedMotionCardProps = await Promise.all(motionCardProps);
 
     // Update the state with the list of motion keys and motion card properties
     setMotionIds(motionIds);
-    setMotions(motionCardProps);
+    setMotions(resolvedMotionCardProps);
   }
 
   // Get all available messages for a motion

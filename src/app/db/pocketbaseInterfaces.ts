@@ -19,6 +19,7 @@ export interface PocketbaseMotion {
   messages: string[];
   created: string;
   updated: string;
+  expand: { [key: string]: any };
 }
 
 export interface PocketbaseMessage {
