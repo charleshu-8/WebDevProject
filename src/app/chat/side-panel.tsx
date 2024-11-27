@@ -9,8 +9,10 @@ interface SidePanelProps {
   handleToggleIsNewMotion: () => void;
 }
 
-export default function SidePanel({ isMakeCommittee,
-  panelVersion, handleToggleMakeCommittee = (value: boolean) => {},
+export default function SidePanel({
+  isMakeCommittee,
+  panelVersion,
+  handleToggleMakeCommittee = (value: boolean) => {},
   handleToggleIsNewMotion,
 }: SidePanelProps) {
   const panel = panelVersion;
@@ -30,20 +32,23 @@ export default function SidePanel({ isMakeCommittee,
 
   const panelButtonTitle = useMemo(() => {
     switch (panel) {
-      case (Panel.COMMITTEES):
-        return "Add Committee";
+      case Panel.COMMITTEES:
+        if (!isMakeCommittee) {
+          return "Add Committee";
+        } else {
+          return "Exit Committee Creation";
+        }
       case Panel.MOTIONS:
         return "Add Motion";
     }
-  }, [panel]);
+  }, [panel, isMakeCommittee]);
 
   function handlePanelAddButtonClick() {
     switch (panel) {
       case Panel.COMMITTEES:
         if (!isMakeCommittee) {
           console.log("Rendering add committee");
-        }
-        else {
+        } else {
           console.log("Returning from add committee");
         }
         handleToggleMakeCommittee(!isMakeCommittee);
