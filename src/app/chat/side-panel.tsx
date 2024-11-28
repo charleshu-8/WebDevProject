@@ -1,5 +1,7 @@
+import React from "react";
 import { Box, Button } from "@mui/material";
-import React, { useMemo } from "react";
+//import CommitteeCard from "./committees/committe-cards";
+import CommitteeCard from "./committees/committe-cards";
 import { Panel } from "./panelEnum";
 
 interface SidePanelProps {
@@ -11,32 +13,34 @@ export default function SidePanel({
   panelVersion,
   handleToggleIsNewMotion,
 }: SidePanelProps) {
-  const panel = panelVersion;
-
-  const panelTitle: string = useMemo(() => {
-    switch (panel) {
+  const panelTitle: string = React.useMemo(() => {
+    switch (panelVersion) {
       case Panel.COMMITTEES:
         return "All Committees";
       case Panel.MOTIONS:
-        return "Comittee Motions";
+        return "Committee Motions";
       case Panel.AGENDA:
         return "Current Agenda";
       case Panel.ROLES:
         return "Current Role";
+      default:
+        return "";
     }
-  }, [panel]);
+  }, [panelVersion]);
 
-  const panelButtonTitle = useMemo(() => {
-    switch (panel) {
+  const panelButtonTitle = React.useMemo(() => {
+    switch (panelVersion) {
       case Panel.COMMITTEES:
         return "Add Committee";
       case Panel.MOTIONS:
         return "Add Motion";
+      default:
+        return "";
     }
-  }, [panel]);
+  }, [panelVersion]);
 
   function handlePanelAddButtonClick() {
-    switch (panel) {
+    switch (panelVersion) {
       case Panel.COMMITTEES:
         console.log("Rendering add committee");
         break;
@@ -54,10 +58,8 @@ export default function SidePanel({
           {panelTitle}
         </h2>
       </Box>
-      <Box className="panel-content flex h-full w-full flex-col items-center gap-y-2">
-        {/*check version here with && and then choose to render add committee button or add motion button
-              then populate by fetching data from specific loc in db and returning a motion card or discussion card for each*/}
-        {(panel === Panel.COMMITTEES || panel === Panel.MOTIONS) && (
+      <Box className="panel-content flex h-full w-full flex-col items-center gap-y-2 overflow-y-auto">
+        {(panelVersion === Panel.COMMITTEES || panelVersion === Panel.MOTIONS) && (
           <Button
             className="mt-3 bg-extra-dark-blue text-xs text-white dark:bg-dark-background dark:text-dark-accent"
             onClick={handlePanelAddButtonClick}
@@ -65,7 +67,9 @@ export default function SidePanel({
             {panelButtonTitle}
           </Button>
         )}
-        {/*Side panel content will go here --> so mapping motions and displaying below or committees */}
+
+        {/* bring out CommitteeCard if the panel is Committees */}
+        {panelVersion === Panel.COMMITTEES && <CommitteeCard />}
       </Box>
     </Box>
   );
