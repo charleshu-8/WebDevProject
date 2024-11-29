@@ -1,4 +1,3 @@
-import React from "react";
 import { Box, Button } from "@mui/material";
 import React, { useEffect, useMemo, useState } from "react";
 import { Panel } from "./panelEnum";
@@ -57,18 +56,16 @@ export default function SidePanel({
       case Panel.COMMITTEES:
         return "All Committees";
       case Panel.MOTIONS:
-        return "Committee Motions";
+        return "Comittee Motions";
       case Panel.AGENDA:
         return "Current Agenda";
       case Panel.ROLES:
         return "Current Role";
-      default:
-        return "";
     }
-  }, [panelVersion]);
+  }, [panel]);
 
-  const panelButtonTitle = React.useMemo(() => {
-    switch (panelVersion) {
+  const panelButtonTitle = useMemo(() => {
+    switch (panel) {
       case Panel.COMMITTEES:
         if (!isMakeCommittee) {
           return "Add Committee";
@@ -77,13 +74,11 @@ export default function SidePanel({
         }
       case Panel.MOTIONS:
         return "Add Motion";
-      default:
-        return "";
     }
   }, [panel, isMakeCommittee]);
 
   function handlePanelAddButtonClick() {
-    switch (panelVersion) {
+    switch (panel) {
       case Panel.COMMITTEES:
         if (!isMakeCommittee) {
           console.log("Rendering add committee");
