@@ -1,5 +1,5 @@
 import { getCommitteeMotions } from "./committees";
-import { pb } from "./pocketbase";
+import { pb, currentUser } from "./pocketbase";
 import { PocketbaseMessage, PocketbaseMotion } from "./pocketbaseInterfaces";
 
 // Create a new motion in DB given a motion title and associated committee ID
@@ -75,6 +75,7 @@ export async function getFilteredMotions(
     })) as PocketbaseMotion[];
   } catch (e) {
     console.error("Motions fetching error: " + e);
+
     return [];
   }
 }
@@ -98,5 +99,48 @@ export async function setVoted(motion: string, voted: boolean) {
   } catch (e) {
     console.error("Voting status update error: " + e);
     return false;
+  }
+}
+
+export async function voteForMotion(motion: string) {
+  try {
+    const motionData = await pb.collection("motions").getOne(motion);
+    const forVote = motionData.for_vote || [];
+    forVote.push(currentUser.id);
+    //checking if vote must be removed from other side
+    if (motionData.against_vote.includes(currentUser.id)) {
+      const againstVote = motionData.against_vote.filter(
+        (id) => id !== currentUser.id,
+      );
+      await pb.collection("motions").update(motion, {
+        against_vote: againstVote,
+      });
+    }
+    await pb.collection("motions").update(motion, {
+      for_vote: forVote,
+    });
+  } catch (e) {
+    console.error("Voting error: " + e);
+  }
+}
+
+export async function voteAgainstMotion(motion: string) {
+  try {
+    const motionData = await pb.collection("motions").getOne(motion);
+    const againstVote = motionData.against_vote || [];
+    againstVote.push(currentUser.id);
+    //checking if vote must be removed from other side
+    if (motionData.for_vote.includes(currentUser.id)) {
+      const forVote = motionData.for_vote.filter((id) => id !== currentUser.id);
+      await pb.collection("motions").update(motion, {
+        for_vote: forVote,
+      });
+    }
+    console.log("againstVote: " + againstVote);
+    await pb.collection("motions").update(motion, {
+      against_vote: againstVote,
+    });
+  } catch (e) {
+    console.error("Voting error: " + e);
   }
 }

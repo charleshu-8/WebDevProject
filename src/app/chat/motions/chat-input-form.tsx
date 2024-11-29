@@ -9,7 +9,13 @@ import {
   getCurrentMotion,
   pb,
 } from "@/app/db/pocketbase";
-import { voted, setVoted, getMotionDetails } from "@/app/db/motions";
+import {
+  voted,
+  setVoted,
+  getMotionDetails,
+  voteForMotion,
+  voteAgainstMotion,
+} from "@/app/db/motions";
 // Import the Input component from the MUI Joy library
 import Image from "next/image";
 import proButton from "@/app/assets/chat/pro_button.svg";
@@ -34,6 +40,7 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
   const [message, setMessage] = useState(""); // State to track the message input
   const [chair, setChair] = useState("");
   const [hasVoted, setHasVoted] = useState(false);
+  const [currentMotion, setCurrentMotion] = useState(getCurrentMotion());
 
   // Toggle the pro button state
   function handleProClick(): void {
@@ -42,11 +49,21 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
     setIsNeutralPressed(false); // Ensure that the neutral button is not pressed
   }
 
+  function handleProVote() {
+    handleProClick();
+    voteForMotion(getCurrentMotion());
+  }
+
   // Toggle the con button state
   function handleConClick(): void {
     setIsConPressed(!isConPressed);
     setIsProPressed(false); // Ensure that the pro button is not pressed
     setIsNeutralPressed(false); // Ensure that the neutral button is not pressed
+  }
+
+  function handleConVote(): void {
+    handleConClick();
+    voteAgainstMotion(getCurrentMotion());
   }
 
   // Toggle the neutral button state
@@ -68,82 +85,195 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
     console.log("something");
   }
 
-  function handleit() {
-    // getMotionDetails(getCurrentMotion()).then((motion) => {
-    //   setHasVoted(motion?.voted);
-    // });
-    voted(getCurrentMotion()).then((voted) => {
+  function callVote() {
+    if (!hasVoted) {
+      checkIfVoted();
+    } else {
+      setIsConPressed(false);
+      setIsProPressed(false);
+    }
+    setVoted(getCurrentMotion(), true).then(() => {
+      setHasVoted(!hasVoted);
+    });
+  }
+
+  function checkIfVoted() {
+    pb.collection("motions")
+      .getOne(getCurrentMotion())
+      .then((motion) => {
+        if (motion.for_vote.includes(currentUser.id)) {
+          setIsProPressed(true);
+        } else if (motion.against_vote.includes(currentUser.id)) {
+          setIsConPressed(true);
+        }
+      });
+  }
+
+  useEffect(() => {
+    voted(currentMotion).then((voted) => {
       setHasVoted(voted);
+      if (voted) {
+        checkIfVoted();
+      }
     });
     getCommitteeChair(getCurrentCommittee()).then((chair) => {
       setChair(chair);
     });
-  }
-
-  function callVote() {
-    setVoted(getCurrentMotion(), true).then(() => {
-      setHasVoted(true);
-    });
-  }
+  }, [currentMotion]);
 
   useEffect(() => {
-    handleit();
-  }, []);
+    setCurrentMotion(getCurrentMotion());
+    setIsProPressed(false);
+    setIsConPressed(false);
+    setIsNeutralPressed(false);
+    setMessage("");
+  }, [getCurrentMotion()]);
 
   return (
     <>
       {/* Main White Chat Field Input Box Container */}
       <div className="h-full w-full flex-col items-center justify-center overflow-hidden rounded-lg border-2 border-extra-light-gray bg-white">
         {/* Gray Options Bar above chat input field */}
-        <div className="flex h-1/5 items-center bg-extra-dim-gray pl-6">
-          {/* Pro Icon Container */}
-          <div className="ml-2 mr-2 flex h-[70%] items-center">
-            {/* Pro Button/Icon */}
-            <Image
-              className="h-full cursor-pointer"
-              alt="Pro"
-              src={isProPressed ? proButtonPressed : proButton} // Conditionally render the icon
-              width="56"
-              height="20"
-              onClick={handleProClick} // Handle icon click
-            />
+
+        {hasVoted ? (
+          <div className="flex h-1/5 items-center bg-extra-dim-gray pl-6">
+            {/* Pro Icon Container */}
+            <div className="ml-2 mr-2 flex h-[70%] items-center">
+              {/* Pro Button/Icon */}
+              <Image
+                className="h-full cursor-pointer"
+                alt="Pro"
+                src={isProPressed ? proButtonPressed : proButton} // Conditionally render the icon
+                width="56"
+                height="20"
+                onClick={handleProVote} // Handle icon click
+              />
+            </div>
+            {/* Con Icon Container */}
+            <div className="ml-2 mr-2 flex h-[70%] items-center">
+              {/* Con Button/Icon */}
+              <Image
+                className="h-full cursor-pointer"
+                alt="Con"
+                src={isConPressed ? conButtonPressed : conButton} // Conditionally render the icon
+                width="58"
+                height="20"
+                onClick={handleConVote} // Handle icon click
+              />
+            </div>
+            {chair === currentUser?.id ? (
+              <Button
+                variant="contained"
+                color=""
+                className="ml-2 mr-2 border-2 border-solid p-1"
+                style={{ fontSize: "0.5rem" }}
+                onClick={() => callVote()}
+              >
+                Restart discussion
+              </Button>
+            ) : null}
           </div>
-          {/* Con Icon Container */}
-          <div className="ml-2 mr-2 flex h-[70%] items-center">
-            {/* Con Button/Icon */}
-            <Image
-              className="h-full cursor-pointer"
-              alt="Con"
-              src={isConPressed ? conButtonPressed : conButton} // Conditionally render the icon
-              width="58"
-              height="20"
-              onClick={handleConClick} // Handle icon click
-            />
+        ) : (
+          <div className="flex h-1/5 items-center bg-extra-dim-gray pl-6">
+            {/* Pro Icon Container */}
+            <div className="ml-2 mr-2 flex h-[70%] items-center">
+              {/* Pro Button/Icon */}
+              <Image
+                className="h-full cursor-pointer"
+                alt="Pro"
+                src={isProPressed ? proButtonPressed : proButton} // Conditionally render the icon
+                width="56"
+                height="20"
+                onClick={handleProClick} // Handle icon click
+              />
+            </div>
+            {/* Con Icon Container */}
+            <div className="ml-2 mr-2 flex h-[70%] items-center">
+              {/* Con Button/Icon */}
+              <Image
+                className="h-full cursor-pointer"
+                alt="Con"
+                src={isConPressed ? conButtonPressed : conButton} // Conditionally render the icon
+                width="58"
+                height="20"
+                onClick={handleConClick} // Handle icon click
+              />
+            </div>
+            {/* Neutral Icon Container */}
+            <div className="ml-2 mr-2 flex h-[70%] items-center">
+              {/* Neutral Button/Icon */}
+              <Image
+                className="h-full cursor-pointer"
+                alt="Neutral"
+                src={isNeutralPressed ? neutralButtonPressed : neutralButton} // Conditionally render the icon
+                width="74"
+                height="20"
+                onClick={handleNeutralClick} // Handle icon click
+              />
+            </div>
+            {chair === currentUser?.id ? (
+              <Button
+                variant="contained"
+                color=""
+                className="ml-2 mr-2 border-2 border-solid p-1"
+                style={{ fontSize: "0.5rem" }}
+                onClick={() => callVote()}
+              >
+                Call vote
+              </Button>
+            ) : null}
           </div>
-          {/* Neutral Icon Container */}
-          <div className="ml-2 mr-2 flex h-[70%] items-center">
-            {/* Neutral Button/Icon */}
-            <Image
-              className="h-full cursor-pointer"
-              alt="Neutral"
-              src={isNeutralPressed ? neutralButtonPressed : neutralButton} // Conditionally render the icon
-              width="74"
-              height="20"
-              onClick={handleNeutralClick} // Handle icon click
-            />
-          </div>
-          {chair === currentUser?.id ? (
-            <Button
-              variant="contained"
-              color=""
-              className="ml-2 mr-2 border-2 border-solid p-1"
-              style={{ fontSize: "0.5rem" }}
-              onClick={() => callVote()}
-            >
-              Call vote
-            </Button>
-          ) : null}
-        </div>
+        )}
+
+        {/*<div className="flex h-1/5 items-center bg-extra-dim-gray pl-6">*/}
+        {/*  /!* Pro Icon Container *!/*/}
+        {/*  <div className="ml-2 mr-2 flex h-[70%] items-center">*/}
+        {/*    /!* Pro Button/Icon *!/*/}
+        {/*    <Image*/}
+        {/*      className="h-full cursor-pointer"*/}
+        {/*      alt="Pro"*/}
+        {/*      src={isProPressed ? proButtonPressed : proButton} // Conditionally render the icon*/}
+        {/*      width="56"*/}
+        {/*      height="20"*/}
+        {/*      onClick={handleProClick} // Handle icon click*/}
+        {/*    />*/}
+        {/*  </div>*/}
+        {/*  /!* Con Icon Container *!/*/}
+        {/*  <div className="ml-2 mr-2 flex h-[70%] items-center">*/}
+        {/*    /!* Con Button/Icon *!/*/}
+        {/*    <Image*/}
+        {/*      className="h-full cursor-pointer"*/}
+        {/*      alt="Con"*/}
+        {/*      src={isConPressed ? conButtonPressed : conButton} // Conditionally render the icon*/}
+        {/*      width="58"*/}
+        {/*      height="20"*/}
+        {/*      onClick={handleConClick} // Handle icon click*/}
+        {/*    />*/}
+        {/*  </div>*/}
+        {/*  /!* Neutral Icon Container *!/*/}
+        {/*  <div className="ml-2 mr-2 flex h-[70%] items-center">*/}
+        {/*    /!* Neutral Button/Icon *!/*/}
+        {/*    <Image*/}
+        {/*      className="h-full cursor-pointer"*/}
+        {/*      alt="Neutral"*/}
+        {/*      src={isNeutralPressed ? neutralButtonPressed : neutralButton} // Conditionally render the icon*/}
+        {/*      width="74"*/}
+        {/*      height="20"*/}
+        {/*      onClick={handleNeutralClick} // Handle icon click*/}
+        {/*    />*/}
+        {/*  </div>*/}
+        {/*  {chair === currentUser?.id ? (*/}
+        {/*    <Button*/}
+        {/*      variant="contained"*/}
+        {/*      color=""*/}
+        {/*      className="ml-2 mr-2 border-2 border-solid p-1"*/}
+        {/*      style={{ fontSize: "0.5rem" }}*/}
+        {/*      onClick={() => callVote()}*/}
+        {/*    >*/}
+        {/*      Call vote*/}
+        {/*    </Button>*/}
+        {/*  ) : null}*/}
+        {/*</div>*/}
         {/* MUI Input with Send Button */}
         <div className="mb-6 ml-7 mr-7 mt-4 flex items-center justify-between">
           {/* MUI Input Component Container*/}
@@ -151,7 +281,7 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
             {hasVoted ? (
               <Textarea
                 name="Textarea"
-                placeholder="A vote has been called for this motion"
+                placeholder="A vote has been called for this motion. Hit Pro to vote in favor of the motion, hit con to vote against the motion."
                 variant="outlined"
                 minRows={3}
                 maxRows={3}
