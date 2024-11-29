@@ -78,3 +78,25 @@ export async function getFilteredMotions(
     return [];
   }
 }
+
+export async function voted(motion: string) {
+  try {
+    return (
+      await pb.collection("motions").getOne(`${motion}`, {
+        fields: "voted",
+      })
+    ).voted as boolean;
+  } catch (e) {
+    console.error("Voting status fetching error: " + e);
+    return false;
+  }
+}
+
+export async function setVoted(motion: string, voted: boolean) {
+  try {
+    return await pb.collection("motions").update(`${motion}`, { voted: voted });
+  } catch (e) {
+    console.error("Voting status update error: " + e);
+    return false;
+  }
+}

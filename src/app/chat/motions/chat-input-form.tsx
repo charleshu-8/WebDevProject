@@ -1,15 +1,25 @@
 "use client";
 
-import React, { useState } from "react";
-import Textarea from "@mui/joy/Textarea"; // Import the Input component from the MUI Joy library
+import React, { useEffect, useState } from "react";
+import Textarea from "@mui/joy/Textarea";
+import { getCommitteeChair } from "@/app/db/committees";
+import {
+  currentUser,
+  getCurrentCommittee,
+  getCurrentMotion,
+  pb,
+} from "@/app/db/pocketbase";
+import { voted, setVoted, getMotionDetails } from "@/app/db/motions";
+// Import the Input component from the MUI Joy library
 import Image from "next/image";
-import proButton from "@/app/assets/chat/pro_button.svg"
-import proButtonPressed from "@/app/assets/chat/pro_button_pressed.svg"
-import conButton from "@/app/assets/chat/con_button.svg"
-import conButtonPressed from "@/app/assets/chat/con_button_pressed.svg"
-import neutralButton from "@/app/assets/chat/neutral_button.svg"
-import neutralButtonPressed from "@/app/assets/chat/neutral_button_pressed.svg"
-import sendIcon from "@/app/assets/chat/send_icon.svg"
+import proButton from "@/app/assets/chat/pro_button.svg";
+import proButtonPressed from "@/app/assets/chat/pro_button_pressed.svg";
+import conButton from "@/app/assets/chat/con_button.svg";
+import conButtonPressed from "@/app/assets/chat/con_button_pressed.svg";
+import neutralButton from "@/app/assets/chat/neutral_button.svg";
+import neutralButtonPressed from "@/app/assets/chat/neutral_button_pressed.svg";
+import sendIcon from "@/app/assets/chat/send_icon.svg";
+import { Button } from "@mui/material";
 
 interface ChatInputFieldProps {
   onSendMessage: (message: string) => void;
@@ -22,6 +32,8 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
   const [isConPressed, setIsConPressed] = useState(false);
   const [isNeutralPressed, setIsNeutralPressed] = useState(false);
   const [message, setMessage] = useState(""); // State to track the message input
+  const [chair, setChair] = useState("");
+  const [hasVoted, setHasVoted] = useState(false);
 
   // Toggle the pro button state
   function handleProClick(): void {
@@ -50,6 +62,34 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
     setMessage(""); // Clear the text area after sending the message
   }
 
+  async function handleBeingChair() {
+    // setChair(await getCommitteeChair(getCurrentCommittee()));
+    console.log(await voted(getCurrentMotion()));
+    console.log("something");
+  }
+
+  function handleit() {
+    // getMotionDetails(getCurrentMotion()).then((motion) => {
+    //   setHasVoted(motion?.voted);
+    // });
+    voted(getCurrentMotion()).then((voted) => {
+      setHasVoted(voted);
+    });
+    getCommitteeChair(getCurrentCommittee()).then((chair) => {
+      setChair(chair);
+    });
+  }
+
+  function callVote() {
+    setVoted(getCurrentMotion(), true).then(() => {
+      setHasVoted(true);
+    });
+  }
+
+  useEffect(() => {
+    handleit();
+  }, []);
+
   return (
     <>
       {/* Main White Chat Field Input Box Container */}
@@ -62,11 +102,7 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
             <Image
               className="h-full cursor-pointer"
               alt="Pro"
-              src={
-                isProPressed
-                  ? proButtonPressed
-                  : proButton
-              } // Conditionally render the icon
+              src={isProPressed ? proButtonPressed : proButton} // Conditionally render the icon
               width="56"
               height="20"
               onClick={handleProClick} // Handle icon click
@@ -78,11 +114,7 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
             <Image
               className="h-full cursor-pointer"
               alt="Con"
-              src={
-                isConPressed
-                  ? conButtonPressed
-                  : conButton
-              } // Conditionally render the icon
+              src={isConPressed ? conButtonPressed : conButton} // Conditionally render the icon
               width="58"
               height="20"
               onClick={handleConClick} // Handle icon click
@@ -94,37 +126,65 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
             <Image
               className="h-full cursor-pointer"
               alt="Neutral"
-              src={
-                isNeutralPressed
-                  ? neutralButtonPressed
-                  : neutralButton
-              } // Conditionally render the icon
+              src={isNeutralPressed ? neutralButtonPressed : neutralButton} // Conditionally render the icon
               width="74"
               height="20"
               onClick={handleNeutralClick} // Handle icon click
             />
           </div>
+          {chair === currentUser?.id ? (
+            <Button
+              variant="contained"
+              color=""
+              className="ml-2 mr-2 border-2 border-solid p-1"
+              style={{ fontSize: "0.5rem" }}
+              onClick={() => callVote()}
+            >
+              Call vote
+            </Button>
+          ) : null}
         </div>
         {/* MUI Input with Send Button */}
         <div className="mb-6 ml-7 mr-7 mt-4 flex items-center justify-between">
           {/* MUI Input Component Container*/}
           <div className="m-1 mb-3 w-full">
-            <Textarea
-              name="Textarea"
-              placeholder="I like this motion because..."
-              variant="outlined"
-              minRows={3}
-              maxRows={3}
-              size="sm"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)} // Handle input change
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  e.preventDefault(); // Prevent default behavior of Enter key
-                  handleSendClick(); // Trigger send button click
-                }
-              }}
-            />
+            {hasVoted ? (
+              <Textarea
+                name="Textarea"
+                placeholder="A vote has been called for this motion"
+                variant="outlined"
+                minRows={3}
+                maxRows={3}
+                size="sm"
+                value={message}
+                disabled={hasVoted}
+                onChange={(e) => setMessage(e.target.value)} // Handle input change
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault(); // Prevent default behavior of Enter key
+                    handleSendClick(); // Trigger send button click
+                  }
+                }}
+              />
+            ) : (
+              <Textarea
+                name="Textarea"
+                placeholder="I like this motion because..."
+                variant="outlined"
+                minRows={3}
+                maxRows={3}
+                size="sm"
+                value={message}
+                disabled={hasVoted}
+                onChange={(e) => setMessage(e.target.value)} // Handle input change
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault(); // Prevent default behavior of Enter key
+                    handleSendClick(); // Trigger send button click
+                  }
+                }}
+              />
+            )}
           </div>
           {/* Send Button/Icon Container*/}
           <div className="ml-2 mr-2 flex h-5/6 cursor-pointer items-center">

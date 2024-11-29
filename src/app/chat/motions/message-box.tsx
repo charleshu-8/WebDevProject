@@ -30,6 +30,7 @@ const MessageBox = memo(function MessageBox({
   memberAvatars: Map<string, string>;
 }) {
   const isSender = messageProp.owner === currentUser?.id;
+  //console.log(`${messageProp.displayName} --> ${messageProp.text}`);
   return (
     <Box
       className={`mb-4 flex flex-col ${isSender ? "mr-1 items-end" : "items-start"}`}
