@@ -1,5 +1,4 @@
 import { Box, Button } from "@mui/material";
-//import CommitteeCard from "./committees/committe-cards";
 import CommitteeCard from "./committees/committe-cards";
 import React, { useEffect, useMemo, useState } from "react";
 import { Panel } from "./panelEnum";
@@ -68,14 +67,10 @@ export default function SidePanel({
     }
   }, [panel]);
 
-  const panelButtonTitle = React.useMemo(() => {
+  const panelButtonTitle = useMemo(() => {
     switch (panel) {
       case Panel.COMMITTEES:
-        if (!isMakeCommittee) {
-          return "Add Committee";
-        } else {
-          return "Exit Committee Creation";
-        }
+        return isMakeCommittee ? "Exit Committee Creation" : "Add Committee";
       case Panel.MOTIONS:
         return "Add Motion";
       default:
@@ -86,15 +81,9 @@ export default function SidePanel({
   function handlePanelAddButtonClick() {
     switch (panel) {
       case Panel.COMMITTEES:
-        if (!isMakeCommittee) {
-          console.log("Rendering add committee");
-        } else {
-          console.log("Returning from add committee");
-        }
         handleToggleMakeCommittee(!isMakeCommittee);
         break;
       case Panel.MOTIONS:
-        console.log("Rendering add motion");
         handleToggleIsNewMotion();
         break;
     }
@@ -102,73 +91,56 @@ export default function SidePanel({
 
   // Function to handle when a motion card is clicked
   async function handleMotionCardClick(key: string): Promise<void> {
-    // You can add additional logic here to handle the motionKey
-    setCurrentMotion(key); // Update the current motion
-    setSelectedMotion((await getMotionDetails(getCurrentMotion())).title); // Update the state variable
-    setReloadChatBox(true); // Toggle the reload state
+    setCurrentMotion(key);
+    setSelectedMotion((await getMotionDetails(getCurrentMotion())).title);
+    setReloadChatBox(true);
   }
 
   function getClassNameForMotionCard(motionKey: string): string {
-    console.info("Selected motion:", selectedMotion);
-    console.info("Checking against:", motionKey);
     if (selectedMotion === motionKey) {
-      //console.info("Selected motion:", selectedMotion);
-      //console.info("Checking against:", motionKey);
       return "border-[6px] border-blue-500 rounded-[7px]";
     }
     return "";
   }
 
-  // asycn function to query all motions from the current committee
+  // Async function to query all motions from the current committee
   async function queryMotions() {
-    // Get the list of motion keys for the current committee
     const motionIds = await getCommitteeMotions(getCurrentCommittee());
-    // Convert it into a filter string
-    const motionIdFilter = motionIds
-      .map((id: string) => `id='${id}'`)
-      .join("||");
-
-    // Retrieve all motions according to the ID filter
+    const motionIdFilter = motionIds.map((id: string) => `id='${id}'`).join("||");
     const motions = await getFilteredMotions(
       motionIdFilter,
       "-updated",
-      "messages",
+      "messages"
     );
-
-    // Get ID -> username map
     const idMap = await getIdUsernameMapping();
 
-    // Loop through each motion and convert into a motion card property
-    const motionCardProps = motions.map(async (motion) => {
-      let seconderFullName = "";
-      let ownerFullName = "";
-      try {
-        seconderFullName = motion.expand.messages[1].owner;
-        ownerFullName = motion.expand.messages[0].owner;
-      } catch (e) {
-        console.info("No seconder on motion " + motion.title);
-        console.info("No owner on motion " + motion.title);
-      }
-      return {
-        motionTitle: motion.title,
-        motionStatus: "TBD",
-        shortName: getInitials(idMap?.get(ownerFullName) || "N/A"),
-        fullName: idMap?.get(ownerFullName) || "N/A",
-        motionText: motion.title,
-        seconderShortName: getInitials(idMap?.get(seconderFullName) || "N/A"),
-        seconderFullName: idMap?.get(seconderFullName) || "N/A",
-        time: motion.created,
-        key: motion.id,
-        onClick: () => handleMotionCardClick(motion.id),
-      };
-    });
+    const motionCardProps = await Promise.all(
+      motions.map(async (motion) => {
+        let seconderFullName = "";
+        let ownerFullName = "";
+        try {
+          seconderFullName = motion.expand.messages[1]?.owner || "";
+          ownerFullName = motion.expand.messages[0]?.owner || "";
+        } catch {
+          console.info("No seconder or owner on motion:", motion.title);
+        }
+        return {
+          motionTitle: motion.title,
+          motionStatus: "TBD",
+          shortName: getInitials(idMap?.get(ownerFullName) || "N/A"),
+          fullName: idMap?.get(ownerFullName) || "N/A",
+          motionText: motion.title,
+          seconderShortName: getInitials(idMap?.get(seconderFullName) || "N/A"),
+          seconderFullName: idMap?.get(seconderFullName) || "N/A",
+          time: motion.created,
+          key: motion.id,
+          onClick: () => handleMotionCardClick(motion.id),
+        };
+      })
+    );
 
-    // Wait for all promises to resolve
-    const resolvedMotionCardProps = await Promise.all(motionCardProps);
-
-    // Update the state with the list of motion keys and motion card properties
     setMotionIds(motionIds);
-    setMotions(resolvedMotionCardProps);
+    setMotions(motionCardProps);
   }
 
   // Get all available messages for a motion
@@ -189,8 +161,7 @@ export default function SidePanel({
 
       // Subscribe to updates for the specific motion
       pb.collection("committees").subscribe(getCurrentCommittee(), () => {
-        fetchMotions(); // Fetch new messages when updated
-        console.log("something changed");
+        fetchMotions();
       });
 
       // Cleanup subscription on component unmount
@@ -217,8 +188,6 @@ export default function SidePanel({
         </h2>
       </Box>
       <Box className="panel-content flex h-full w-full flex-col items-center gap-y-2 overflow-auto">
-        {/*check version here with && and then choose to render add committee button or add motion button
-              then populate by fetching data from specific loc in db and returning a motion card or discussion card for each*/}
         {(panel === Panel.COMMITTEES || panel === Panel.MOTIONS) && (
           <Button
             className="mt-3 bg-extra-dark-blue text-xs text-white dark:bg-dark-background dark:text-dark-accent"
@@ -227,8 +196,6 @@ export default function SidePanel({
             {panelButtonTitle}
           </Button>
         )}
-
-        {/* bring out CommitteeCard if the panel is Committees */}
         {panel === Panel.COMMITTEES && <CommitteeCard />}
         {panel === Panel.MOTIONS && (
           <>
@@ -245,7 +212,6 @@ export default function SidePanel({
                     onClick={() => handleMotionCardClick(motion.key)}
                   >
                     <MotionCard
-                      key={motion.key}
                       motionTitle={motion.motionTitle}
                       motionStatus={motion.motionStatus}
                       shortName={motion.shortName}
