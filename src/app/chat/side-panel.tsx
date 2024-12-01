@@ -6,18 +6,19 @@ import { pb } from "@/app/db/pocketbase";
 
 interface SidePanelProps {
   panelVersion: Panel;
-  handleToggleIsNewMotion: () => void;
+  handleToggleMakeCommittee: (value: boolean) => void;
+  isMakeCommittee: boolean;
 }
 
 export default function SidePanel({
   panelVersion,
-  handleToggleIsNewMotion,
+  handleToggleMakeCommittee,
+  isMakeCommittee,
 }: SidePanelProps) {
-  const [committees, setCommittees] = useState<any[]>([]); // Store committees fetched from the backend
-  const [selectedCommittee, setSelectedCommittee] = useState<number | null>(null); // Track the selected committee
-  const [loading, setLoading] = useState(false); // Loading state
+  const [committees, setCommittees] = useState<any[]>([]);
+  const [selectedCommittee, setSelectedCommittee] = useState<number | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  // Fetch committees data
   const fetchCommittees = async () => {
     setLoading(true);
     try {
@@ -30,7 +31,6 @@ export default function SidePanel({
     }
   };
 
-  // Fetch committees only when panelVersion is COMMITTEES
   useEffect(() => {
     if (panelVersion === Panel.COMMITTEES) {
       fetchCommittees();
@@ -41,12 +41,6 @@ export default function SidePanel({
     switch (panelVersion) {
       case Panel.COMMITTEES:
         return "All Committees";
-      case Panel.MOTIONS:
-        return "Committee Motions";
-      case Panel.AGENDA:
-        return "Current Agenda";
-      case Panel.ROLES:
-        return "Current Role";
       default:
         return "";
     }
@@ -55,9 +49,7 @@ export default function SidePanel({
   const panelButtonTitle = useMemo(() => {
     switch (panelVersion) {
       case Panel.COMMITTEES:
-        return "Add Committee";
-      case Panel.MOTIONS:
-        return "Add Motion";
+        return isMakeCommittee ? "Exit Committee Creation" : "Add Committee";
       default:
         return "";
     }
@@ -65,13 +57,13 @@ export default function SidePanel({
 
   const handlePanelAddButtonClick = () => {
     if (panelVersion === Panel.COMMITTEES) {
-      console.log("Rendering add committee");
+      handleToggleMakeCommittee(!isMakeCommittee);
     }
   };
 
   const handleCommitteeClick = (id: number) => {
-    console.log(`Committee with ID ${id} clicked!`);
     setSelectedCommittee(id);
+    console.log(`Committee with ID ${id} clicked.`);
   };
 
   return (
@@ -91,29 +83,26 @@ export default function SidePanel({
         )}
       </Box>
 
-      {/* Conditional Rendering Based on Panel Version */}
+      {/* Conditional Content for Committees */}
       <Box className="panel-content flex h-full w-full flex-col gap-y-2 overflow-y-auto">
-        {panelVersion === Panel.COMMITTEES ? (
-          loading ? (
-            <Box className="flex justify-center items-center h-full">
-              <CircularProgress />
-            </Box>
-          ) : (
-            committees.map((committee) => (
-              <CommitteeCard
-                key={committee.id}
-                id={committee.id}
-                title={committee.title}
-                memberCount={committee.members?.length || 0} // Assuming 'members' is an array
-                selected={committee.id === selectedCommittee}
-                onClick={handleCommitteeClick}
-              />
-            ))
-          )
+        {loading ? (
+          <Box className="flex justify-center items-center h-full">
+            <CircularProgress />
+          </Box>
         ) : (
-          <p className="text-gray-500 text-center">
-            Select a panel to view its content.
-          </p>
+          committees.map((committee) => (
+            <CommitteeCard
+              key={committee.id}
+              id={committee.id}
+              title={committee.title}
+              memberCount={committee.members?.length || 0}
+              selected={committee.id === selectedCommittee}
+              onClick={handleCommitteeClick}
+            />
+          ))
+        )}
+        {!loading && committees.length === 0 && (
+          <p className="text-gray-500 text-center">No committees found.</p>
         )}
       </Box>
     </Box>

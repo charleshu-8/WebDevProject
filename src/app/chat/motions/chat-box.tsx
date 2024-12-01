@@ -14,14 +14,17 @@ import {
 } from "@/app/db/pocketbase";
 import { formatDate, getCurrentTime } from "@/app/utils/time";
 import { PocketbaseMessage } from "@/app/db/pocketbaseInterfaces";
-import { addNewMotion } from "@/app/db/motions";
+import { addNewMotion, getFullMotionMessages } from "@/app/db/motions";
 import getRandomColor from "@/app/utils/color";
-import { RecordModel } from "pocketbase";
 import MessageBox from "./message-box";
+import { getCommitteeMembers } from "@/app/db/committees";
+import { addNewMessage } from "@/app/db/messages";
 
 interface ChatBoxProps {
   isNewMotion: boolean;
   handleToggleIsNewMotion: () => void;
+  reload: boolean;
+  setReload: (value: boolean) => void; // Add this prop
 }
 
 export interface ChatMessage {
@@ -37,6 +40,8 @@ export interface ChatMessage {
 export default function ChatBox({
   isNewMotion,
   handleToggleIsNewMotion,
+  reload, // Add this prop
+  setReload, // Add this prop
 }: ChatBoxProps) {
   // State to store messages as objects with text and timestamp
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -53,32 +58,19 @@ export default function ChatBox({
   // Ref to keep track of the container for automatic scrolling
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
-  // Get array of member IDs in committee to find member avatars
-  async function getCommitteeMembersIds() {
-    if (currentUser) {
-      const committeeMembers = await pb
-        .collection("committees")
-        .getOne(getCurrentCommittee(), {
-          fields: "members",
-          $autoCancel: false,
-        });
-      return committeeMembers.members;
-    }
-  }
-
   // Sift through users collection and find current committee members & avatars
   async function getMemberAvatarsByIds() {
     setLoadingMembers(true);
     const avatarPaths = new Map<string, string>();
     // Get list of member ids
-    const memberIds = await getCommitteeMembersIds();
+    const memberIds = await getCommitteeMembers(getCurrentCommittee());
     const memberIdFilter = memberIds
       .map((id: string) => `id='${id}'`)
       .join("||");
 
     // Look through all users that exist until all members of current committee are found
     const result = await pb.collection("users").getFullList({
-      fields: "username, avatar,id",
+      fields: "username, avatar, id",
       filter: memberIdFilter,
     });
 
@@ -94,19 +86,16 @@ export default function ChatBox({
       }
       avatarPaths.set(member.username, avatarPic);
     });
-
     setCurrentAvatars(avatarPaths);
     setLoadingMembers(false);
   }
 
-  async function helper() {
-    const response = await pb.collection("motions").getOne(getCurrentMotion(), {
-      expand: "messages",
-      $autoCancel: false,
-    });
+  // Get all available messages for a motion
+  async function fetchMessages() {
+    const messages = await getFullMotionMessages(getCurrentMotion());
 
     const helperArray: ChatMessage[] = [];
-    response?.expand?.messages.forEach((message: PocketbaseMessage) => {
+    messages.forEach((message: PocketbaseMessage) => {
       const formattedDate = formatDate(message.created);
       helperArray.push({
         id: message.id,
@@ -114,73 +103,28 @@ export default function ChatBox({
         timestamp: formattedDate,
         owner: message.owner,
         displayName: message.displayName,
-        // map profile path to display name
+        // Map profile path to display name
       });
     });
     helperArray.sort(
       (a, b) =>
         new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime(),
     );
+
     setMessages(helperArray);
-  }
-
-  // Get all available messages for a motion
-  async function fetchMessages() {
-    await helper();
-  }
-
-  // Push a given message to the DB
-  async function publishMessage(message: string) {
-    try {
-      const newMessage = await pb.collection("messages").create(
-        {
-          text: message,
-          owner: currentUser?.id,
-          motion: getCurrentMotion(),
-          displayName: currentUser?.username,
-        },
-        {
-          $autoCancel: false,
-        },
-      );
-
-      const motion = await pb.collection("motions").getOne(getCurrentMotion(), {
-        expand: "messages",
-        $autoCancel: false,
-      });
-
-      const oldMessages = motion?.expand?.messages;
-      const updatedMessages = oldMessages
-        ? [...motion?.expand?.messages, newMessage]
-        : [newMessage];
-      console.log(updatedMessages);
-
-      await pb.collection("motions").update(
-        getCurrentMotion(),
-        {
-          messages: updatedMessages.map((message) => message.id), // Ensure only message IDs are stored
-        },
-        {
-          $autoCancel: false,
-        },
-      );
-    } catch (error) {
-      console.error("Failed to publish message:", error);
-    }
   }
 
   // Process and send a given message to the DB
   // Flag is set if messages should be wiped, resetting motion
-  function sendMessage(message: string, flag: boolean = false) {
+  async function sendMessage(message: string, flag: boolean = false) {
     if (message.trim()) {
-      console.log("messages", messages);
       // Add message along with timestamp
       const currentTime =
         getCurrentTime() + " " + new Date().toLocaleDateString();
-      const newMessage = {
+      const newMessage: ChatMessage = {
         text: message,
         timestamp: currentTime,
-        owner: currentUser?.id,
+        owner: currentUser?.id as string,
         displayName: currentUser?.username,
       };
 
@@ -190,7 +134,16 @@ export default function ChatBox({
         setMessages([newMessage]);
       }
 
-      publishMessage(message);
+      if (
+        !(await addNewMessage(
+          message,
+          currentUser?.id as string,
+          getCurrentMotion(),
+          currentUser?.username,
+        ))
+      ) {
+        console.error("Failed to publish message");
+      }
       setCurrentMessage(""); // Clear input after sending
     }
   }
@@ -199,31 +152,25 @@ export default function ChatBox({
   function sendNewMotion(message: string) {
     if (message.trim()) {
       addNewMotion(message, getCurrentCommittee()).then((motion) => {
-        setCurrentMotion((motion as RecordModel).id);
+        setCurrentMotion(motion === false ? "" : motion.id);
         sendMessage(message, true);
         handleToggleIsNewMotion();
       });
     }
   }
 
-  // Effect to scroll to the bottom whenever the messages change
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
-
   // Listens for DB updates to messages to refetch messages
   // Also refetches upon motion or committee change
   useEffect(() => {
     if (getCurrentCommittee() && getCurrentMotion()) {
       fetchMessages();
-
-      // get updated members & avatar pics based on current committee
+      // Get updated members & avatar pics based on current committee
       getMemberAvatarsByIds();
 
       // Subscribe to updates for the specific motion
       pb.collection("motions").subscribe(getCurrentMotion(), () => {
         fetchMessages(); // Fetch new messages when updated
-        console.log("something changed");
+        console.log("Messages have changed");
       });
 
       // Cleanup subscription on component unmount
@@ -232,6 +179,34 @@ export default function ChatBox({
       };
     }
   }, []);
+
+  // Effect to scroll to the bottom whenever the messages change
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    console.log(messages);
+  }, [messages]);
+
+  // Fetch messages whenever reload changes
+  useEffect(() => {
+    let isMounted = true;
+
+    if (reload) {
+      fetchMessages().then(() => {
+        if (isMounted) {
+          setReload(false);
+        }
+      });
+    }
+
+    return () => {
+      isMounted = false;
+    };
+  }, [reload, setReload]);
+
+  // Fetch messages whenever reload changes
+  useEffect(() => {
+    fetchMessages();
+  }, [reload]);
 
   return (
     <Box className="flex h-full w-full flex-col bg-gray-200 p-4">
@@ -245,7 +220,7 @@ export default function ChatBox({
               messageProp={message}
               loadingState={loadingMembers}
               memberAvatars={currentAvatars}
-              key={index}
+              key={message.id || index}
             />
           ))
         )}
