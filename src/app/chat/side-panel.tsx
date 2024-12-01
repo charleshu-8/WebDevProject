@@ -1,8 +1,8 @@
-import React from "react";
-import { Box, Button } from "@mui/material";
-//import CommitteeCard from "./committees/committe-cards";
-import CommitteeCard from "./committees/committe-cards";
+import React, { useState, useEffect, useMemo } from "react";
+import { Box, Button, CircularProgress } from "@mui/material";
+import CommitteeCard from "./committees/committee-cards";
 import { Panel } from "./panelEnum";
+import { pb } from "@/app/db/pocketbase";
 
 interface SidePanelProps {
   panelVersion: Panel;
@@ -13,7 +13,31 @@ export default function SidePanel({
   panelVersion,
   handleToggleIsNewMotion,
 }: SidePanelProps) {
-  const panelTitle: string = React.useMemo(() => {
+  const [committees, setCommittees] = useState<any[]>([]); // Store committees fetched from the backend
+  const [selectedCommittee, setSelectedCommittee] = useState<number | null>(null); // Track the selected committee
+  const [loading, setLoading] = useState(false); // Loading state
+
+  // Fetch committees data
+  const fetchCommittees = async () => {
+    setLoading(true);
+    try {
+      const response = await pb.collection("committees").getFullList();
+      setCommittees(response);
+    } catch (error) {
+      console.error("Error fetching committees:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch committees only when panelVersion is COMMITTEES
+  useEffect(() => {
+    if (panelVersion === Panel.COMMITTEES) {
+      fetchCommittees();
+    }
+  }, [panelVersion]);
+
+  const panelTitle: string = useMemo(() => {
     switch (panelVersion) {
       case Panel.COMMITTEES:
         return "All Committees";
@@ -28,7 +52,7 @@ export default function SidePanel({
     }
   }, [panelVersion]);
 
-  const panelButtonTitle = React.useMemo(() => {
+  const panelButtonTitle = useMemo(() => {
     switch (panelVersion) {
       case Panel.COMMITTEES:
         return "Add Committee";
@@ -39,27 +63,25 @@ export default function SidePanel({
     }
   }, [panelVersion]);
 
-  function handlePanelAddButtonClick() {
-    switch (panelVersion) {
-      case Panel.COMMITTEES:
-        console.log("Rendering add committee");
-        break;
-      case Panel.MOTIONS:
-        console.log("Rendering add motion");
-        handleToggleIsNewMotion();
-        break;
+  const handlePanelAddButtonClick = () => {
+    if (panelVersion === Panel.COMMITTEES) {
+      console.log("Rendering add committee");
     }
-  }
+  };
+
+  const handleCommitteeClick = (id: number) => {
+    console.log(`Committee with ID ${id} clicked!`);
+    setSelectedCommittee(id);
+  };
 
   return (
     <Box className="flex h-full w-auto min-w-[8rem] flex-grow flex-col bg-light-secondary p-2 dark:bg-extra-dark-blue">
-      <Box className="flex h-auto w-full justify-start">
-        <h2 className="panel-title m-2 h-auto w-auto font-bold text-black dark:text-dark-text">
+      {/* Panel Header */}
+      <Box className="flex flex-col items-center w-full mb-4">
+        <h2 className="panel-title font-bold text-black dark:text-dark-text">
           {panelTitle}
         </h2>
-      </Box>
-      <Box className="panel-content flex h-full w-full flex-col items-center gap-y-2 overflow-y-auto">
-        {(panelVersion === Panel.COMMITTEES || panelVersion === Panel.MOTIONS) && (
+        {panelVersion === Panel.COMMITTEES && (
           <Button
             className="mt-3 bg-extra-dark-blue text-xs text-white dark:bg-dark-background dark:text-dark-accent"
             onClick={handlePanelAddButtonClick}
@@ -67,9 +89,32 @@ export default function SidePanel({
             {panelButtonTitle}
           </Button>
         )}
+      </Box>
 
-        {/* bring out CommitteeCard if the panel is Committees */}
-        {panelVersion === Panel.COMMITTEES && <CommitteeCard />}
+      {/* Conditional Rendering Based on Panel Version */}
+      <Box className="panel-content flex h-full w-full flex-col gap-y-2 overflow-y-auto">
+        {panelVersion === Panel.COMMITTEES ? (
+          loading ? (
+            <Box className="flex justify-center items-center h-full">
+              <CircularProgress />
+            </Box>
+          ) : (
+            committees.map((committee) => (
+              <CommitteeCard
+                key={committee.id}
+                id={committee.id}
+                title={committee.title}
+                memberCount={committee.members?.length || 0} // Assuming 'members' is an array
+                selected={committee.id === selectedCommittee}
+                onClick={handleCommitteeClick}
+              />
+            ))
+          )
+        ) : (
+          <p className="text-gray-500 text-center">
+            Select a panel to view its content.
+          </p>
+        )}
       </Box>
     </Box>
   );
