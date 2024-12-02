@@ -7,12 +7,19 @@ import {
   pb,
   setCurrentMotion,
   getCurrentCommittee,
+  setCurrentCommittee,
+  getCurrentUser,
 } from "@/app/db/pocketbase";
-import { getCommitteeMotions } from "@/app/db/committees";
+import {
+  getCommitteeMotions,
+  getFilteredCommittees,
+} from "@/app/db/committees";
 import { getFilteredMotions, getMotionDetails } from "@/app/db/motions";
 import { CircularProgress } from "@mui/material";
-import { getIdUsernameMapping } from "../db/users";
+import { getIdUsernameMapping, getUserCommittees } from "../db/users";
 import { getInitials } from "../utils/initials";
+import CommitteeCard from "./committees/committee-card";
+import { CommitteeCardProps, MotionCardProps } from "./cardPropInterfaces";
 
 interface SidePanelProps {
   panelVersion: Panel;
@@ -21,19 +28,6 @@ interface SidePanelProps {
   handleToggleIsNewMotion: () => void;
   setReloadChatBox: (value: boolean) => void; // Add this prop
   onClick?: () => void;
-}
-
-interface MotionCardProps {
-  motionTitle: string;
-  motionStatus: string;
-  shortName: string;
-  fullName: string;
-  motionText: string;
-  seconderShortName: string;
-  seconderFullName: string;
-  time: string;
-  key: string;
-  onClick: () => void;
 }
 
 export default function SidePanel({
@@ -49,6 +43,9 @@ export default function SidePanel({
   const [motions, setMotions] = useState<MotionCardProps[]>([]);
   const [motionIds, setMotionIds] = useState<string[]>([]);
   const [selectedMotion, setSelectedMotion] = useState<string | null>(null);
+  const [committees, setCommittees] = useState<CommitteeCardProps[]>([]);
+  const [committeeIds, setCommitteeIds] = useState<string[]>([]);
+  const [selectedCommittee, setSelectedCommittee] = useState("");
   const [loading, setLoading] = useState(true);
 
   const panelTitle: string = useMemo(() => {
@@ -103,8 +100,6 @@ export default function SidePanel({
   }
 
   function getClassNameForMotionCard(motionKey: string): string {
-    console.info("Selected motion:", selectedMotion);
-    console.info("Checking against:", motionKey);
     if (selectedMotion === motionKey) {
       //console.info("Selected motion:", selectedMotion);
       //console.info("Checking against:", motionKey);
@@ -113,52 +108,57 @@ export default function SidePanel({
     return "";
   }
 
-  // asycn function to query all motions from the current committee
+  // Async function to query all motions from the current committee
   async function queryMotions() {
     // Get the list of motion keys for the current committee
     const motionIds = await getCommitteeMotions(getCurrentCommittee());
-    // Convert it into a filter string
-    const motionIdFilter = motionIds
-      .map((id: string) => `id='${id}'`)
-      .join("||");
 
-    // Retrieve all motions according to the ID filter
-    const motions = await getFilteredMotions(
-      motionIdFilter,
-      "-updated",
-      "messages",
-    );
+    let resolvedMotionCardProps: MotionCardProps[] = [];
+    console.info(motionIds);
+    if (motionIds.length) {
+      // Convert it into a filter string
+      const motionIdFilter = motionIds
+        .map((id: string) => `id='${id}'`)
+        .join("||");
 
-    // Get ID -> username map
-    const idMap = await getIdUsernameMapping();
+      // Retrieve all motions according to the ID filter
+      const motions = await getFilteredMotions(
+        motionIdFilter,
+        "-updated",
+        "messages",
+      );
 
-    // Loop through each motion and convert into a motion card property
-    const motionCardProps = motions.map(async (motion) => {
-      let seconderFullName = "";
-      let ownerFullName = "";
-      try {
-        seconderFullName = motion.expand.messages[1].owner;
-        ownerFullName = motion.expand.messages[0].owner;
-      } catch (e) {
-        console.info("No seconder on motion " + motion.title);
-        console.info("No owner on motion " + motion.title);
-      }
-      return {
-        motionTitle: motion.title,
-        motionStatus: "TBD",
-        shortName: getInitials(idMap?.get(ownerFullName) || "N/A"),
-        fullName: idMap?.get(ownerFullName) || "N/A",
-        motionText: motion.title,
-        seconderShortName: getInitials(idMap?.get(seconderFullName) || "N/A"),
-        seconderFullName: idMap?.get(seconderFullName) || "N/A",
-        time: motion.created,
-        key: motion.id,
-        onClick: () => handleMotionCardClick(motion.id),
-      };
-    });
+      // Get ID -> username map
+      const idMap = await getIdUsernameMapping();
 
-    // Wait for all promises to resolve
-    const resolvedMotionCardProps = await Promise.all(motionCardProps);
+      // Loop through each motion and convert into a motion card property
+      const motionCardProps = motions.map(async (motion) => {
+        let seconderFullName = "";
+        let ownerFullName = "";
+        try {
+          seconderFullName = motion.expand.messages[1].owner;
+          ownerFullName = motion.expand.messages[0].owner;
+        } catch (e) {
+          console.info("No seconder on motion " + motion.title);
+          console.info("No owner on motion " + motion.title);
+        }
+        return {
+          motionTitle: motion.title,
+          motionStatus: "TBD",
+          shortName: getInitials(idMap?.get(ownerFullName) || "N/A"),
+          fullName: idMap?.get(ownerFullName) || "N/A",
+          motionText: motion.title,
+          seconderShortName: getInitials(idMap?.get(seconderFullName) || "N/A"),
+          seconderFullName: idMap?.get(seconderFullName) || "N/A",
+          time: motion.created,
+          key: motion.id,
+          onClick: () => handleMotionCardClick(motion.id),
+        };
+      });
+
+      // Wait for all promises to resolve
+      resolvedMotionCardProps = await Promise.all(motionCardProps);
+    }
 
     // Update the state with the list of motion keys and motion card properties
     setMotionIds(motionIds);
@@ -174,6 +174,83 @@ export default function SidePanel({
       setLoading(false);
     }
   }
+
+  // Async function to query all committees from the current user
+  async function queryCommittees() {
+    // Get the list of committee keys for the current user
+    const committeeIds = await getUserCommittees(getCurrentUser());
+    // Convert it into a filter string
+    const committeeIdFilter = committeeIds
+      .map((id: string) => `id='${id}'`)
+      .join("||");
+
+    // Retrieve all committees according to the ID filter
+    const committees = await getFilteredCommittees(
+      committeeIdFilter,
+      "-updated",
+      "",
+    );
+
+    // Loop through each committee and convert into a committee card property
+    const committeeCardProps = committees.map(async (committee) => {
+      return {
+        committeeId: committee.id,
+        committeeTitle: committee.title,
+        committeeMemberCount: committee.members.length as unknown as string,
+        selectedCommittee: selectedCommittee,
+        onClick: () => handleCommitteeCardClick(committee.id),
+      };
+    });
+
+    // Wait for all promises to resolve
+    const resolvedCommitteeCardProps = await Promise.all(committeeCardProps);
+
+    // Update the state with the list of committee IDs and committee card properties
+    setCommitteeIds(committeeIds);
+    setCommittees(resolvedCommitteeCardProps);
+  }
+
+  // Get all available committees for a user
+  async function fetchCommittees() {
+    setLoading(true);
+    try {
+      await queryCommittees();
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  // Function to handle when a committee card is clicked
+  async function handleCommitteeCardClick(id: string): Promise<void> {
+    setCurrentCommittee(id); // Update current committee
+    setSelectedCommittee(id);
+  }
+
+  // Listens for DB updates to motions to refetch motions
+  // Also refetches upon motion or committee change
+  useEffect(() => {
+    fetchCommittees();
+
+    // Subscribe to updates for the specific motion
+    pb.collection("users").subscribe(getCurrentUser(), () => {
+      fetchCommittees(); // Fetch new messages when updated
+      console.log("something changed");
+    });
+
+    // Cleanup subscription on component unmount
+    return () => {
+      pb.collection("users").unsubscribe(getCurrentUser());
+    };
+  }, []);
+
+  // Set selected motion and call handleMotionCardClick on mount
+  useEffect(() => {
+    const currentCommittee = getCurrentCommittee();
+    if (currentCommittee) {
+      setSelectedCommittee(currentCommittee);
+      handleCommitteeCardClick(currentCommittee);
+    }
+  }, []);
 
   // Listens for DB updates to motions to refetch motions
   // Also refetches upon motion or committee change
@@ -203,6 +280,13 @@ export default function SidePanel({
     }
   }, []);
 
+  useEffect(() => {
+    if (getCurrentCommittee()) {
+      setMotions([]);
+      fetchMotions();
+    }
+  }, [panel]);
+
   return (
     <Box className="flex h-full w-[80%] min-w-[8rem] flex-grow flex-col bg-light-secondary p-2 dark:bg-extra-dark-blue">
       <Box className="flex h-auto w-full justify-start">
@@ -223,6 +307,9 @@ export default function SidePanel({
         )}
         {panel === Panel.MOTIONS && (
           <>
+            {!loading && motions.length === 0 && (
+              <p className="text-center text-dark-text">No motions found.</p>
+            )}
             {loading ? (
               <Box className="mt-10 flex h-full w-[90%] justify-center">
                 <CircularProgress />
@@ -250,6 +337,37 @@ export default function SidePanel({
                   </Box>
                 ))}
               </Box>
+            )}
+          </>
+        )}
+        {panelVersion === Panel.COMMITTEES && (
+          <>
+            {!loading && committees.length === 0 && (
+              <p className="text-center text-dark-text">No committees found.</p>
+            )}
+            {loading ? (
+              <Box className="mt-10 flex h-full w-[90%] justify-center">
+                <CircularProgress />
+              </Box>
+            ) : (
+              committees.map((committee) => (
+                <Box
+                  key={committee.committeeId}
+                  className={
+                    "mb-2 mt-2 flex w-[90%] items-center justify-center"
+                  }
+                >
+                  <CommitteeCard
+                    committeeId={committee.committeeId}
+                    committeeTitle={committee.committeeTitle}
+                    committeeMemberCount={committee.committeeMemberCount}
+                    selectedCommittee={selectedCommittee}
+                    onClick={() =>
+                      handleCommitteeCardClick(committee.committeeId)
+                    }
+                  />
+                </Box>
+              ))
             )}
           </>
         )}

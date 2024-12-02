@@ -1,18 +1,6 @@
 import { Box, Avatar } from "@mui/material";
 import { blue, purple } from "@mui/material/colors";
-
-interface MotionCardProps {
-  motionTitle: string;
-  motionStatus: string;
-  shortName: string;
-  fullName: string;
-  motionText: string;
-  seconderShortName: string;
-  seconderFullName: string;
-  time: string;
-  key: string;
-  onClick: () => void;
-}
+import { MotionCardProps } from "../cardPropInterfaces";
 
 export default function MotionCard(props: MotionCardProps) {
   return (

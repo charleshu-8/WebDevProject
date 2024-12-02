@@ -39,6 +39,29 @@ export async function addNewCommitteee(
   }
 }
 
+// Return DB record for a given committee
+// Returns record if found, empty object otherwise
+export async function getCommitteeDetails(committee: string) {
+  try {
+    return (await pb
+      .collection("committees")
+      .getOne(committee)) as PocketbaseCommittee;
+  } catch (e) {
+    console.error("Committee fetching error: " + e);
+    return {
+      collectionId: "",
+      collectionName: "",
+      id: "",
+      title: "",
+      members: [],
+      motions: [],
+      chair: "",
+      created: "",
+      updated: "",
+    };
+  }
+}
+
 // Returns list of motion IDs for given committee ID
 // If none found, return empty array
 export async function getCommitteeMotions(committee: string) {
@@ -96,5 +119,24 @@ export async function getCommitteeChair(committee: string) {
   } catch (e) {
     console.error("Committee chair fetching error: " + e);
     return "";
+  }
+}
+
+// Get all committees according to the given filter
+// If none found, returns empty array
+export async function getFilteredCommittees(
+  filter: string,
+  sortBy: string,
+  expand: string,
+) {
+  try {
+    return (await pb.collection("committees").getFullList({
+      sort: sortBy,
+      filter: filter,
+      expand: expand,
+    })) as PocketbaseCommittee[];
+  } catch (e) {
+    console.error("Committees fetching error: " + e);
+    return [];
   }
 }
