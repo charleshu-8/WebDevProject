@@ -25,6 +25,10 @@ export function getCurrentMotion() {
   return currentMotion;
 }
 
+export function getCurrentUser() {
+  return currentUser?.id as string;
+}
+
 // Halt deletion of duplicate queries
 pb.autoCancellation(false);
 
