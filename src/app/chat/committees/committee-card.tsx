@@ -1,9 +1,4 @@
-interface CommitteeCardProps {
-  committeeId: string;
-  committeeTitle: string;
-  committeeMemberCount?: string;
-  onClick: () => void;
-}
+import { CommitteeCardProps } from "../cardPropInterfaces";
 
 export default function CommitteeCard({
   committeeId,

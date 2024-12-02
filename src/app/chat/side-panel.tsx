@@ -20,6 +20,7 @@ import { CircularProgress } from "@mui/material";
 import { getIdUsernameMapping, getUserCommittees } from "../db/users";
 import { getInitials } from "../utils/initials";
 import CommitteeCard from "./committees/committee-card";
+import { CommitteeCardProps, MotionCardProps } from "./cardPropInterfaces";
 
 interface SidePanelProps {
   panelVersion: Panel;
@@ -28,26 +29,6 @@ interface SidePanelProps {
   handleToggleIsNewMotion: () => void;
   setReloadChatBox: (value: boolean) => void; // Add this prop
   onClick?: () => void;
-}
-
-interface MotionCardProps {
-  motionTitle: string;
-  motionStatus: string;
-  shortName: string;
-  fullName: string;
-  motionText: string;
-  seconderShortName: string;
-  seconderFullName: string;
-  time: string;
-  key: string;
-  onClick: () => void;
-}
-
-interface CommitteeCardProps {
-  committeeId: string;
-  committeeTitle: string;
-  committeeMemberCount?: string;
-  onClick: () => void;
 }
 
 export default function SidePanel({
@@ -346,6 +327,9 @@ export default function SidePanel({
         )}
         {panel === Panel.MOTIONS && (
           <>
+            {!loading && motions.length === 0 && (
+              <p className="text-center text-gray-500">No motions found.</p>
+            )}
             {loading ? (
               <Box className="mt-10 flex h-full w-[90%] justify-center">
                 <CircularProgress />
@@ -378,6 +362,9 @@ export default function SidePanel({
         )}
         {panelVersion === Panel.COMMITTEES && (
           <>
+            {!loading && committees.length === 0 && (
+              <p className="text-center text-gray-500">No committees found.</p>
+            )}
             {loading ? (
               <Box className="mt-10 flex h-full w-[90%] justify-center">
                 <CircularProgress />
@@ -402,9 +389,6 @@ export default function SidePanel({
                   />
                 </Box>
               ))
-            )}
-            {!loading && committees.length === 0 && (
-              <p className="text-center text-gray-500">No committees found.</p>
             )}
           </>
         )}
