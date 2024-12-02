@@ -11,7 +11,6 @@ import {
   getCurrentUser,
 } from "@/app/db/pocketbase";
 import {
-  getCommitteeDetails,
   getCommitteeMotions,
   getFilteredCommittees,
 } from "@/app/db/committees";
@@ -230,20 +229,18 @@ export default function SidePanel({
   // Listens for DB updates to motions to refetch motions
   // Also refetches upon motion or committee change
   useEffect(() => {
-    if (getCurrentCommittee() && getCurrentMotion()) {
-      fetchCommittees();
+    fetchCommittees();
 
-      // Subscribe to updates for the specific motion
-      pb.collection("users").subscribe(getCurrentUser(), () => {
-        fetchCommittees(); // Fetch new messages when updated
-        console.log("something changed");
-      });
+    // Subscribe to updates for the specific motion
+    pb.collection("users").subscribe(getCurrentUser(), () => {
+      fetchCommittees(); // Fetch new messages when updated
+      console.log("something changed");
+    });
 
-      // Cleanup subscription on component unmount
-      return () => {
-        pb.collection("users").unsubscribe(getCurrentUser());
-      };
-    }
+    // Cleanup subscription on component unmount
+    return () => {
+      pb.collection("users").unsubscribe(getCurrentUser());
+    };
   }, []);
 
   // Set selected motion and call handleMotionCardClick on mount
@@ -284,8 +281,10 @@ export default function SidePanel({
   }, []);
 
   useEffect(() => {
-    setMotions([]);
-    fetchMotions();
+    if (getCurrentCommittee()) {
+      setMotions([]);
+      fetchMotions();
+    }
   }, [panel]);
 
   return (

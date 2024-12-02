@@ -6,8 +6,8 @@ export let currentUser = pb.authStore.model;
 export const avatarPathUrl =
   "https://slackers.pockethost.io/api/files/_pb_users_auth_";
 
-let currentCommittee = "91ttrau140qhgdc"; //placeholder, missing logic
-let currentMotion = "esco3pacuipvqre"; //placeholder, missing most logic
+let currentCommittee = "";
+let currentMotion = "";
 
 export function setCurrentCommittee(committeeId: string) {
   currentCommittee = committeeId;
