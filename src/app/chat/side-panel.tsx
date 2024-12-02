@@ -46,9 +46,7 @@ export default function SidePanel({
   const [selectedMotion, setSelectedMotion] = useState<string | null>(null);
   const [committees, setCommittees] = useState<CommitteeCardProps[]>([]);
   const [committeeIds, setCommitteeIds] = useState<string[]>([]);
-  const [selectedCommittee, setSelectedCommittee] = useState<string | null>(
-    null,
-  );
+  const [selectedCommittee, setSelectedCommittee] = useState("");
   const [loading, setLoading] = useState(true);
 
   const panelTitle: string = useMemo(() => {
@@ -100,14 +98,6 @@ export default function SidePanel({
     setCurrentMotion(key); // Update the current motion
     setSelectedMotion((await getMotionDetails(getCurrentMotion())).title); // Update the state variable
     setReloadChatBox(true); // Toggle the reload state
-  }
-
-  // Function to handle when a committee card is clicked
-  async function handleCommitteeCardClick(id: string): Promise<void> {
-    setCurrentCommittee(id); // Update current committee
-    setSelectedCommittee(
-      (await getCommitteeDetails(getCurrentCommittee())).title,
-    );
   }
 
   function getClassNameForMotionCard(motionKey: string): string {
@@ -186,13 +176,6 @@ export default function SidePanel({
     }
   }
 
-  function getClassNameForCommitteeCard(id: string): string {
-    if (selectedCommittee === id) {
-      return "border-[6px] border-blue-500 rounded-[7px]";
-    }
-    return "";
-  }
-
   // Async function to query all committees from the current user
   async function queryCommittees() {
     // Get the list of committee keys for the current user
@@ -215,6 +198,7 @@ export default function SidePanel({
         committeeId: committee.id,
         committeeTitle: committee.title,
         committeeMemberCount: committee.members.length as unknown as string,
+        selectedCommittee: selectedCommittee,
         onClick: () => handleCommitteeCardClick(committee.id),
       };
     });
@@ -235,6 +219,12 @@ export default function SidePanel({
     } finally {
       setLoading(false);
     }
+  }
+
+  // Function to handle when a committee card is clicked
+  async function handleCommitteeCardClick(id: string): Promise<void> {
+    setCurrentCommittee(id); // Update current committee
+    setSelectedCommittee(id);
   }
 
   // Listens for DB updates to motions to refetch motions
@@ -295,7 +285,6 @@ export default function SidePanel({
 
   useEffect(() => {
     setMotions([]);
-
     fetchMotions();
   }, [panel]);
 
@@ -320,7 +309,7 @@ export default function SidePanel({
         {panel === Panel.MOTIONS && (
           <>
             {!loading && motions.length === 0 && (
-              <p className="text-center text-gray-500">No motions found.</p>
+              <p className="text-center text-dark-text">No motions found.</p>
             )}
             {loading ? (
               <Box className="mt-10 flex h-full w-[90%] justify-center">
@@ -355,7 +344,7 @@ export default function SidePanel({
         {panelVersion === Panel.COMMITTEES && (
           <>
             {!loading && committees.length === 0 && (
-              <p className="text-center text-gray-500">No committees found.</p>
+              <p className="text-center text-dark-text">No committees found.</p>
             )}
             {loading ? (
               <Box className="mt-10 flex h-full w-[90%] justify-center">
@@ -365,16 +354,15 @@ export default function SidePanel({
               committees.map((committee) => (
                 <Box
                   key={committee.committeeId}
-                  className={`mb-4 flex h-[30%] w-[90%] items-center justify-center gap-y-2 ${getClassNameForCommitteeCard(committee.committeeTitle)}`}
-                  onClick={() =>
-                    handleCommitteeCardClick(committee.committeeId)
+                  className={
+                    "mb-2 mt-2 flex w-[90%] items-center justify-center"
                   }
                 >
                   <CommitteeCard
-                    key={committee.committeeId}
                     committeeId={committee.committeeId}
                     committeeTitle={committee.committeeTitle}
                     committeeMemberCount={committee.committeeMemberCount}
+                    selectedCommittee={selectedCommittee}
                     onClick={() =>
                       handleCommitteeCardClick(committee.committeeId)
                     }

@@ -1,7 +1,8 @@
 export interface CommitteeCardProps {
   committeeId: string;
   committeeTitle: string;
-  committeeMemberCount?: string;
+  committeeMemberCount: string;
+  selectedCommittee: string;
   onClick: () => void;
 }
 
