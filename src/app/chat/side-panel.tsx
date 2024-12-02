@@ -127,7 +127,6 @@ export default function SidePanel({
     setSelectedCommittee(
       (await getCommitteeDetails(getCurrentCommittee())).title,
     );
-    await fetchMotions();
   }
 
   function getClassNameForMotionCard(motionKey: string): string {
