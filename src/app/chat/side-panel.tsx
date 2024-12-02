@@ -122,9 +122,7 @@ export default function SidePanel({
   // Async function to query all motions from the current committee
   async function queryMotions() {
     // Get the list of motion keys for the current committee
-    console.log("rrrrrr c" + getCurrentCommittee());
     const motionIds = await getCommitteeMotions(getCurrentCommittee());
-    console.log("RRRRRRR c2" + motionIds);
 
     let resolvedMotionCardProps: MotionCardProps[] = [];
     console.info(motionIds);
@@ -173,7 +171,6 @@ export default function SidePanel({
       resolvedMotionCardProps = await Promise.all(motionCardProps);
     }
 
-    console.log("rrrr" + resolvedMotionCardProps);
     // Update the state with the list of motion keys and motion card properties
     setMotionIds(motionIds);
     setMotions(resolvedMotionCardProps);
@@ -186,7 +183,6 @@ export default function SidePanel({
       await queryMotions();
     } finally {
       setLoading(false);
-      console.log(motionIds);
     }
   }
 
@@ -298,13 +294,9 @@ export default function SidePanel({
   }, []);
 
   useEffect(() => {
-    console.log("CURRENT COMMITTEE: " + getCurrentCommittee());
     setMotions([]);
-    console.log("b m" + JSON.stringify(motions));
-    console.log("b mid" + JSON.stringify(motionIds));
+
     fetchMotions();
-    console.log("a m" + JSON.stringify(motions));
-    console.log("a mid" + JSON.stringify(motionIds));
   }, [panel]);
 
   return (
