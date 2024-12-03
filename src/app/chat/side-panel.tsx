@@ -26,6 +26,7 @@ interface SidePanelProps {
   handleToggleMakeCommittee: (value: boolean) => void;
   isMakeCommittee: boolean;
   handleToggleIsNewMotion: () => void;
+  handleToggleIsInputHidden: (value: boolean) => void;
   setReloadChatBox: (value: boolean) => void; // Add this prop
   onClick?: () => void;
 }
@@ -35,6 +36,7 @@ export default function SidePanel({
   panelVersion,
   handleToggleMakeCommittee = (value: boolean) => {},
   handleToggleIsNewMotion,
+  handleToggleIsInputHidden = (value: boolean) => {},
   setReloadChatBox,
 }: SidePanelProps) {
   const panel = panelVersion;
@@ -86,8 +88,13 @@ export default function SidePanel({
         break;
       case Panel.MOTIONS:
         console.log("Rendering add motion");
-        if (getCurrentCommittee() !== "" && getCurrentMotion() !== "") {
+        console.log("Current committee:", getCurrentCommittee());
+        if (getCurrentCommittee() !== "") {
           handleToggleIsNewMotion();
+          handleToggleIsInputHidden(false);
+        } else {
+          console.log("INPUT HIDDEN IS SET TO TRUE");
+          handleToggleIsInputHidden(true);
         }
         break;
     }

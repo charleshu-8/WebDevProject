@@ -23,6 +23,7 @@ import { get } from "http";
 
 interface ChatBoxProps {
   isNewMotion: boolean;
+  isInputHidden: boolean;
   handleToggleIsNewMotion: () => void;
   reload: boolean;
   setReload: (value: boolean) => void; // Add this prop
@@ -40,6 +41,7 @@ export interface ChatMessage {
 
 export default function ChatBox({
   isNewMotion,
+  isInputHidden,
   handleToggleIsNewMotion,
   reload, // Add this prop
   setReload, // Add this prop
@@ -58,6 +60,9 @@ export default function ChatBox({
 
   // Ref to keep track of the container for automatic scrolling
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+
+  // Keep track of getCurrentCommittee() updates for rendering input field
+  const [currentCommittee, setCurrentCommittee] = useState("");
 
   // Sift through users collection and find current committee members & avatars
   async function getMemberAvatarsByIds() {
@@ -89,6 +94,12 @@ export default function ChatBox({
     });
     setCurrentAvatars(avatarPaths);
     setLoadingMembers(false);
+  }
+
+  async function updateCurrentCommittee() {
+    const committee = getCurrentCommittee();
+    setCurrentCommittee(committee);
+    console.info("Committee has changed: " + committee);
   }
 
   // Get all available messages for a motion
@@ -168,6 +179,12 @@ export default function ChatBox({
       // Get updated members & avatar pics based on current committee
       getMemberAvatarsByIds();
 
+      // Call updateCurrentCommittee() whenever the committee changes
+      pb.collection("committees").subscribe(getCurrentCommittee(), () => {
+        updateCurrentCommittee();
+        getMemberAvatarsByIds();
+      });
+
       // Subscribe to updates for the specific motion
       pb.collection("motions").subscribe(getCurrentMotion(), () => {
         fetchMessages(); // Fetch new messages when updated
@@ -239,7 +256,7 @@ export default function ChatBox({
             sendMessage(message);
           }}
         >
-          {getCurrentCommittee() !== "" &&
+          {!isInputHidden &&
             (isNewMotion ? (
               <MotionInputField onSendMessage={sendNewMotion} />
             ) : (
