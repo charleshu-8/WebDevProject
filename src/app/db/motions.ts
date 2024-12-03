@@ -119,8 +119,10 @@ export async function voteForMotion(motion: string) {
     await pb.collection("motions").update(motion, {
       for_vote: forVote,
     });
+    return forVote as string[];
   } catch (e) {
     console.error("Voting error: " + e);
+    return [];
   }
 }
 
@@ -140,7 +142,35 @@ export async function voteAgainstMotion(motion: string) {
     await pb.collection("motions").update(motion, {
       against_vote: againstVote,
     });
+    return againstVote as string[];
   } catch (e) {
     console.error("Voting error: " + e);
+    return [];
+  }
+}
+
+export async function getForVotes(motion: string) {
+  try {
+    return (
+      await pb.collection("motions").getOne(`${motion}`, {
+        fields: "for_vote",
+      })
+    ).for_vote as string[];
+  } catch (e) {
+    console.error("Voting status fetching error: " + e);
+    return [];
+  }
+}
+
+export async function getAgainstVotes(motion: string) {
+  try {
+    return (
+      await pb.collection("motions").getOne(`${motion}`, {
+        fields: "against_vote",
+      })
+    ).against_vote as string[];
+  } catch (e) {
+    console.error("Voting status fetching error: " + e);
+    return [];
   }
 }

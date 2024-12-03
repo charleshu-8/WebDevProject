@@ -15,6 +15,8 @@ import {
   getMotionDetails,
   voteForMotion,
   voteAgainstMotion,
+  getForVotes,
+  getAgainstVotes,
 } from "@/app/db/motions";
 // Import the Input component from the MUI Joy library
 import Image from "next/image";
@@ -26,6 +28,7 @@ import neutralButton from "@/app/assets/chat/neutral_button.svg";
 import neutralButtonPressed from "@/app/assets/chat/neutral_button_pressed.svg";
 import sendIcon from "@/app/assets/chat/send_icon.svg";
 import { Button } from "@mui/material";
+import { addNewMessage } from "@/app/db/messages";
 
 interface ChatInputFieldProps {
   onSendMessage: (message: string) => void;
@@ -41,6 +44,8 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
   const [chair, setChair] = useState("");
   const [hasVoted, setHasVoted] = useState(false);
   const [currentMotion, setCurrentMotion] = useState(getCurrentMotion());
+  const [forVotes, setForVotes] = useState([]);
+  const [againstVotes, setAgainstVotes] = useState([]);
 
   // Toggle the pro button state
   function handleProClick(): void {
@@ -49,9 +54,33 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
     setIsNeutralPressed(false); // Ensure that the neutral button is not pressed
   }
 
-  function handleProVote() {
+  async function handleProVote() {
     handleProClick();
-    voteForMotion(getCurrentMotion());
+    const forArr = await voteForMotion(getCurrentMotion());
+    //console.log("for vote" + fforVote);
+    setForVotes(forArr);
+    addNewMessage(
+      `${currentUser.username} has voted for this motion\n
+      There are ${forArr.length} votes for, ${againstVotes.length - 1} votes against`,
+      "8eszq0g4tebyspt",
+      getCurrentMotion(),
+      "VoteBot",
+    );
+    // await handleVoteBot();
+    // addNewMessage(
+    //   `${currentUser.username} has voted in favor of this motion`,
+    //   "8eszq0g4tebyspt",
+    //   getCurrentMotion(),
+    //   "VoteBot",
+    // );
+    // const forVotes = await getForVotes(getCurrentMotion());
+    // const againstVotes = await getAgainstVotes(getCurrentMotion());
+    // addNewMessage(
+    //   `Update: ${forVotes.length} votes for, ${againstVotes.length} votes against`,
+    //   "8eszq0g4tebyspt",
+    //   getCurrentMotion(),
+    //   "VoteBot",
+    // );
   }
 
   // Toggle the con button state
@@ -61,9 +90,18 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
     setIsNeutralPressed(false); // Ensure that the neutral button is not pressed
   }
 
-  function handleConVote(): void {
+  async function handleConVote() {
     handleConClick();
-    voteAgainstMotion(getCurrentMotion());
+    const againstArr = await voteAgainstMotion(getCurrentMotion());
+    setAgainstVotes(againstArr);
+    addNewMessage(
+      `${currentUser.username} has voted against this motion\n
+      There are ${forVotes.length - 1} votes for, ${againstArr.length} votes against`,
+      "8eszq0g4tebyspt",
+      getCurrentMotion(),
+      "VoteBot",
+    );
+    //addNewMessage(``, "8eszq0g4tebyspt", getCurrentMotion(), "VoteBot");
   }
 
   // Toggle the neutral button state
@@ -79,15 +117,15 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
     setMessage(""); // Clear the text area after sending the message
   }
 
-  async function handleBeingChair() {
-    // setChair(await getCommitteeChair(getCurrentCommittee()));
-    console.log(await voted(getCurrentMotion()));
-    console.log("something");
-  }
-
   function callVote() {
     if (!hasVoted) {
       checkIfVoted();
+      addNewMessage(
+        "a vote has been called",
+        "8eszq0g4tebyspt",
+        getCurrentMotion(),
+        "VoteBot",
+      );
     } else {
       setIsConPressed(false);
       setIsProPressed(false);
@@ -118,6 +156,12 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
     });
     getCommitteeChair(getCurrentCommittee()).then((chair) => {
       setChair(chair);
+    });
+    getForVotes(currentMotion).then((votes) => {
+      setForVotes(votes);
+    });
+    getAgainstVotes(currentMotion).then((votes) => {
+      setAgainstVotes(votes);
     });
   }, [currentMotion]);
 
