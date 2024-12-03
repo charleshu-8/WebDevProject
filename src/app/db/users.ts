@@ -42,11 +42,11 @@ export async function getIdUsernameMapping() {
 // If none found, return empty array
 export async function getUserCommittees(user: string) {
   try {
-    
-    return (await pb.collection("users").getOne(`${user}`, {
+    return (
+      await pb.collection("users").getOne(`${user}`, {
         fields: "committees",
       })
-    ).committees;
+    ).committees as string[];
   } catch (e) {
     console.error("User committees fetching error: " + e);
     return [];

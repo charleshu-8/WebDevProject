@@ -180,40 +180,40 @@ export default function SidePanel({
     // Get the list of committee keys for the current user
     const committeeIds = await getUserCommittees(getCurrentUser());
     console.log(`Committee ids are: ${committeeIds}`);
-    if (committeeIds.length !== 0){
-        // Convert it into a filter string
+    if (committeeIds.length !== 0) {
+      // Convert it into a filter string
       const committeeIdFilter = committeeIds
-      .map((id: string) => `id='${id}'`)
-      .join("||");
+        .map((id: string) => `id='${id}'`)
+        .join("||");
 
-    // Retrieve all committees according to the ID filter
-    const committees = await getFilteredCommittees(
-      committeeIdFilter,
-      "-updated",
-      "",
-    );
+      // Retrieve all committees according to the ID filter
+      const committees = await getFilteredCommittees(
+        committeeIdFilter,
+        "-updated",
+        "",
+      );
 
-    // Loop through each committee and convert into a committee card property
-    const committeeCardProps = committees.map(async (committee) => {
-      return {
-        committeeId: committee.id,
-        committeeTitle: committee.title,
-        committeeMemberCount: committee.members.length as unknown as string,
-        selectedCommittee: selectedCommittee,
-        onClick: () => handleCommitteeCardClick(committee.id),
-      };
-    });
+      // Loop through each committee and convert into a committee card property
+      const committeeCardProps = committees.map(async (committee) => {
+        return {
+          committeeId: committee.id,
+          committeeTitle: committee.title,
+          committeeMemberCount: committee.members.length as unknown as string,
+          selectedCommittee: selectedCommittee,
+          onClick: () => handleCommitteeCardClick(committee.id),
+        };
+      });
 
-    // Wait for all promises to resolve
-    const resolvedCommitteeCardProps = await Promise.all(committeeCardProps);
-    setCommittees(resolvedCommitteeCardProps);
+      // Wait for all promises to resolve
+      const resolvedCommitteeCardProps = await Promise.all(committeeCardProps);
+      setCommittees(resolvedCommitteeCardProps);
     }
     // means new user does not have committee
-    else{
+    else {
       setCommittees([]);
     }
-      // Update the state with the list of committee IDs and committee card properties
-      setCommitteeIds(committeeIds);
+    // Update the state with the list of committee IDs and committee card properties
+    setCommitteeIds(committeeIds);
   }
 
   // Get all available committees for a user
@@ -231,32 +231,6 @@ export default function SidePanel({
     setCurrentCommittee(id); // Update current committee
     setSelectedCommittee(id);
   }
-/*
-  const renderCommitteeCards = () =>{
-    if (committees !== null) {
-      committees.map((committee) => (
-        <Box
-          key={committee.committeeId}
-          className={
-            "mb-2 mt-2 flex w-[90%] items-center justify-center"
-          }
-        >
-          <CommitteeCard
-            committeeId={committee.committeeId}
-            committeeTitle={committee.committeeTitle}
-            committeeMemberCount={committee.committeeMemberCount}
-            selectedCommittee={selectedCommittee}
-            onClick={() =>
-              handleCommitteeCardClick(committee.committeeId)
-            }
-          />
-        </Box>
-      ))
-
-    }
-    
-  }
-    */
 
   // Listens for DB updates to motions to refetch motions
   // Also refetches upon motion or committee change
@@ -384,7 +358,7 @@ export default function SidePanel({
               <Box className="mt-10 flex h-full w-[90%] justify-center">
                 <CircularProgress />
               </Box>
-            ) : ( 
+            ) : (
               committees.map((committee) => (
                 <Box
                   key={committee.committeeId}
