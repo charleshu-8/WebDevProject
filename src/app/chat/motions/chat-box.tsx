@@ -103,24 +103,30 @@ export default function ChatBox({
 
   // Get all available messages for a motion
   async function fetchMessages() {
-    const messages = await getFullMotionMessages(getCurrentMotion());
-
     const helperArray: ChatMessage[] = [];
-    messages.forEach((message: PocketbaseMessage) => {
-      const formattedDate = formatDate(message.created);
-      helperArray.push({
-        id: message.id,
-        text: message.text,
-        timestamp: formattedDate,
-        owner: message.owner,
-        displayName: message.displayName,
-        // Map profile path to display name
+
+    // Check if motion is selected
+    if (getCurrentMotion()) {
+      // Pull all motion messages
+      const messages = await getFullMotionMessages(getCurrentMotion());
+
+      // Convert to message format for display
+      messages.forEach((message: PocketbaseMessage) => {
+        const formattedDate = formatDate(message.created);
+        helperArray.push({
+          id: message.id,
+          text: message.text,
+          timestamp: formattedDate,
+          owner: message.owner,
+          displayName: message.displayName,
+          // Map profile path to display name
+        });
       });
-    });
-    helperArray.sort(
-      (a, b) =>
-        new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime(),
-    );
+      helperArray.sort(
+        (a, b) =>
+          new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime(),
+      );
+    }
 
     setMessages(helperArray);
   }
