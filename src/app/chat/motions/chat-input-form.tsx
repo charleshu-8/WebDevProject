@@ -44,8 +44,8 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
   const [chair, setChair] = useState("");
   const [hasVoted, setHasVoted] = useState(false);
   const [currentMotion, setCurrentMotion] = useState(getCurrentMotion());
-  const [forVotes, setForVotes] = useState([]);
-  const [againstVotes, setAgainstVotes] = useState([]);
+  const [forVotes, setForVotes] = useState<string[]>([]);
+  const [againstVotes, setAgainstVotes] = useState<string[]>([]);
 
   // Toggle the pro button state
   function handleProClick(): void {
@@ -129,19 +129,35 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
     } else {
       setIsConPressed(false);
       setIsProPressed(false);
+
+      let finalMessage = "";
+
+      if (forVotes.length > againstVotes.length) {
+        finalMessage = "The motion has passed";
+      } else if (forVotes.length < againstVotes.length) {
+        finalMessage = "The motion has failed";
+      } else {
+        finalMessage = "The motion has tied";
+      }
+
+      addNewMessage(
+        finalMessage,
+        "8eszq0g4tebyspt",
+        getCurrentMotion(),
+        "VoteBot",
+      );
+
+      //do something to remove the button
     }
-    setVoted(getCurrentMotion(), true).then(() => {
-      setHasVoted(!hasVoted);
-    });
   }
 
   function checkIfVoted() {
     pb.collection("motions")
       .getOne(getCurrentMotion())
       .then((motion) => {
-        if (motion.for_vote.includes(currentUser.id)) {
+        if (motion.for_vote.includes(currentUser?.id)) {
           setIsProPressed(true);
-        } else if (motion.against_vote.includes(currentUser.id)) {
+        } else if (motion.against_vote.includes(currentUser?.id)) {
           setIsConPressed(true);
         }
       });
@@ -208,8 +224,8 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
             {chair === currentUser?.id ? (
               <Button
                 variant="contained"
-                color=""
                 className="ml-2 mr-2 border-2 border-solid p-1"
+                color={""} // this is need to not make the button look horrible
                 style={{ fontSize: "0.5rem" }}
                 onClick={() => callVote()}
               >
@@ -258,7 +274,6 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
             {chair === currentUser?.id ? (
               <Button
                 variant="contained"
-                color=""
                 className="ml-2 mr-2 border-2 border-solid p-1"
                 style={{ fontSize: "0.5rem" }}
                 onClick={() => callVote()}
