@@ -184,12 +184,6 @@ export default function ChatBox({
       // Get updated members & avatar pics based on current committee
       getMemberAvatarsByIds();
 
-      // Call updateCurrentCommittee() whenever the committee changes
-      pb.collection("committees").subscribe(getCurrentCommittee(), () => {
-        updateCurrentCommittee();
-        getMemberAvatarsByIds();
-      });
-
       // Subscribe to updates for the specific motion
       pb.collection("motions").subscribe(getCurrentMotion(), () => {
         fetchMessages(); // Fetch new messages when updated
@@ -202,6 +196,21 @@ export default function ChatBox({
       };
     }
   }, []);
+
+  useEffect(() => {
+    if (getCurrentCommittee()) {
+      // Call updateCurrentCommittee() whenever the committee changes
+      pb.collection("committees").subscribe(getCurrentCommittee(), () => {
+        updateCurrentCommittee();
+        getMemberAvatarsByIds();
+      });
+
+      // Cleanup subscription on component unmount
+      return () => {
+        pb.collection("committees").unsubscribe(getCurrentCommittee());
+      };
+    }
+  });
 
   // Effect to scroll to the bottom whenever the messages change
   useEffect(() => {
