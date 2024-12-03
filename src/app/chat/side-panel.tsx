@@ -271,6 +271,9 @@ export default function SidePanel({
 
     // Cleanup subscription on component unmount
     return () => {
+      // if (pb.authStore.isValid) {
+      //   pb.collection("users").unsubscribe(getCurrentUser());
+      // }
       pb.collection("users").unsubscribe(getCurrentUser());
     };
   }, []);
