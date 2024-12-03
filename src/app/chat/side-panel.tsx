@@ -188,35 +188,43 @@ export default function SidePanel({
   async function queryCommittees() {
     // Get the list of committee keys for the current user
     const committeeIds = await getUserCommittees(getCurrentUser());
-    // Convert it into a filter string
-    const committeeIdFilter = committeeIds
-      .map((id: string) => `id='${id}'`)
-      .join("||");
 
-    // Retrieve all committees according to the ID filter
-    const committees = await getFilteredCommittees(
-      committeeIdFilter,
-      "-updated",
-      "",
-    );
+    // Check if user has any assigned committees
+    if (committeeIds.length !== 0) {
+      // Convert it into a filter string
+      const committeeIdFilter = committeeIds
+        .map((id: string) => `id='${id}'`)
+        .join("||");
 
-    // Loop through each committee and convert into a committee card property
-    const committeeCardProps = committees.map(async (committee) => {
-      return {
-        committeeId: committee.id,
-        committeeTitle: committee.title,
-        committeeMemberCount: committee.members.length as unknown as string,
-        selectedCommittee: selectedCommittee,
-        onClick: () => handleCommitteeCardClick(committee.id),
-      };
-    });
+      // Retrieve all committees according to the ID filter
+      const committees = await getFilteredCommittees(
+        committeeIdFilter,
+        "-updated",
+        "",
+      );
 
-    // Wait for all promises to resolve
-    const resolvedCommitteeCardProps = await Promise.all(committeeCardProps);
+      // Loop through each committee and convert into a committee card property
+      const committeeCardProps = committees.map(async (committee) => {
+        return {
+          committeeId: committee.id,
+          committeeTitle: committee.title,
+          committeeMemberCount: committee.members.length as unknown as string,
+          selectedCommittee: selectedCommittee,
+          onClick: () => handleCommitteeCardClick(committee.id),
+        };
+      });
 
-    // Update the state with the list of committee IDs and committee card properties
-    setCommitteeIds(committeeIds);
-    setCommittees(resolvedCommitteeCardProps);
+      // Wait for all promises to resolve
+      const resolvedCommitteeCardProps = await Promise.all(committeeCardProps);
+
+      // Update the state with the list of committee IDs and committee card properties
+      setCommitteeIds(committeeIds);
+      setCommittees(resolvedCommitteeCardProps);
+    } else {
+      // Update the state with a blank list of committee IDs and committee card properties
+      setCommitteeIds(committeeIds);
+      setCommittees([]);
+    }
   }
 
   // Get all available committees for a user
@@ -248,6 +256,9 @@ export default function SidePanel({
 
     // Cleanup subscription on component unmount
     return () => {
+      // if (pb.authStore.isValid) {
+      //   pb.collection("users").unsubscribe(getCurrentUser());
+      // }
       pb.collection("users").unsubscribe(getCurrentUser());
     };
   }, []);
