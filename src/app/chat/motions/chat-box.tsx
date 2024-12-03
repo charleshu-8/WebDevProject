@@ -257,10 +257,10 @@ export default function ChatBox({
           }}
         >
           {!isInputHidden &&
-            (isNewMotion ? (
-              <MotionInputField onSendMessage={sendNewMotion} />
-            ) : (
+            (!isNewMotion && getCurrentMotion() !== "" ? (
               <ChatInputField onSendMessage={sendMessage} />
+            ) : (
+              <MotionInputField onSendMessage={sendNewMotion} />
             ))}
         </form>
       </Box>
