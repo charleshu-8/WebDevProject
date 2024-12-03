@@ -47,14 +47,12 @@ export default function ChatPage() {
             handleToggleMakeCommittee={handleToggleMakeCommittee}
           />
         ) : (
-          getCurrentMotion() && (
-            <ChatBox
-              isNewMotion={isNewMotion}
-              handleToggleIsNewMotion={handleToggleIsNewMotion}
-              reload={reloadChatBox} // Pass the reload state as a prop
-              setReload={setReloadChatBox} // Pass the setReload state as a prop
-            />
-          )
+          <ChatBox
+            isNewMotion={isNewMotion}
+            handleToggleIsNewMotion={handleToggleIsNewMotion}
+            reload={reloadChatBox} // Pass the reload state as a prop
+            setReload={setReloadChatBox} // Pass the setReload state as a prop
+          />
         )}
       </div>
     </div>

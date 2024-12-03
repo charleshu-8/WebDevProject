@@ -19,6 +19,7 @@ import getRandomColor from "@/app/utils/color";
 import MessageBox from "./message-box";
 import { getCommitteeMembers } from "@/app/db/committees";
 import { addNewMessage } from "@/app/db/messages";
+import { get } from "http";
 
 interface ChatBoxProps {
   isNewMotion: boolean;
@@ -210,36 +211,42 @@ export default function ChatBox({
   return (
     <Box className="flex h-full w-full flex-col bg-gray-200 p-4">
       {/* Display messages */}
-      <Box className="mb-2 flex-grow overflow-y-auto bg-white p-4">
-        {messages.length === 0 ? (
-          <p className="text-gray-500"></p>
-        ) : (
-          messages.map((message, index) => (
-            <MessageBox
-              messageProp={message}
-              loadingState={loadingMembers}
-              memberAvatars={currentAvatars}
-              key={message.id || index}
-            />
-          ))
-        )}
-        {/* Invisible div to maintain scrolling to the bottom */}
-        <div ref={messagesEndRef} />
-      </Box>
-
+      {getCurrentMotion() && (
+        <Box className="mb-2 flex-grow overflow-y-auto bg-white p-4">
+          {messages.length === 0 ? (
+            <p className="text-gray-500"></p>
+          ) : (
+            messages.map((message, index) => (
+              <MessageBox
+                messageProp={message}
+                loadingState={loadingMembers}
+                memberAvatars={currentAvatars}
+                key={message.id || index}
+              />
+            ))
+          )}
+          {/* Invisible div to maintain scrolling to the bottom */}
+          <div ref={messagesEndRef} />
+        </Box>
+      )}
       {/* Input area */}
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          sendMessage(message);
-        }}
+      <Box
+        className={`${!getCurrentMotion() ? "flex h-full w-full flex-col justify-end" : ""}`}
       >
-        {isNewMotion ? (
-          <MotionInputField onSendMessage={sendNewMotion} />
-        ) : (
-          <ChatInputField onSendMessage={sendMessage} />
-        )}
-      </form>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            sendMessage(message);
+          }}
+        >
+          {getCurrentCommittee() !== "" &&
+            (isNewMotion ? (
+              <MotionInputField onSendMessage={sendNewMotion} />
+            ) : (
+              <ChatInputField onSendMessage={sendMessage} />
+            ))}
+        </form>
+      </Box>
     </Box>
   );
 }

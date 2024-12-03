@@ -86,7 +86,7 @@ export default function SidePanel({
         break;
       case Panel.MOTIONS:
         console.log("Rendering add motion");
-        if (getCurrentCommittee() !== "") {
+        if (getCurrentCommittee() !== "" && getCurrentMotion() !== "") {
           handleToggleIsNewMotion();
         }
         break;
