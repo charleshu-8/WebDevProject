@@ -212,6 +212,10 @@ export default function ChatBox({
     }
   });
 
+  useEffect(() => {
+    fetchMessages();
+  }, [message]);
+
   // Effect to scroll to the bottom whenever the messages change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
