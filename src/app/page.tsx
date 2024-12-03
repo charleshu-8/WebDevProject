@@ -33,10 +33,6 @@ export default function Home() {
             A web-based platform that adapts Robert&apos;s Rules of Order for
             digital use
           </h2>
-          {/*you can delete this testing chatpage button whenever*/}
-          <button className="h-auto w-auto bg-light-primary text-white">
-            <Link href={"/chat"}>Go To Chat Page</Link>
-          </button>
         </div>
       </div>
     </main>
