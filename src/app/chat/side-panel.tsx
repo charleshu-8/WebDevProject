@@ -179,8 +179,10 @@ export default function SidePanel({
   async function queryCommittees() {
     // Get the list of committee keys for the current user
     const committeeIds = await getUserCommittees(getCurrentUser());
-    // Convert it into a filter string
-    const committeeIdFilter = committeeIds
+    console.log(`Committee ids are: ${committeeIds}`);
+    if (committeeIds.length !== 0){
+        // Convert it into a filter string
+      const committeeIdFilter = committeeIds
       .map((id: string) => `id='${id}'`)
       .join("||");
 
@@ -204,10 +206,14 @@ export default function SidePanel({
 
     // Wait for all promises to resolve
     const resolvedCommitteeCardProps = await Promise.all(committeeCardProps);
-
-    // Update the state with the list of committee IDs and committee card properties
-    setCommitteeIds(committeeIds);
     setCommittees(resolvedCommitteeCardProps);
+    }
+    // means new user does not have committee
+    else{
+      setCommittees([]);
+    }
+      // Update the state with the list of committee IDs and committee card properties
+      setCommitteeIds(committeeIds);
   }
 
   // Get all available committees for a user
@@ -225,6 +231,32 @@ export default function SidePanel({
     setCurrentCommittee(id); // Update current committee
     setSelectedCommittee(id);
   }
+/*
+  const renderCommitteeCards = () =>{
+    if (committees !== null) {
+      committees.map((committee) => (
+        <Box
+          key={committee.committeeId}
+          className={
+            "mb-2 mt-2 flex w-[90%] items-center justify-center"
+          }
+        >
+          <CommitteeCard
+            committeeId={committee.committeeId}
+            committeeTitle={committee.committeeTitle}
+            committeeMemberCount={committee.committeeMemberCount}
+            selectedCommittee={selectedCommittee}
+            onClick={() =>
+              handleCommitteeCardClick(committee.committeeId)
+            }
+          />
+        </Box>
+      ))
+
+    }
+    
+  }
+    */
 
   // Listens for DB updates to motions to refetch motions
   // Also refetches upon motion or committee change
@@ -349,7 +381,7 @@ export default function SidePanel({
               <Box className="mt-10 flex h-full w-[90%] justify-center">
                 <CircularProgress />
               </Box>
-            ) : (
+            ) : ( 
               committees.map((committee) => (
                 <Box
                   key={committee.committeeId}
