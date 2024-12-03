@@ -15,7 +15,7 @@ import { redirect } from "next/navigation";
 export default function ChatPage() {
   // State to track whether the input is for a new motion
   const [isNewMotion, toggleIsNewMotion] = useState(false);
-  const [isInputHidden, toggleIsInputHidden] = useState(false);
+  const [isInputHidden, toggleIsInputHidden] = useState(true);
   const [isMakeCommittee, toggleIsMakeCommittee] = useState(false);
   // State to track whether the chat box should be reloaded
   const [reloadChatBox, setReloadChatBox] = useState(false);
