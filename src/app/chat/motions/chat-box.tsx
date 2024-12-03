@@ -22,6 +22,7 @@ import { addNewMessage } from "@/app/db/messages";
 
 interface ChatBoxProps {
   isNewMotion: boolean;
+  isInputHidden: boolean;
   handleToggleIsNewMotion: () => void;
   reload: boolean;
   setReload: (value: boolean) => void; // Add this prop
@@ -39,6 +40,7 @@ export interface ChatMessage {
 
 export default function ChatBox({
   isNewMotion,
+  isInputHidden,
   handleToggleIsNewMotion,
   reload, // Add this prop
   setReload, // Add this prop
@@ -57,6 +59,9 @@ export default function ChatBox({
 
   // Ref to keep track of the container for automatic scrolling
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+
+  // Keep track of getCurrentCommittee() updates for rendering input field
+  const [currentCommittee, setCurrentCommittee] = useState("");
 
   // Sift through users collection and find current committee members & avatars
   async function getMemberAvatarsByIds() {
@@ -90,26 +95,38 @@ export default function ChatBox({
     setLoadingMembers(false);
   }
 
+  async function updateCurrentCommittee() {
+    const committee = getCurrentCommittee();
+    setCurrentCommittee(committee);
+    console.info("Committee has changed: " + committee);
+  }
+
   // Get all available messages for a motion
   async function fetchMessages() {
-    const messages = await getFullMotionMessages(getCurrentMotion());
-
     const helperArray: ChatMessage[] = [];
-    messages.forEach((message: PocketbaseMessage) => {
-      const formattedDate = formatDate(message.created);
-      helperArray.push({
-        id: message.id,
-        text: message.text,
-        timestamp: formattedDate,
-        owner: message.owner,
-        displayName: message.displayName,
-        // Map profile path to display name
+
+    // Check if motion is selected
+    if (getCurrentMotion()) {
+      // Pull all motion messages
+      const messages = await getFullMotionMessages(getCurrentMotion());
+
+      // Convert to message format for display
+      messages.forEach((message: PocketbaseMessage) => {
+        const formattedDate = formatDate(message.created);
+        helperArray.push({
+          id: message.id,
+          text: message.text,
+          timestamp: formattedDate,
+          owner: message.owner,
+          displayName: message.displayName,
+          // Map profile path to display name
+        });
       });
-    });
-    helperArray.sort(
-      (a, b) =>
-        new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime(),
-    );
+      helperArray.sort(
+        (a, b) =>
+          new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime(),
+      );
+    }
 
     setMessages(helperArray);
   }
@@ -167,6 +184,12 @@ export default function ChatBox({
       // Get updated members & avatar pics based on current committee
       getMemberAvatarsByIds();
 
+      // Call updateCurrentCommittee() whenever the committee changes
+      pb.collection("committees").subscribe(getCurrentCommittee(), () => {
+        updateCurrentCommittee();
+        getMemberAvatarsByIds();
+      });
+
       // Subscribe to updates for the specific motion
       pb.collection("motions").subscribe(getCurrentMotion(), () => {
         fetchMessages(); // Fetch new messages when updated
@@ -210,36 +233,42 @@ export default function ChatBox({
   return (
     <Box className="flex h-full w-full flex-col bg-gray-200 p-4">
       {/* Display messages */}
-      <Box className="mb-2 flex-grow overflow-y-auto bg-white p-4">
-        {messages.length === 0 ? (
-          <p className="text-gray-500"></p>
-        ) : (
-          messages.map((message, index) => (
-            <MessageBox
-              messageProp={message}
-              loadingState={loadingMembers}
-              memberAvatars={currentAvatars}
-              key={message.id || index}
-            />
-          ))
-        )}
-        {/* Invisible div to maintain scrolling to the bottom */}
-        <div ref={messagesEndRef} />
-      </Box>
-
+      {getCurrentMotion() && (
+        <Box className="mb-2 flex-grow overflow-y-auto bg-white p-4">
+          {messages.length === 0 ? (
+            <p className="text-gray-500"></p>
+          ) : (
+            messages.map((message, index) => (
+              <MessageBox
+                messageProp={message}
+                loadingState={loadingMembers}
+                memberAvatars={currentAvatars}
+                key={message.id || index}
+              />
+            ))
+          )}
+          {/* Invisible div to maintain scrolling to the bottom */}
+          <div ref={messagesEndRef} />
+        </Box>
+      )}
       {/* Input area */}
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          sendMessage(message);
-        }}
+      <Box
+        className={`${!getCurrentMotion() ? "flex h-full w-full flex-col justify-end" : ""}`}
       >
-        {isNewMotion ? (
-          <MotionInputField onSendMessage={sendNewMotion} />
-        ) : (
-          <ChatInputField onSendMessage={sendMessage} />
-        )}
-      </form>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            sendMessage(message);
+          }}
+        >
+          {!isInputHidden &&
+            (!isNewMotion && getCurrentMotion() !== "" ? (
+              <ChatInputField onSendMessage={sendMessage} />
+            ) : (
+              <MotionInputField onSendMessage={sendNewMotion} />
+            ))}
+        </form>
+      </Box>
     </Box>
   );
 }
