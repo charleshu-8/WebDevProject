@@ -179,7 +179,8 @@ export default function SidePanel({
   async function queryCommittees() {
     // Get the list of committee keys for the current user
     const committeeIds = await getUserCommittees(getCurrentUser());
-    console.log(`Committee ids are: ${committeeIds}`);
+
+    // Check if user has any assigned committees
     if (committeeIds.length !== 0) {
       // Convert it into a filter string
       const committeeIdFilter = committeeIds
@@ -206,14 +207,14 @@ export default function SidePanel({
 
       // Wait for all promises to resolve
       const resolvedCommitteeCardProps = await Promise.all(committeeCardProps);
+      // Update the state with the list of committee IDs and committee card properties
       setCommittees(resolvedCommitteeCardProps);
-    }
-    // means new user does not have committee
-    else {
+    } else {
+      // Set blank committee set
       setCommittees([]);
+      // Update the state with the list of committee IDs and committee card properties
+      setCommitteeIds(committeeIds);
     }
-    // Update the state with the list of committee IDs and committee card properties
-    setCommitteeIds(committeeIds);
   }
 
   // Get all available committees for a user
