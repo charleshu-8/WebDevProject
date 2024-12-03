@@ -5,10 +5,22 @@ import EventNoteIcon from "@mui/icons-material/EventNote";
 import StarsIcon from "@mui/icons-material/Stars";
 import SettingsIcon from "@mui/icons-material/Settings";
 import React, { useState } from "react";
-import { Panel } from "./panel";
+import { Panel } from "./panelEnum";
 import SidePanel from "./side-panel";
 
-export default function SideBar() {
+interface SidebarProps {
+  handleToggleIsNewMotion: () => void;
+  handleToggleMakeCommittee: (value: boolean) => void;
+  isMakeCommittee: boolean;
+  setReloadChatBox: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export default function Sidebar({
+  handleToggleIsNewMotion,
+  handleToggleMakeCommittee = (value: boolean) => {},
+  isMakeCommittee,
+  setReloadChatBox,
+}: SidebarProps) {
   /* tracks panel version for changing panel layout */
   const [panelVersion, setPanelVersion] = useState(Panel.COMMITTEES);
 
@@ -77,7 +89,13 @@ export default function SideBar() {
           </IconButton>
         </Box>
       </Box>
-      <SidePanel panelVersion={panelVersion} />
+      <SidePanel
+        panelVersion={panelVersion}
+        handleToggleIsNewMotion={handleToggleIsNewMotion}
+        handleToggleMakeCommittee={handleToggleMakeCommittee}
+        isMakeCommittee={isMakeCommittee}
+        setReloadChatBox={setReloadChatBox}
+      />
     </Box>
   );
 }
