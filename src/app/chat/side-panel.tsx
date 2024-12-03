@@ -208,12 +208,12 @@ export default function SidePanel({
       // Wait for all promises to resolve
       const resolvedCommitteeCardProps = await Promise.all(committeeCardProps);
       // Update the state with the list of committee IDs and committee card properties
+      setCommitteeIds(committeeIds);
       setCommittees(resolvedCommitteeCardProps);
     } else {
-      // Set blank committee set
-      setCommittees([]);
-      // Update the state with the list of committee IDs and committee card properties
+      // Update the state with a blank list of committee IDs and committee card properties
       setCommitteeIds(committeeIds);
+      setCommittees([]);
     }
   }
 
