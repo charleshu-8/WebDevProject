@@ -207,6 +207,7 @@ export default function SidePanel({
 
       // Wait for all promises to resolve
       const resolvedCommitteeCardProps = await Promise.all(committeeCardProps);
+
       // Update the state with the list of committee IDs and committee card properties
       setCommitteeIds(committeeIds);
       setCommittees(resolvedCommitteeCardProps);
