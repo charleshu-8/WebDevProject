@@ -5,11 +5,7 @@ import NavBar from "./navbar";
 import Sidebar from "./sidebar";
 import ChatBox from "./motions/chat-box";
 import MakeCommitteeForm from "./committees/make-committee-form";
-import {
-  currentUser,
-  getCurrentCommittee,
-  getCurrentMotion,
-} from "../db/pocketbase";
+import { currentUser } from "../db/pocketbase";
 import { redirect } from "next/navigation";
 
 export default function ChatPage() {

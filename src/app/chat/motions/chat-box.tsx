@@ -19,7 +19,6 @@ import getRandomColor from "@/app/utils/color";
 import MessageBox from "./message-box";
 import { getCommitteeMembers } from "@/app/db/committees";
 import { addNewMessage } from "@/app/db/messages";
-import { get } from "http";
 
 interface ChatBoxProps {
   isNewMotion: boolean;
