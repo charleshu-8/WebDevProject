@@ -5,7 +5,7 @@ import NavBar from "./navbar";
 import Sidebar from "./sidebar";
 import ChatBox from "./motions/chat-box";
 import MakeCommitteeForm from "./committees/make-committee-form";
-import { currentUser } from "../db/pocketbase";
+import { currentUser, getCurrentMotion } from "../db/pocketbase";
 import { redirect } from "next/navigation";
 
 export default function ChatPage() {
@@ -24,6 +24,7 @@ export default function ChatPage() {
   function handleToggleMakeCommittee(value: boolean): void {
     toggleIsMakeCommittee(value);
   }
+
   // Redirects user to landing page if not logged in
   useLayoutEffect(() => {
     if (!currentUser) {
@@ -46,12 +47,14 @@ export default function ChatPage() {
             handleToggleMakeCommittee={handleToggleMakeCommittee}
           />
         ) : (
-          <ChatBox
-            isNewMotion={isNewMotion}
-            handleToggleIsNewMotion={handleToggleIsNewMotion}
-            reload={reloadChatBox} // Pass the reload state as a prop
-            setReload={setReloadChatBox} // Pass the setReload state as a prop
-          />
+          getCurrentMotion() && (
+            <ChatBox
+              isNewMotion={isNewMotion}
+              handleToggleIsNewMotion={handleToggleIsNewMotion}
+              reload={reloadChatBox} // Pass the reload state as a prop
+              setReload={setReloadChatBox} // Pass the setReload state as a prop
+            />
+          )
         )}
       </div>
     </div>

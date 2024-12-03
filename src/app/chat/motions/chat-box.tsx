@@ -183,7 +183,6 @@ export default function ChatBox({
   // Effect to scroll to the bottom whenever the messages change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    console.log(messages);
   }, [messages]);
 
   // Fetch messages whenever reload changes

@@ -6,8 +6,8 @@ export let currentUser = pb.authStore.model;
 export const avatarPathUrl =
   "https://slackers.pockethost.io/api/files/_pb_users_auth_";
 
-let currentCommittee = "91ttrau140qhgdc"; //placeholder, missing logic
-let currentMotion = "esco3pacuipvqre"; //placeholder, missing most logic
+let currentCommittee = "";
+let currentMotion = "";
 
 export function setCurrentCommittee(committeeId: string) {
   currentCommittee = committeeId;
@@ -23,6 +23,10 @@ export function setCurrentMotion(motionId: string) {
 
 export function getCurrentMotion() {
   return currentMotion;
+}
+
+export function getCurrentUser() {
+  return currentUser?.id as string;
 }
 
 // Halt deletion of duplicate queries
