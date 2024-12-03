@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Textarea from "@mui/joy/Textarea"; // Import the Input component from the MUI Joy library
 import Image from "next/image";
-import sendIcon from "@/app/assets/chat/send_icon.svg"
+import sendIcon from "@/app/assets/chat/send_icon.svg";
 
 interface MotionInputFieldProps {
   onSendMessage: (message: string) => void;
@@ -25,11 +25,11 @@ export default function MotionInputField({
   return (
     <>
       {/* Main White Chat Field Input Box Container */}
-      <div className="h-full w-full flex-col items-center justify-center overflow-hidden rounded-lg bg-white">
+      <div className="h-full w-full flex-col items-center justify-center overflow-hidden rounded-lg bg-white dark:bg-extra-gray">
         {/* 'Motion:' Declaration Text with Send Button */}
-        <div className="ml-7 mr-7 mt-4 flex h-1/5 items-center justify-between">
+        <div className="ml-7 mr-7 mt-4 flex h-1/5 items-center justify-between dark:bg-extra-dim-gray">
           {/* Motion Text */}
-          <p className="text-xl font-semibold text-black dark:text-black">
+          <p className="text-xl font-semibold text-black dark:text-dark-text">
             Adding New Motion:
           </p>
           {/* Send Button/Icon Container*/}
@@ -38,7 +38,7 @@ export default function MotionInputField({
             <Image
               className="h-full"
               alt="Send"
-              src={sendIcon} 
+              src={sendIcon}
               width="40"
               height="40"
               onClick={handleSendClick}
