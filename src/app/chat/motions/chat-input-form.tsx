@@ -46,6 +46,7 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
   const [currentMotion, setCurrentMotion] = useState(getCurrentMotion());
   const [forVotes, setForVotes] = useState<string[]>([]);
   const [againstVotes, setAgainstVotes] = useState<string[]>([]);
+  const [voteFinished, setVoteFinished] = useState<boolean>(false);
 
   // Toggle the pro button state
   function handleProClick(): void {
@@ -66,21 +67,6 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
       getCurrentMotion(),
       "VoteBot",
     );
-    // await handleVoteBot();
-    // addNewMessage(
-    //   `${currentUser.username} has voted in favor of this motion`,
-    //   "8eszq0g4tebyspt",
-    //   getCurrentMotion(),
-    //   "VoteBot",
-    // );
-    // const forVotes = await getForVotes(getCurrentMotion());
-    // const againstVotes = await getAgainstVotes(getCurrentMotion());
-    // addNewMessage(
-    //   `Update: ${forVotes.length} votes for, ${againstVotes.length} votes against`,
-    //   "8eszq0g4tebyspt",
-    //   getCurrentMotion(),
-    //   "VoteBot",
-    // );
   }
 
   // Toggle the con button state
@@ -126,6 +112,7 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
         getCurrentMotion(),
         "VoteBot",
       );
+      setVoted(getCurrentMotion(), true);
     } else {
       setIsConPressed(false);
       setIsProPressed(false);
@@ -148,6 +135,7 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
       );
 
       //do something to remove the button
+      setVoteFinished(true);
     }
   }
 
@@ -221,7 +209,7 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
                 onClick={handleConVote} // Handle icon click
               />
             </div>
-            {chair === currentUser?.id ? (
+            {chair === currentUser?.id && !voteFinished ? (
               <Button
                 variant="contained"
                 className="ml-2 mr-2 border-2 border-solid p-1"
@@ -229,7 +217,7 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
                 style={{ fontSize: "0.5rem" }}
                 onClick={() => callVote()}
               >
-                Restart discussion
+                End Voting
               </Button>
             ) : null}
           </div>
@@ -276,6 +264,7 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
                 variant="contained"
                 className="ml-2 mr-2 border-2 border-solid p-1"
                 style={{ fontSize: "0.5rem" }}
+                color={""} // this is need to not make the button look horrible
                 onClick={() => callVote()}
               >
                 Call vote
@@ -283,57 +272,6 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
             ) : null}
           </div>
         )}
-
-        {/*<div className="flex h-1/5 items-center bg-extra-dim-gray pl-6">*/}
-        {/*  /!* Pro Icon Container *!/*/}
-        {/*  <div className="ml-2 mr-2 flex h-[70%] items-center">*/}
-        {/*    /!* Pro Button/Icon *!/*/}
-        {/*    <Image*/}
-        {/*      className="h-full cursor-pointer"*/}
-        {/*      alt="Pro"*/}
-        {/*      src={isProPressed ? proButtonPressed : proButton} // Conditionally render the icon*/}
-        {/*      width="56"*/}
-        {/*      height="20"*/}
-        {/*      onClick={handleProClick} // Handle icon click*/}
-        {/*    />*/}
-        {/*  </div>*/}
-        {/*  /!* Con Icon Container *!/*/}
-        {/*  <div className="ml-2 mr-2 flex h-[70%] items-center">*/}
-        {/*    /!* Con Button/Icon *!/*/}
-        {/*    <Image*/}
-        {/*      className="h-full cursor-pointer"*/}
-        {/*      alt="Con"*/}
-        {/*      src={isConPressed ? conButtonPressed : conButton} // Conditionally render the icon*/}
-        {/*      width="58"*/}
-        {/*      height="20"*/}
-        {/*      onClick={handleConClick} // Handle icon click*/}
-        {/*    />*/}
-        {/*  </div>*/}
-        {/*  /!* Neutral Icon Container *!/*/}
-        {/*  <div className="ml-2 mr-2 flex h-[70%] items-center">*/}
-        {/*    /!* Neutral Button/Icon *!/*/}
-        {/*    <Image*/}
-        {/*      className="h-full cursor-pointer"*/}
-        {/*      alt="Neutral"*/}
-        {/*      src={isNeutralPressed ? neutralButtonPressed : neutralButton} // Conditionally render the icon*/}
-        {/*      width="74"*/}
-        {/*      height="20"*/}
-        {/*      onClick={handleNeutralClick} // Handle icon click*/}
-        {/*    />*/}
-        {/*  </div>*/}
-        {/*  {chair === currentUser?.id ? (*/}
-        {/*    <Button*/}
-        {/*      variant="contained"*/}
-        {/*      color=""*/}
-        {/*      className="ml-2 mr-2 border-2 border-solid p-1"*/}
-        {/*      style={{ fontSize: "0.5rem" }}*/}
-        {/*      onClick={() => callVote()}*/}
-        {/*    >*/}
-        {/*      Call vote*/}
-        {/*    </Button>*/}
-        {/*  ) : null}*/}
-        {/*</div>*/}
-        {/* MUI Input with Send Button */}
         <div className="mb-6 ml-7 mr-7 mt-4 flex items-center justify-between">
           {/* MUI Input Component Container*/}
           <div className="m-1 mb-3 w-full">
