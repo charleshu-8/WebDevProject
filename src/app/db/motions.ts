@@ -106,11 +106,11 @@ export async function voteForMotion(motion: string) {
   try {
     const motionData = await pb.collection("motions").getOne(motion);
     const forVote = motionData.for_vote || [];
-    forVote.push(currentUser.id);
+    forVote.push(currentUser?.id);
     //checking if vote must be removed from other side
-    if (motionData.against_vote.includes(currentUser.id)) {
+    if (motionData.against_vote.includes(currentUser?.id)) {
       const againstVote = motionData.against_vote.filter(
-        (id) => id !== currentUser.id,
+        (id: string) => id !== currentUser?.id,
       );
       await pb.collection("motions").update(motion, {
         against_vote: againstVote,
@@ -130,10 +130,12 @@ export async function voteAgainstMotion(motion: string) {
   try {
     const motionData = await pb.collection("motions").getOne(motion);
     const againstVote = motionData.against_vote || [];
-    againstVote.push(currentUser.id);
+    againstVote.push(currentUser?.id);
     //checking if vote must be removed from other side
-    if (motionData.for_vote.includes(currentUser.id)) {
-      const forVote = motionData.for_vote.filter((id) => id !== currentUser.id);
+    if (motionData.for_vote.includes(currentUser?.id)) {
+      const forVote = motionData.for_vote.filter(
+        (id: string) => id !== currentUser?.id,
+      );
       await pb.collection("motions").update(motion, {
         for_vote: forVote,
       });

@@ -44,8 +44,8 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
   const [chair, setChair] = useState("");
   const [hasVoted, setHasVoted] = useState(false);
   const [currentMotion, setCurrentMotion] = useState(getCurrentMotion());
-  const [forVotes, setForVotes] = useState([]);
-  const [againstVotes, setAgainstVotes] = useState([]);
+  const [forVotes, setForVotes] = useState<string[]>([]);
+  const [againstVotes, setAgainstVotes] = useState<string[]>([]);
 
   // Toggle the pro button state
   function handleProClick(): void {
@@ -60,7 +60,7 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
     //console.log("for vote" + fforVote);
     setForVotes(forArr);
     addNewMessage(
-      `${currentUser.username} has voted for this motion\n
+      `${currentUser?.username} has voted for this motion\n
       There are ${forArr.length} votes for, ${againstVotes.length - 1} votes against`,
       "8eszq0g4tebyspt",
       getCurrentMotion(),
@@ -95,7 +95,7 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
     const againstArr = await voteAgainstMotion(getCurrentMotion());
     setAgainstVotes(againstArr);
     addNewMessage(
-      `${currentUser.username} has voted against this motion\n
+      `${currentUser?.username} has voted against this motion\n
       There are ${forVotes.length - 1} votes for, ${againstArr.length} votes against`,
       "8eszq0g4tebyspt",
       getCurrentMotion(),
@@ -139,9 +139,9 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
     pb.collection("motions")
       .getOne(getCurrentMotion())
       .then((motion) => {
-        if (motion.for_vote.includes(currentUser.id)) {
+        if (motion.for_vote.includes(currentUser?.id)) {
           setIsProPressed(true);
-        } else if (motion.against_vote.includes(currentUser.id)) {
+        } else if (motion.against_vote.includes(currentUser?.id)) {
           setIsConPressed(true);
         }
       });
@@ -208,7 +208,6 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
             {chair === currentUser?.id ? (
               <Button
                 variant="contained"
-                color=""
                 className="ml-2 mr-2 border-2 border-solid p-1"
                 style={{ fontSize: "0.5rem" }}
                 onClick={() => callVote()}
@@ -258,7 +257,6 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
             {chair === currentUser?.id ? (
               <Button
                 variant="contained"
-                color=""
                 className="ml-2 mr-2 border-2 border-solid p-1"
                 style={{ fontSize: "0.5rem" }}
                 onClick={() => callVote()}
