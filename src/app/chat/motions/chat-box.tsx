@@ -160,15 +160,19 @@ export default function ChatBox({
     }
   }
 
-  // Listens for DB updates to messages to refetch messages
-  // Also refetches upon motion or committee change
   useEffect(() => {
     if (getCurrentMotion() && reload) {
       fetchMessages();
       // Get updated members & avatar pics based on current committee
       getMemberAvatarsByIds();
       setReload(false);
+    }
+  }, [reload]);
 
+  // Listens for DB updates to messages to refetch messages
+  // Also refetches upon motion or committee change
+  useEffect(() => {
+    if (getCurrentCommittee() && getCurrentMotion()) {
       // Subscribe to updates for the specific motion
       pb.collection("motions").subscribe(getCurrentMotion(), () => {
         setReload(true); // Fetch new messages when updated
