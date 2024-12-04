@@ -112,7 +112,21 @@ export default function ChatInputField({
     }
   }
 
-  function callVote() {
+  //subscribe to the voted state of the motion
+  // useEffect(() => {
+  //   pb.collection("motions").subscribe(getCurrentMotion(), (motion) => {
+  //     if (motion.voted) {
+  //       setHasVoted(motion.voted);
+  //     }
+  //   });
+  //
+  //   //cleanup
+  //   return () => {
+  //     pb.collection("motions").unsubscribe(getCurrentMotion());
+  //   };
+  // }, []);
+
+  async function callVote() {
     if (!hasVoted) {
       checkIfVoted();
       addNewMessage(
@@ -126,12 +140,15 @@ export default function ChatInputField({
     } else {
       setIsConPressed(false);
       setIsProPressed(false);
+      const stats = await getVotingStatistics(getCurrentMotion());
+      const forV = stats.for_vote;
+      const against = stats.against_vote;
 
       let finalMessage = "";
 
-      if (forVotes.length > againstVotes.length) {
+      if (forV.length > against.length) {
         finalMessage = "The motion has passed";
-      } else if (forVotes.length < againstVotes.length) {
+      } else if (forV.length < against.length) {
         finalMessage = "The motion has failed";
       } else {
         finalMessage = "The motion has tied";
