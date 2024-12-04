@@ -33,10 +33,14 @@ import { addNewMessage } from "@/app/db/messages";
 
 interface ChatInputFieldProps {
   onSendMessage: (message: string) => void;
+  reload: boolean;
 }
 
 // Form component for requesting email for password recovery
-export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
+export default function ChatInputField({
+  onSendMessage,
+  reload,
+}: ChatInputFieldProps) {
   // States to track whether each icon is pressed
   const [isProPressed, setIsProPressed] = useState(false);
   const [isConPressed, setIsConPressed] = useState(false);
@@ -44,7 +48,6 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
   const [message, setMessage] = useState(""); // State to track the message input
   const [chair, setChair] = useState("");
   const [hasVoted, setHasVoted] = useState(false);
-  const [currentMotion, setCurrentMotion] = useState(getCurrentMotion());
   const [forVotes, setForVotes] = useState<string[]>([]);
   const [againstVotes, setAgainstVotes] = useState<string[]>([]);
   const [voteFinished, setVoteFinished] = useState<boolean>(false);
@@ -161,7 +164,7 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
   }
 
   useEffect(() => {
-    voted(currentMotion).then((voted) => {
+    voted(getCurrentMotion()).then((voted) => {
       setHasVoted(voted);
       if (voted) {
         checkIfVoted();
@@ -170,22 +173,21 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
     getCommitteeChair(getCurrentCommittee()).then((chair) => {
       setChair(chair);
     });
-    getForVotes(currentMotion).then((votes) => {
+    getForVotes(getCurrentMotion()).then((votes) => {
       setForVotes(votes);
     });
-    getAgainstVotes(currentMotion).then((votes) => {
+    getAgainstVotes(getCurrentMotion()).then((votes) => {
       setAgainstVotes(votes);
     });
-  }, [currentMotion]);
+  }, [reload]);
 
   useEffect(() => {
-    setCurrentMotion(getCurrentMotion());
     setIsProPressed(false);
     setIsConPressed(false);
     setIsNeutralPressed(false);
     updateFinished();
     setMessage("");
-  }, [getCurrentMotion()]);
+  }, [reload]);
 
   return (
     <>

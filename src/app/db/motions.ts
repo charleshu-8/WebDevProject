@@ -179,13 +179,11 @@ export async function getAgainstVotes(motion: string) {
 
 export async function setFinished(motion: string, finished: boolean) {
   try {
-    return (
-      await pb.collection("motions").getOne(`${motion}`, {
-        fields: "finished",
-      })
-    ).finished as boolean;
+    return await pb.collection("motions").update(`${motion}`, {
+      finished: finished,
+    });
   } catch (e) {
-    console.error("Motion finished state fetching error: " + e);
+    console.error("Motion finished state updating error: " + e);
     return false;
   }
 }

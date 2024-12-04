@@ -238,7 +238,9 @@ export default function ChatBox({
         {isNewMotion ? (
           <MotionInputField onSendMessage={sendNewMotion} />
         ) : (
-          getCurrentMotion() && <ChatInputField onSendMessage={sendMessage} />
+          getCurrentMotion() && (
+            <ChatInputField onSendMessage={sendMessage} reload={reload} />
+          )
         )}
       </form>
     </Box>
