@@ -202,13 +202,6 @@ export default function ChatBox({
         isMounted = false;
       };
     }
-  }, [reload, setReload]);
-
-  // Fetch messages whenever reload changes
-  useEffect(() => {
-    if (getCurrentMotion()) {
-      fetchMessages();
-    }
   }, [reload]);
 
   return (
