@@ -12,7 +12,6 @@ import {
 import {
   voted,
   setVoted,
-  getMotionDetails,
   voteForMotion,
   voteAgainstMotion,
   getForVotes,
@@ -61,7 +60,7 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
     //console.log("for vote" + fforVote);
     setForVotes(forArr);
     addNewMessage(
-      `${currentUser.username} has voted for this motion\n
+      `${currentUser?.username} has voted for this motion\n
       There are ${forArr.length} votes for, ${againstVotes.length < 0 ? 0 : againstVotes.length - 1} votes against`,
       "8eszq0g4tebyspt",
       getCurrentMotion(),
@@ -81,7 +80,7 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
     const againstArr = await voteAgainstMotion(getCurrentMotion());
     setAgainstVotes(againstArr);
     addNewMessage(
-      `${currentUser.username} has voted against this motion\n
+      `${currentUser?.username} has voted against this motion\n
       There are ${forVotes.length < 0 ? 0 : forVotes.length - 1} votes for, ${againstArr.length} votes against`,
       "8eszq0g4tebyspt",
       getCurrentMotion(),
@@ -213,7 +212,7 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
               <Button
                 variant="contained"
                 className="ml-2 mr-2 border-2 border-solid p-1"
-                color={""} // this is need to not make the button look horrible
+                color={"inherit"} // this is need to not make the button look horrible
                 style={{ fontSize: "0.5rem" }}
                 onClick={() => callVote()}
               >
@@ -264,7 +263,7 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
                 variant="contained"
                 className="ml-2 mr-2 border-2 border-solid p-1"
                 style={{ fontSize: "0.5rem" }}
-                color={""} // this is need to not make the button look horrible
+                color={"inherit"} // this is need to not make the button look horrible
                 onClick={() => callVote()}
               >
                 Call vote
