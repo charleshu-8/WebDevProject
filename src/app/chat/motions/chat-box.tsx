@@ -187,24 +187,28 @@ export default function ChatBox({
 
   // Fetch messages whenever reload changes
   useEffect(() => {
-    let isMounted = true;
+    if (getCurrentMotion()) {
+      let isMounted = true;
 
-    if (reload) {
-      fetchMessages().then(() => {
-        if (isMounted) {
-          setReload(false);
-        }
-      });
+      if (reload) {
+        fetchMessages().then(() => {
+          if (isMounted) {
+            setReload(false);
+          }
+        });
+      }
+
+      return () => {
+        isMounted = false;
+      };
     }
-
-    return () => {
-      isMounted = false;
-    };
   }, [reload, setReload]);
 
   // Fetch messages whenever reload changes
   useEffect(() => {
-    fetchMessages();
+    if (getCurrentMotion()) {
+      fetchMessages();
+    }
   }, [reload]);
 
   return (
@@ -237,7 +241,7 @@ export default function ChatBox({
         {isNewMotion ? (
           <MotionInputField onSendMessage={sendNewMotion} />
         ) : (
-          <ChatInputField onSendMessage={sendMessage} />
+          getCurrentMotion() && <ChatInputField onSendMessage={sendMessage} />
         )}
       </form>
     </Box>
