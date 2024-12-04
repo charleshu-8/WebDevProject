@@ -80,28 +80,6 @@ export async function getFilteredMotions(
   }
 }
 
-export async function voted(motion: string) {
-  try {
-    return (
-      await pb.collection("motions").getOne(`${motion}`, {
-        fields: "voted",
-      })
-    ).voted as boolean;
-  } catch (e) {
-    console.error("Voting status fetching error: " + e);
-    return false;
-  }
-}
-
-export async function setVoted(motion: string, voted: boolean) {
-  try {
-    return await pb.collection("motions").update(`${motion}`, { voted: voted });
-  } catch (e) {
-    console.error("Voting status update error: " + e);
-    return false;
-  }
-}
-
 export async function voteForMotion(motion: string) {
   try {
     const motionData = await pb.collection("motions").getOne(motion);
@@ -151,29 +129,34 @@ export async function voteAgainstMotion(motion: string) {
   }
 }
 
-export async function getForVotes(motion: string) {
+export async function getVotingStatistics(motion: string): Promise<{
+  voted: boolean;
+  for_vote: string[];
+  against_vote: string[];
+  finished: boolean;
+}> {
   try {
-    return (
-      await pb.collection("motions").getOne(`${motion}`, {
-        fields: "for_vote",
-      })
-    ).for_vote as string[];
+    const response = await pb.collection("motions").getOne(`${motion}`, {
+      fields: "voted, for_vote, against_vote, finished",
+    });
+    return {
+      voted: response.voted,
+      for_vote: response.for_vote,
+      against_vote: response.against_vote,
+      finished: response.finished,
+    };
   } catch (e) {
-    console.error("Voting status fetching error: " + e);
-    return [];
+    console.error("Voting info fetching error: " + e);
+    return { voted: false, for_vote: [], against_vote: [], finished: false };
   }
 }
 
-export async function getAgainstVotes(motion: string) {
+export async function setVoted(motion: string, voted: boolean) {
   try {
-    return (
-      await pb.collection("motions").getOne(`${motion}`, {
-        fields: "against_vote",
-      })
-    ).against_vote as string[];
+    return await pb.collection("motions").update(`${motion}`, { voted: voted });
   } catch (e) {
-    console.error("Voting status fetching error: " + e);
-    return [];
+    console.error("Voting status update error: " + e);
+    return false;
   }
 }
 
@@ -184,19 +167,6 @@ export async function setFinished(motion: string, finished: boolean) {
     });
   } catch (e) {
     console.error("Motion finished state updating error: " + e);
-    return false;
-  }
-}
-
-export async function getFinished(motion: string) {
-  try {
-    return (
-      await pb.collection("motions").getOne(`${motion}`, {
-        fields: "finished",
-      })
-    ).finished as boolean;
-  } catch (e) {
-    console.error("Motion finished state fetching error: " + e);
     return false;
   }
 }

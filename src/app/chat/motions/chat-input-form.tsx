@@ -10,14 +10,11 @@ import {
   pb,
 } from "@/app/db/pocketbase";
 import {
-  voted,
   setVoted,
   voteForMotion,
   voteAgainstMotion,
-  getForVotes,
-  getAgainstVotes,
   setFinished,
-  getFinished,
+  getVotingStatistics,
 } from "@/app/db/motions";
 // Import the Input component from the MUI Joy library
 import Image from "next/image";
@@ -86,7 +83,7 @@ export default function ChatInputField({
     setAgainstVotes(againstArr);
     addNewMessage(
       `${currentUser?.username} has voted against this motion\n
-      There are ${forVotes.length <= 0 ? 0 : forVotes.length - 1} votes for, ${againstArr.length} votes against`,
+      There are ${forVotes.length <= 0 ? 0 : forVotes.length} votes for, ${againstArr.length} votes against`,
       "8eszq0g4tebyspt",
       getCurrentMotion(),
       "VoteBot",
@@ -105,6 +102,14 @@ export default function ChatInputField({
   function handleSendClick(): void {
     onSendMessage(message);
     setMessage(""); // Clear the text area after sending the message
+  }
+
+  function checkIfVoted() {
+    if (forVotes.includes(currentUser?.id as string)) {
+      setIsProPressed(true);
+    } else if (againstVotes.includes(currentUser?.id as string)) {
+      setIsConPressed(true);
+    }
   }
 
   function callVote() {
@@ -146,47 +151,24 @@ export default function ChatInputField({
     }
   }
 
-  function checkIfVoted() {
-    pb.collection("motions")
-      .getOne(getCurrentMotion())
-      .then((motion) => {
-        if (motion.for_vote.includes(currentUser?.id)) {
-          setIsProPressed(true);
-        } else if (motion.against_vote.includes(currentUser?.id)) {
-          setIsConPressed(true);
-        }
-      });
-  }
-
-  async function updateFinished() {
-    const finished = await getFinished(getCurrentMotion());
-    setVoteFinished(finished);
-  }
-
-  useEffect(() => {
-    voted(getCurrentMotion()).then((voted) => {
-      setHasVoted(voted);
-      if (voted) {
-        checkIfVoted();
-      }
-    });
-    getCommitteeChair(getCurrentCommittee()).then((chair) => {
-      setChair(chair);
-    });
-    getForVotes(getCurrentMotion()).then((votes) => {
-      setForVotes(votes);
-    });
-    getAgainstVotes(getCurrentMotion()).then((votes) => {
-      setAgainstVotes(votes);
-    });
-  }, [reload]);
-
   useEffect(() => {
     setIsProPressed(false);
     setIsConPressed(false);
     setIsNeutralPressed(false);
-    updateFinished();
     setMessage("");
+
+    getVotingStatistics(getCurrentMotion()).then((stats) => {
+      setHasVoted(stats.voted);
+      if (stats.voted) {
+        checkIfVoted();
+      }
+      setForVotes(stats.for_vote);
+      setAgainstVotes(stats.against_vote);
+      setVoteFinished(stats.finished);
+    });
+    getCommitteeChair(getCurrentCommittee()).then((chair) => {
+      setChair(chair);
+    });
   }, [reload]);
 
   return (
@@ -194,103 +176,107 @@ export default function ChatInputField({
       {/* Main White Chat Field Input Box Container */}
       <div className="h-full w-full flex-col items-center justify-center overflow-hidden rounded-lg border-2 border-extra-light-gray bg-white">
         {/* Gray Options Bar above chat input field */}
-
-        {hasVoted ? (
-          <div className="flex h-1/5 items-center bg-extra-dim-gray pl-6">
-            {/* Pro Icon Container */}
-            <div className="ml-2 mr-2 flex h-[70%] items-center">
-              {/* Pro Button/Icon */}
-              <Image
-                className="h-full cursor-pointer"
-                alt="Pro"
-                src={isProPressed ? proButtonPressed : proButton} // Conditionally render the icon
-                width="56"
-                height="20"
-                onClick={handleProVote} // Handle icon click
-              />
+        {!voteFinished &&
+          (hasVoted ? (
+            <div className="flex h-1/5 items-center bg-extra-dim-gray pl-6">
+              {/* Pro Icon Container */}
+              <div className="ml-2 mr-2 flex h-[70%] items-center">
+                {/* Pro Button/Icon */}
+                <Image
+                  className="h-full cursor-pointer"
+                  alt="Pro"
+                  src={isProPressed ? proButtonPressed : proButton} // Conditionally render the icon
+                  width="56"
+                  height="20"
+                  onClick={handleProVote} // Handle icon click
+                />
+              </div>
+              {/* Con Icon Container */}
+              <div className="ml-2 mr-2 flex h-[70%] items-center">
+                {/* Con Button/Icon */}
+                <Image
+                  className="h-full cursor-pointer"
+                  alt="Con"
+                  src={isConPressed ? conButtonPressed : conButton} // Conditionally render the icon
+                  width="58"
+                  height="20"
+                  onClick={handleConVote} // Handle icon click
+                />
+              </div>
+              {chair === currentUser?.id && !voteFinished ? (
+                <Button
+                  variant="contained"
+                  className="ml-2 mr-2 border-2 border-solid p-1"
+                  color={"inherit"} // this is need to not make the button look horrible
+                  style={{ fontSize: "0.5rem" }}
+                  onClick={() => callVote()}
+                >
+                  End Voting
+                </Button>
+              ) : null}
             </div>
-            {/* Con Icon Container */}
-            <div className="ml-2 mr-2 flex h-[70%] items-center">
-              {/* Con Button/Icon */}
-              <Image
-                className="h-full cursor-pointer"
-                alt="Con"
-                src={isConPressed ? conButtonPressed : conButton} // Conditionally render the icon
-                width="58"
-                height="20"
-                onClick={handleConVote} // Handle icon click
-              />
+          ) : (
+            <div className="flex h-1/5 items-center bg-extra-dim-gray pl-6">
+              {/* Pro Icon Container */}
+              <div className="ml-2 mr-2 flex h-[70%] items-center">
+                {/* Pro Button/Icon */}
+                <Image
+                  className="h-full cursor-pointer"
+                  alt="Pro"
+                  src={isProPressed ? proButtonPressed : proButton} // Conditionally render the icon
+                  width="56"
+                  height="20"
+                  onClick={handleProClick} // Handle icon click
+                />
+              </div>
+              {/* Con Icon Container */}
+              <div className="ml-2 mr-2 flex h-[70%] items-center">
+                {/* Con Button/Icon */}
+                <Image
+                  className="h-full cursor-pointer"
+                  alt="Con"
+                  src={isConPressed ? conButtonPressed : conButton} // Conditionally render the icon
+                  width="58"
+                  height="20"
+                  onClick={handleConClick} // Handle icon click
+                />
+              </div>
+              {/* Neutral Icon Container */}
+              <div className="ml-2 mr-2 flex h-[70%] items-center">
+                {/* Neutral Button/Icon */}
+                <Image
+                  className="h-full cursor-pointer"
+                  alt="Neutral"
+                  src={isNeutralPressed ? neutralButtonPressed : neutralButton} // Conditionally render the icon
+                  width="74"
+                  height="20"
+                  onClick={handleNeutralClick} // Handle icon click
+                />
+              </div>
+              {chair === currentUser?.id ? (
+                <Button
+                  variant="contained"
+                  className="ml-2 mr-2 border-2 border-solid p-1"
+                  style={{ fontSize: "0.5rem" }}
+                  color={"inherit"} // this is need to not make the button look horrible
+                  onClick={() => callVote()}
+                >
+                  Call vote
+                </Button>
+              ) : null}
             </div>
-            {chair === currentUser?.id && !voteFinished ? (
-              <Button
-                variant="contained"
-                className="ml-2 mr-2 border-2 border-solid p-1"
-                color={"inherit"} // this is need to not make the button look horrible
-                style={{ fontSize: "0.5rem" }}
-                onClick={() => callVote()}
-              >
-                End Voting
-              </Button>
-            ) : null}
-          </div>
-        ) : (
-          <div className="flex h-1/5 items-center bg-extra-dim-gray pl-6">
-            {/* Pro Icon Container */}
-            <div className="ml-2 mr-2 flex h-[70%] items-center">
-              {/* Pro Button/Icon */}
-              <Image
-                className="h-full cursor-pointer"
-                alt="Pro"
-                src={isProPressed ? proButtonPressed : proButton} // Conditionally render the icon
-                width="56"
-                height="20"
-                onClick={handleProClick} // Handle icon click
-              />
-            </div>
-            {/* Con Icon Container */}
-            <div className="ml-2 mr-2 flex h-[70%] items-center">
-              {/* Con Button/Icon */}
-              <Image
-                className="h-full cursor-pointer"
-                alt="Con"
-                src={isConPressed ? conButtonPressed : conButton} // Conditionally render the icon
-                width="58"
-                height="20"
-                onClick={handleConClick} // Handle icon click
-              />
-            </div>
-            {/* Neutral Icon Container */}
-            <div className="ml-2 mr-2 flex h-[70%] items-center">
-              {/* Neutral Button/Icon */}
-              <Image
-                className="h-full cursor-pointer"
-                alt="Neutral"
-                src={isNeutralPressed ? neutralButtonPressed : neutralButton} // Conditionally render the icon
-                width="74"
-                height="20"
-                onClick={handleNeutralClick} // Handle icon click
-              />
-            </div>
-            {chair === currentUser?.id ? (
-              <Button
-                variant="contained"
-                className="ml-2 mr-2 border-2 border-solid p-1"
-                style={{ fontSize: "0.5rem" }}
-                color={"inherit"} // this is need to not make the button look horrible
-                onClick={() => callVote()}
-              >
-                Call vote
-              </Button>
-            ) : null}
-          </div>
-        )}
+          ))}
         <div className="mb-6 ml-7 mr-7 mt-4 flex items-center justify-between">
           {/* MUI Input Component Container*/}
           <div className="m-1 mb-3 w-full">
             {hasVoted ? (
               <Textarea
                 name="Textarea"
-                placeholder="A vote has been called for this motion. Hit Pro to vote in favor of the motion, hit con to vote against the motion."
+                placeholder={
+                  voteFinished
+                    ? "Vote has ended. This motion is now closed."
+                    : "A vote has been called for this motion. Hit Pro to vote in favor of the motion, hit con to vote against the motion."
+                }
                 variant="outlined"
                 minRows={3}
                 maxRows={3}
