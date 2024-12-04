@@ -63,7 +63,7 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
     setForVotes(forArr);
     addNewMessage(
       `${currentUser?.username} has voted for this motion\n
-      There are ${forArr.length} votes for, ${againstVotes.length < 0 ? 0 : againstVotes.length - 1} votes against`,
+      There are ${forArr.length} votes for, ${againstVotes.length <= 0 ? 0 : againstVotes.length - 1} votes against`,
       "8eszq0g4tebyspt",
       getCurrentMotion(),
       "VoteBot",
@@ -83,7 +83,7 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
     setAgainstVotes(againstArr);
     addNewMessage(
       `${currentUser?.username} has voted against this motion\n
-      There are ${forVotes.length < 0 ? 0 : forVotes.length - 1} votes for, ${againstArr.length} votes against`,
+      There are ${forVotes.length <= 0 ? 0 : forVotes.length - 1} votes for, ${againstArr.length} votes against`,
       "8eszq0g4tebyspt",
       getCurrentMotion(),
       "VoteBot",
