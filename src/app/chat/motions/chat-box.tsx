@@ -175,7 +175,7 @@ export default function ChatBox({
     if (getCurrentCommittee() && getCurrentMotion()) {
       // Subscribe to updates for the specific motion
       pb.collection("motions").subscribe(getCurrentMotion(), () => {
-        setReload(true); // Fetch new messages when updated
+        fetchMessages(); // Fetch new messages when updated
         console.log("Messages have changed");
       });
 
