@@ -178,7 +178,7 @@ export default function ChatBox({
         pb.collection("motions").unsubscribe(getCurrentMotion());
       };
     }
-  }, []);
+  }, [reload]);
 
   // Effect to scroll to the bottom whenever the messages change
   useEffect(() => {
