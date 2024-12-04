@@ -29,7 +29,11 @@ export default function MakeCommitteeForm({
       console.log(committeeName);
       console.log([...memberSet]);
       handleToggleMakeCommittee(false);
-      addNewCommitteee(committeeName, [...memberSet], currentUserEmail);
+      addNewCommitteee(
+        committeeName,
+        [...memberSet, "votebot@wm.edu"],
+        currentUserEmail,
+      );
     }
     setHasName(false);
     setMembersAdded(false);
