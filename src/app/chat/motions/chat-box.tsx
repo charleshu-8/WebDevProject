@@ -172,7 +172,7 @@ export default function ChatBox({
   // Listens for DB updates to messages to refetch messages
   // Also refetches upon motion or committee change
   useEffect(() => {
-    if (getCurrentCommittee() && getCurrentMotion()) {
+    if (getCurrentMotion()) {
       // Subscribe to updates for the specific motion
       pb.collection("motions").subscribe(getCurrentMotion(), () => {
         fetchMessages(); // Fetch new messages when updated
@@ -184,7 +184,7 @@ export default function ChatBox({
         pb.collection("motions").unsubscribe(getCurrentMotion());
       };
     }
-  }, [reload]);
+  }, [messages]);
 
   // Effect to scroll to the bottom whenever the messages change
   useEffect(() => {
