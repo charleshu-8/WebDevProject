@@ -114,6 +114,7 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
         "VoteBot",
       );
       setVoted(getCurrentMotion(), true);
+      setHasVoted(true);
     } else {
       setIsConPressed(false);
       setIsProPressed(false);
