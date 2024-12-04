@@ -176,3 +176,29 @@ export async function getAgainstVotes(motion: string) {
     return [];
   }
 }
+
+export async function setFinished(motion: string, finished: boolean) {
+  try {
+    return (
+      await pb.collection("motions").getOne(`${motion}`, {
+        fields: "finished",
+      })
+    ).finished as boolean;
+  } catch (e) {
+    console.error("Motion finished state fetching error: " + e);
+    return false;
+  }
+}
+
+export async function getFinished(motion: string) {
+  try {
+    return (
+      await pb.collection("motions").getOne(`${motion}`, {
+        fields: "finished",
+      })
+    ).finished as boolean;
+  } catch (e) {
+    console.error("Motion finished state fetching error: " + e);
+    return false;
+  }
+}

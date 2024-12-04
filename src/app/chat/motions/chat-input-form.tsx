@@ -17,6 +17,8 @@ import {
   voteAgainstMotion,
   getForVotes,
   getAgainstVotes,
+  setFinished,
+  getFinished,
 } from "@/app/db/motions";
 // Import the Input component from the MUI Joy library
 import Image from "next/image";
@@ -134,6 +136,8 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
         "VoteBot",
       );
 
+      setFinished(getCurrentMotion(), true);
+
       //do something to remove the button
       setVoteFinished(true);
     }
@@ -149,6 +153,11 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
           setIsConPressed(true);
         }
       });
+  }
+
+  async function updateFinished() {
+    const finished = await getFinished(getCurrentMotion());
+    setVoteFinished(finished);
   }
 
   useEffect(() => {
@@ -174,6 +183,7 @@ export default function ChatInputField({ onSendMessage }: ChatInputFieldProps) {
     setIsProPressed(false);
     setIsConPressed(false);
     setIsNeutralPressed(false);
+    updateFinished();
     setMessage("");
   }, [getCurrentMotion()]);
 
