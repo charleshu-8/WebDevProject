@@ -184,7 +184,24 @@ export default function ChatBox({
         pb.collection("motions").unsubscribe(getCurrentMotion());
       };
     }
-  }, [messages]);
+  }, [reload]);
+
+  // Fetch messages whenever reload changes
+  useEffect(() => {
+    if (getCurrentMotion()) {
+      let isMounted = true;
+
+      if (reload) {
+        if (isMounted) {
+          setReload(false);
+        }
+      }
+
+      return () => {
+        isMounted = false;
+      };
+    }
+  }, [reload, setReload]);
 
   // Effect to scroll to the bottom whenever the messages change
   useEffect(() => {
