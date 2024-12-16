@@ -5,7 +5,7 @@ import NavBar from "./navbar";
 import Sidebar from "./sidebar";
 import ChatBox from "./motions/chat-box";
 import MakeCommitteeForm from "./committees/make-committee-form";
-import { currentUser, getCurrentMotion } from "../db/pocketbase";
+import { currentUser, getCurrentCommittee } from "../db/pocketbase";
 import { redirect } from "next/navigation";
 
 export default function ChatPage() {
@@ -47,7 +47,7 @@ export default function ChatPage() {
             handleToggleMakeCommittee={handleToggleMakeCommittee}
           />
         ) : (
-          getCurrentMotion() && (
+          getCurrentCommittee() && (
             <ChatBox
               isNewMotion={isNewMotion}
               handleToggleIsNewMotion={handleToggleIsNewMotion}

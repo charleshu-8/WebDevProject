@@ -47,6 +47,7 @@ export default function SidePanel({
   const [committeeIds, setCommitteeIds] = useState<string[]>([]);
   const [selectedCommittee, setSelectedCommittee] = useState("");
   const [loading, setLoading] = useState(true);
+  const [renderedCommittee, setRenderedCommittee] = useState("");
 
   const panelTitle: string = useMemo(() => {
     switch (panel) {
@@ -263,11 +264,23 @@ export default function SidePanel({
     }
   }, []);
 
+  // Set selected motion and call handleMotionCardClick on mount
+  useEffect(() => {
+    const currentMotion = getCurrentMotion();
+    if (currentMotion) {
+      setSelectedMotion(currentMotion);
+      handleMotionCardClick(currentMotion);
+    }
+  }, []);
+
   // Listens for DB updates to motions to refetch motions
   // Also refetches upon motion or committee change
   useEffect(() => {
-    if (getCurrentCommittee() && getCurrentMotion()) {
+    if (getCurrentCommittee() && getCurrentCommittee() !== renderedCommittee) {
+      setMotions([]);
       fetchMotions();
+
+      setRenderedCommittee(getCurrentCommittee());
 
       // Subscribe to updates for the specific motion
       pb.collection("committees").subscribe(getCurrentCommittee(), () => {
@@ -279,22 +292,6 @@ export default function SidePanel({
       return () => {
         pb.collection("committees").unsubscribe(getCurrentCommittee());
       };
-    }
-  }, []);
-
-  // Set selected motion and call handleMotionCardClick on mount
-  useEffect(() => {
-    const currentMotion = getCurrentMotion();
-    if (currentMotion) {
-      setSelectedMotion(currentMotion);
-      handleMotionCardClick(currentMotion);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (getCurrentCommittee()) {
-      setMotions([]);
-      fetchMotions();
     }
   }, [panel]);
 

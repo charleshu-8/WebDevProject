@@ -92,6 +92,7 @@ export default function ChatBox({
 
   // Get all available messages for a motion
   async function fetchMessages() {
+    console.log("Fetching messages");
     const messages = await getFullMotionMessages(getCurrentMotion());
 
     const helperArray: ChatMessage[] = [];
@@ -159,14 +160,19 @@ export default function ChatBox({
     }
   }
 
-  // Listens for DB updates to messages to refetch messages
-  // Also refetches upon motion or committee change
   useEffect(() => {
-    if (getCurrentCommittee() && getCurrentMotion()) {
+    if (getCurrentMotion() && reload) {
       fetchMessages();
       // Get updated members & avatar pics based on current committee
       getMemberAvatarsByIds();
+      setReload(false);
+    }
+  }, [reload]);
 
+  // Listens for DB updates to messages to refetch messages
+  // Also refetches upon motion or committee change
+  useEffect(() => {
+    if (getCurrentMotion()) {
       // Subscribe to updates for the specific motion
       pb.collection("motions").subscribe(getCurrentMotion(), () => {
         fetchMessages(); // Fetch new messages when updated
@@ -178,34 +184,29 @@ export default function ChatBox({
         pb.collection("motions").unsubscribe(getCurrentMotion());
       };
     }
-  }, []);
+  }, [reload]);
+
+  // Fetch messages whenever reload changes
+  useEffect(() => {
+    if (getCurrentMotion()) {
+      let isMounted = true;
+
+      if (reload) {
+        if (isMounted) {
+          setReload(false);
+        }
+      }
+
+      return () => {
+        isMounted = false;
+      };
+    }
+  }, [reload, setReload]);
 
   // Effect to scroll to the bottom whenever the messages change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
-
-  // Fetch messages whenever reload changes
-  useEffect(() => {
-    let isMounted = true;
-
-    if (reload) {
-      fetchMessages().then(() => {
-        if (isMounted) {
-          setReload(false);
-        }
-      });
-    }
-
-    return () => {
-      isMounted = false;
-    };
-  }, [reload, setReload]);
-
-  // Fetch messages whenever reload changes
-  useEffect(() => {
-    fetchMessages();
-  }, [reload]);
 
   return (
     <Box className="flex h-full w-full flex-col bg-gray-200 p-4">
@@ -237,7 +238,9 @@ export default function ChatBox({
         {isNewMotion ? (
           <MotionInputField onSendMessage={sendNewMotion} />
         ) : (
-          <ChatInputField onSendMessage={sendMessage} />
+          getCurrentMotion() && (
+            <ChatInputField onSendMessage={sendMessage} reload={reload} />
+          )
         )}
       </form>
     </Box>
