@@ -4,6 +4,7 @@ import { useState } from "react";
 import Form from "./form";
 import UploadAndDisplayImage from "./pfp";
 import { SignUpContext } from "./signUpContext";
+import Link from "next/link";
 
 export default function SignUp() {
   // Define state variable to track and pass user selected PFP between components
@@ -47,12 +48,12 @@ export default function SignUp() {
               <Form />
             </SignUpContext.Provider>
             {/* Bottom of page text: Already have an account? Login */}
-            <p className="mt-2 text-center">
-              Already have an account?{" "}
-              <a href="/auth/login" className="hypertext-styling">
-                Login
-              </a>
-            </p>
+            <div className="flex justify-center space-x-1">
+              <p className="mt-2 text-center">Already have an account? </p>
+              <p className="hypertext-styling mt-2 text-center">
+                <Link href={"/auth/login"}>Login</Link>
+              </p>
+            </div>
           </div>
         </div>
       </div>
