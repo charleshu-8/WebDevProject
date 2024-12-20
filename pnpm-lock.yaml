@@ -33,8 +33,8 @@ importers:
         specifier: 15.1.2
         version: 15.1.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       pocketbase:
-        specifier: ^0.23.0
-        version: 0.23.0
+        specifier: ^0.24.0
+        version: 0.24.0
       react:
         specifier: ^19.0.0
         version: 19.0.0
@@ -1666,8 +1666,8 @@ packages:
     resolution: {integrity: sha512-saLsH7WeYYPiD25LDuLRRY/i+6HaPYr6G1OUlN39otzkSTxKnubR9RTxS3/Kk50s1g2JTgFwWQDQyplC5/SHZg==}
     engines: {node: '>= 6'}
 
-  pocketbase@0.23.0:
-    resolution: {integrity: sha512-S9b/QSKGXsRyL55m8MoXMucPTpMvpOLlOLTSduraIOzwVt8Epp0j7V53a1qW7VbF2pL7PC579DOruxJBWqBYTg==}
+  pocketbase@0.24.0:
+    resolution: {integrity: sha512-zcmEUsXGRT+AqRHzEMlheglOiQnhYKRxT0ew164kx38/IGsE7MLmlmEaMSkm3tUwiZe5qC3RcA5+SX0lkDUSHA==}
 
   possible-typed-array-names@1.0.0:
     resolution: {integrity: sha512-d7Uw+eZoloe0EHDIYoe+bQ5WXnGMOpmiZFTuMWCwpjzzkL2nTjcKiAk4hh8TjnGye2TwWOk3UXucZ+3rbmBa8Q==}
@@ -3855,7 +3855,7 @@ snapshots:
 
   pirates@4.0.6: {}
 
-  pocketbase@0.23.0: {}
+  pocketbase@0.24.0: {}
 
   possible-typed-array-names@1.0.0: {}
 
