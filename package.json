@@ -14,7 +14,7 @@
     "@fontsource/roboto": "^5.1.0",
     "@mui/icons-material": "^6.2.1",
     "@mui/joy": "5.0.0-beta.51",
-    "@mui/material": "^6.2.1",
+    "@mui/material": "^6.3.0",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "next": "15.1.2",
     "pocketbase": "^0.24.0",
