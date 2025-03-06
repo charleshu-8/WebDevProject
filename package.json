@@ -20,7 +20,7 @@
     "pocketbase": "^0.25.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-intersection-observer": "^9.15.1"
+    "react-intersection-observer": "^9.16.0"
   },
   "devDependencies": {
     "@types/node": "^22.13.9",
