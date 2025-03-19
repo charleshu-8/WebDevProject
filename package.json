@@ -13,7 +13,7 @@
     "@emotion/styled": "^11.14.0",
     "@fontsource/roboto": "^5.2.5",
     "@mui/icons-material": "^6.4.8",
-    "@mui/joy": "5.0.0-beta.51",
+    "@mui/joy": "5.0.0-beta.52",
     "@mui/material": "^6.4.8",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "next": "15.2.3",
