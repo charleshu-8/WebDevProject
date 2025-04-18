@@ -16,7 +16,7 @@
     "@mui/joy": "5.0.0-beta.52",
     "@mui/material": "^6.4.8",
     "@tailwindcss/aspect-ratio": "^0.4.2",
-    "next": "15.3.0",
+    "next": "15.3.1",
     "pocketbase": "^0.25.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
