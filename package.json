@@ -17,7 +17,7 @@
     "@mui/material": "^6.4.8",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "next": "15.3.3",
-    "pocketbase": "^0.26.0",
+    "pocketbase": "^0.26.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-intersection-observer": "^9.16.0"
